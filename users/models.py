@@ -9,6 +9,13 @@ from django.utils.translation import gettext_lazy as _
 import uuid
 
 
+class Role(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -44,8 +51,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(verbose_name=_('date joined'), auto_now_add=True)
 
     groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True, verbose_name=_('user groups'))
-    user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True,
-                                              verbose_name=_('user permissions'))
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='customuser_set',
+        blank=True,
+        verbose_name=_('user permissions')
+    )
+    role = models.ForeignKey(Role, on_delete=models.SET_NULL, blank=True, null=True, related_name='customuser_set')
 
     objects = CustomUserManager()
 
@@ -62,6 +74,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
         db_table = 'user'
