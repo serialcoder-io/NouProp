@@ -3,8 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 
 from users.models import Role, User
 
-
-# Register your models here.
 class RoleAdmin(admin.ModelAdmin):
     list_display = ['name']
 

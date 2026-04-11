@@ -1,3 +1,11 @@
 from django.contrib import admin
+from .models import Report, Tag
 
-# Register your models here.
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ['title', 'status', 'lat', 'lng', 'created_at']
+
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+admin.site.register(Report, ReportAdmin)
+admin.site.register(Tag, TagAdmin)

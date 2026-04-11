@@ -1,8 +1,12 @@
 import uuid
+from decimal import Decimal
+
 from django.core.exceptions import ValidationError
 from django.db.models import TextChoices
 from django_quill.fields import QuillField
 from django.db import models
+from django.utils.text import slugify
+
 from locations.models import Area
 from users.models import User
 from phonenumber_field.modelfields import PhoneNumberField
@@ -15,7 +19,13 @@ class Category(models.Model):
 
     class Meta:
         db_table = 'categories'
+        verbose_name_plural = 'Categories'
         ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -34,7 +44,11 @@ class Listing(models.Model):
     is_open = models.BooleanField(default=True, verbose_name='Is Open')
     is_deleted = models.BooleanField(default=False, verbose_name='Is deleted')
     is_free= models.BooleanField(default=True, verbose_name='Is free')
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Price')
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('0.00')
+    )
 
     class Meta:
         db_table = 'listings'

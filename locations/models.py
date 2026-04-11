@@ -5,7 +5,7 @@ from django.utils.text import slugify
 class District(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True,  blank=True)
 
     class Meta:
         db_table = 'districts'
