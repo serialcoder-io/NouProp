@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 )
 from django.utils.translation import gettext_lazy as _
 import uuid
-
+from django.contrib.auth.models import User
 
 class Role(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -66,12 +66,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         if not self.display_name and self.email:
             self.display_name = self.email.split('@')[0]
-            super().save(update_fields=['display_name'])
-        else:
-            super().save(*args, **kwargs)
+
+        if not self.role:
+            self.role = Role.objects.filter(name='citizen').first()
+
+        super().save(*args, **kwargs)
+
+        if not self.role:
+            self.role = Role.objects.filter(name='citizen').first()
 
     def __str__(self):
         return self.email
 
     class Meta:
-        db_table = 'user'
+        db_table = 'users'

@@ -1,0 +1,23 @@
+{% load static %}
+{% load django_htmx %}
+<!DOCTYPE html>
+<html lang="en" data-theme="emerald">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}{% endblock%}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css"/>
+    {% htmx_script %}
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}' class="min-h-screen" id="body">
+    <div class="min-h-screen" id="base-component">
+      {% block content %}
+
+      {% endblock %}
+    </div>
+    {% block extra_script %}{% endblock %}
+  </body>
+</html>

@@ -24,6 +24,11 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("accounts/", include("allauth.urls")),
+    path('listings/', include('listings.urls')),
+    path('reports/', include('reports.urls')),
+    path('locations/', include('locations.urls')),
+    path('dashboard/', include('users.urls')),
     path('', index, name='home'),
 ]
 

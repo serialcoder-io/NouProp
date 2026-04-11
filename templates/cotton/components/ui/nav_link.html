@@ -1,0 +1,17 @@
+<c-vars curr_path="" text=""></c-vars>
+<a
+  curr_path="{{ curr_path }}"
+  class="group flex gap-x-2 items-center px-4 py-2 text-md font-light
+   hover:border-primary rounded-lg transition-all duration-200 box-border hover:cursor-pointer
+  {% if text == 'Home' and request.path == '/' or text != 'Home' and curr_path != 'home' and curr_path in request.path %}
+    bg-primary/20
+  {% endif %}"
+  hx-get="{{ url }}"
+  hx-target="#base-component"
+  hx-swap="innerHTML"
+  hx-push-url="true">
+  <span class="group-hover:text-primary transition-all duration-300 rounded-lg">
+    {{ slot }}
+  </span>
+  <span class="font-semibold">{{ text }}</span>
+</a>
