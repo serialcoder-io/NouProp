@@ -5,21 +5,28 @@
 
         <!-- SIDEBAR -->
         <aside class="lg:w-1/5 w-full">
-            <div class="bg-base-100 border border-base-300 rounded-xl p-5 sticky top-6">
+            <form
+                    hx-get="{% url 'listings' %}"
+                    hx-target="#listing-container"
+                    hx-push-url="true"
+                    hx-trigger="change delay:300ms, submit"
+                    class="bg-base-100 border border-base-300 rounded-xl p-5 sticky top-6"
+            >
                 <h2 class="text-lg font-semibold mb-5">Filters</h2>
 
                 <!-- Date filter -->
                 <div class="mb-6">
                     <label for="date_filter" class="text-sm font-medium mb-2 block">Date posted</label>
                     <select id="date_filter" class="select select-bordered w-full" name="date_filter">
-                        <option value="">All time</option>
-                        <option value="3m">Last 3 months</option>
-                        <option value="2m">Last 2 months</option>
-                        <option value="1m">Last month</option>
-                        <option value="3w">Last 3 weeks</option>
-                        <option value="2w">Last 2 weeks</option>
-                        <option value="7d">Last 7 days</option>
-                        <option value="today">Today</option>
+                        <option value="all" {% if date_filter == 'all' %} selected {% endif %}>All time</option>
+                        {% for filter in date_filters %}
+                            <option
+                                    value="{{ filter.num_days }}"
+                                    {% if date_filter == filter.num_days|stringformat:"s" %}selected{% endif %}
+                            >
+                                {{ filter.label }}
+                            </option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -27,9 +34,14 @@
                 <div class="mb-6">
                     <label for="category_filter" class="text-sm font-medium mb-2 block">Category</label>
                     <select id="category_filter" class="select select-bordered w-full" name="category">
-                        <option value="ALL">All categories</option>
+                        <option value="all" {% if category_slug == 'all' %}selected{% endif %}>
+                            All categories
+                        </option>
                         {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            <option value="{{ category.slug }}"
+                                    {% if category_slug == category.slug %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </div>
@@ -38,9 +50,10 @@
                 <div class="mb-6">
                     <label for="district_filter" class="text-sm font-medium mb-2 block">District</label>
                     <select id="district_filter" class="select select-bordered w-full" name="district">
-                        <option value="ALL">All districts</option>
+                        <option value="all" {% if district_slug == 'all' %}selected{% endif %}>All districts</option>
                         {% for district in districts %}
-                            <option value="{{ district.id }}">{{ district.name }}</option>
+                            <option value="{{ district.slug }}"
+                                    {% if district_slug == district.slug %}selected{% endif %}>{{ district.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -48,126 +61,31 @@
                 <!-- Free filter -->
                 <div class="flex items-center gap-2 mb-6">
                     <label>
-                        <input type="checkbox" class="checkbox checkbox-sm" name="is_free">
+                        <input
+                                type="checkbox"
+                                class="checkbox checkbox-sm"
+                                name="free_only"
+                                {% if free_only %} checked {% endif %}
+                        >
                     </label>
                     <span class="text-sm">Free listings only</span>
                 </div>
 
-                <button class="btn btn-primary btn-sm w-full">Apply filters</button>
-            </div>
-        </aside>
-
-        <!-- LISTINGS -->
-        <main class="lg:w-4/5 w-full">
-
-            <!-- GRID -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-
-                {% for listing in listings %}
-                    <div class="group bg-base-100 border border-base-200 rounded-2xl overflow-hidden flex flex-col transition hover:shadow-sm">
-
-                        <!-- IMAGE -->
-                        <div class="relative h-56 bg-base-200 overflow-hidden">
-
-                            {% if listing.image %}
-                                <img src="{{ listing.image.url }}"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                                     alt="{{ listing.title }} image"
-                                />
-                            {% else %}
-                                <div class="w-full h-full flex items-center justify-center text-sm opacity-50">
-                                    No image available
-                                </div>
-                            {% endif %}
-
-                            <!-- BADGES -->
-                            <div class="absolute top-3 left-3 flex gap-2">
-                                <span class="badge badge-sm badge-primary">
-                                    {{ listing.category.name }}
-                                </span>
-                                {% if listing.is_free %}
-                                    <span class="badge badge-sm badge-success">
-                                      Free
-                                    </span>
-                                {% else %}
-                                    <span class="badge badge-sm badge-warning">
-                                      Paid
-                                    </span>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <!-- CONTENT -->
-                        <div class="p-4 flex flex-col flex-1">
-
-                            <!-- TITLE -->
-                            <h3 class="font-semibold text-base leading-snug line-clamp-2">
-                                {{ listing.title }}
-                            </h3>
-
-                            <!-- META -->
-                            <div class="mt-2 flex justify-between text-xs text-gray-500 flex justify-between">
-                                {% if listing.area %}
-                                    <div class="flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                             stroke-linecap="round" stroke-linejoin="round"
-                                             class="lucide lucide-map-pin-icon lucide-map-pin">
-                                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                                            <circle cx="12" cy="10" r="3"></circle>
-                                        </svg>
-                                        <span>{{ listing.area.name }}</span>
-                                    </div>
-                                {% else %}
-                                    <span></span>
-                                {% endif %}
-
-                                <span>{{ listing.created_at|timesince }} ago</span>
-                            </div>
-
-                            <!-- PRICE -->
-                            <div class="mt-3">
-                                {% if listing.is_free %}
-                                    <span class="text-green-600 font-semibold">Free</span>
-                                {% else %}
-                                    <span class="font-semibold">{{ listing.price }} Rs</span>
-                                {% endif %}
-                            </div>
-
-                            <!-- ACTIONS -->
-                            <div class="mt-4 flex gap-2">
-                                <a href=""
-                                   class="btn btn-sm btn-outline flex-1">
-                                    View
-                                </a>
-                                <a href=""
-                                   class="btn btn-sm btn-primary flex-1">
-                                    Offer
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-
-            </div>
-
-            <!-- PAGINATION -->
-            <div class="flex justify-center mt-10">
-                <div class="join">
-                    {% if listings.has_previous %}
-                        <a href="?page={{ listings.previous_page_number }}" class="join-item btn btn-sm">«</a>
-                    {% endif %}
-
-                    <button class="join-item btn btn-sm">
-                        {{ listings.number }} / {{ listings.paginator.num_pages }}
-                    </button>
-
-                    {% if listings.has_next %}
-                        <a href="?page={{ listings.next_page_number }}" class="join-item btn btn-sm">»</a>
-                    {% endif %}
+                <div class="space-y-3">
+                    <a
+                            hx-get="{% url 'listings' %}"
+                            hx-target="#body"
+                            type="button" class="btn btn-tertiary btn-sm w-full"
+                    >
+                        Reset filter
+                    </a>
                 </div>
-            </div>
+            </form>
+        </aside>
+        <!-- LISTINGS -->
+        <main class="lg:w-4/5 w-full" id="listing-container">
 
+            <c-partials.listings_container_partial></c-partials.listings_container_partial>
         </main>
 
     </div>
