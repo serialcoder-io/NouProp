@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
 from django.utils.translation import gettext_lazy as _
 import uuid
 from django.contrib.auth.models import User
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Role(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -46,6 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     email = models.EmailField(verbose_name=_('email address'), unique=True)
     display_name = models.CharField(max_length=50, blank=True, null=True)
+    whatsapp_number = PhoneNumberField(blank=True, null=True, verbose_name='WhatsApp number')
     is_active = models.BooleanField(verbose_name=_('active'), default=True)
     is_staff = models.BooleanField(verbose_name=_('staff status'), default=False)
     date_joined = models.DateTimeField(verbose_name=_('date joined'), auto_now_add=True)

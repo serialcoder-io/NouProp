@@ -1,11 +1,14 @@
-# users/forms.py
-
 from allauth.account.forms import SignupForm
 from django import forms
 from .models import Role
+from phonenumber_field.formfields import PhoneNumberField
 
 class CustomSignupForm(SignupForm):
-    display_name = forms.CharField(max_length=50, required=True)
+
+    whatsapp_number = PhoneNumberField(
+        required=True,
+        region="MU"
+    )
 
     role = forms.ModelChoiceField(
         queryset=Role.objects.all(),
@@ -16,8 +19,8 @@ class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
 
-        user.display_name = self.cleaned_data['display_name']
-        user.role = self.cleaned_data['role']
-        user.save()
+        user.role = self.cleaned_data["role"]
+        user.whatsapp_number = self.cleaned_data["whatsapp_number"]
 
+        user.save()
         return user

@@ -1,10 +1,9 @@
 # from django.contrib.auth.decorators import login_required
+import uuid
 from datetime import datetime, timedelta, time
-import time as my_time
 
 from django.core.paginator import Paginator
-from django.db.models import QuerySet
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from listings.models import Listing, Category
 from locations.models import District
 
@@ -88,3 +87,11 @@ def listings_view(request):
             return render(request, "cotton/partials/listings_page_partial.html", context)
 
     return render(request, "listings/listings_page.html", context)
+
+def listing_details(request, listing_id):
+    listing = get_object_or_404(
+        Listing.objects.select_related('area', 'user', 'category'),
+        pk=listing_id
+    )
+
+    return render(request, "listings/listing_details.html", {"listing": listing})

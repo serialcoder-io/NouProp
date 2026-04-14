@@ -68,7 +68,9 @@
 
         <!-- ACTIONS -->
         <div class="mt-4 flex gap-2">
-            <a href=""
+            <a hx-get="{% url 'listing_details' listing.id %}"
+               hx-target="#body"
+              hx-push-url="true"
                class="btn btn-sm btn-outline flex-1">
                 View
             </a>
