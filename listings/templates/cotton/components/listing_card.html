@@ -70,14 +70,29 @@
         <div class="mt-4 flex gap-2">
             <a hx-get="{% url 'listing_details' listing.id %}"
                hx-target="#body"
-              hx-push-url="true"
+               hx-push-url="true"
                class="btn btn-sm btn-outline flex-1">
                 View
             </a>
-            <a href=""
-               class="btn btn-sm btn-primary flex-1">
-                Offer
-            </a>
+
+            {% if request.user.is_authenticated %}
+                <button
+                    hx-get="{% url 'listing_details' listing.id %}"
+                    hx-target="#body"
+                    class="btn btn-sm btn-primary flex-1">
+                    Make offer
+                </button>
+
+            {% else %}
+                {% url 'listing_details' listing.id as detail_url %}
+                <button
+                    hx-get="{% url 'account_login' %}?next={{ detail_url|urlencode }}"
+                    hx-target="#body"
+                    hx-push-url="true"
+                    class="btn btn-sm btn-primary flex-1">
+                    Make an offer
+                </button>
+            {% endif %}
         </div>
     </div>
 </div>

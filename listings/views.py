@@ -94,4 +94,8 @@ def listing_details(request, listing_id):
         pk=listing_id
     )
 
-    return render(request, "listings/listing_details.html", {"listing": listing})
+    context = {
+        'listing': listing,
+    }
+
+    return render(request, "listings/listing_details.html", context)

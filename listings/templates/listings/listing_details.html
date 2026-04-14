@@ -2,142 +2,142 @@
 {% load static %}
 
 {% block title %}
-<title>{{ listing.title }}</title>
+    <title>{{ listing.title }}</title>
 {% endblock %}
 
 {% block content %}
+    <c-components.layout.header></c-components.layout.header>
+    <c-components.auth_required_modal next="{{ request.path }}"></c-components.auth_required_modal>
+    <div class="bg-base-100 min-h-screen py-10 px-4">
+        <div class="max-w-6xl mx-auto">
 
-<c-components.layout.header></c-components.layout.header>
+            <!-- BACK -->
+            <div class="mb-6">
+                <a href="{% url 'listings' %}" class="text-sm opacity-70 hover:opacity-100">
+                    ← Back to listings
+                </a>
+            </div>
 
-<div class="bg-base-100 min-h-screen py-10 px-4">
-    <div class="max-w-6xl mx-auto">
+            <!-- GRID -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        <!-- BACK -->
-        <div class="mb-6">
-            <a href="{% url 'listings' %}" class="text-sm opacity-70 hover:opacity-100">
-                ← Back to listings
-            </a>
-        </div>
+                <!-- LEFT -->
+                <div class="lg:col-span-2 space-y-6">
 
-        <!-- GRID -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-            <!-- LEFT -->
-            <div class="lg:col-span-2 space-y-6">
-
-                <!-- IMAGE -->
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-base-100">
-                    <div class="w-full aspect-[4/3] sm:h-[420px]">
-                        {% if listing.image %}
-                            <img src="{{ listing.image.url }}"
-                                 class="w-full h-full object-cover hover:scale-105 transition duration-500"
-                                 alt="{{ listing.title }}">
-                        {% else %}
-                            <div class="w-full h-full flex items-center justify-center text-gray-400">
-                                No image available
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- TITLE + PRICE (inchangé) -->
-                <div class="bg-base-100 rounded-2xl p-6 shadow">
-
-                    <div class="flex justify-between items-start gap-4">
-
-                        <h1 class="text-lg md:text-xl lg:text-2xl font-bold leading-tight">
-                            {{ listing.title }}
-                        </h1>
-
-                        <div class="text-right">
-                            {% if listing.is_free %}
-                                <span class="badge badge-success">Free</span>
+                    <!-- IMAGE -->
+                    <div class="rounded-2xl overflow-hidden shadow-lg bg-base-100">
+                        <div class="w-full aspect-[4/3] sm:h-[420px]">
+                            {% if listing.image %}
+                                <img src="{{ listing.image.url }}"
+                                     class="w-full h-full object-cover hover:scale-105 transition duration-500"
+                                     alt="{{ listing.title }}">
                             {% else %}
-                                <div class="text-2xl font-bold text-primary">
-                                    {{ listing.price }} Rs
+                                <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                    No image available
                                 </div>
                             {% endif %}
                         </div>
+                    </div>
 
+                    <!-- TITLE + PRICE (inchangé) -->
+                    <div class="bg-base-100 rounded-2xl p-6 shadow">
+
+                        <div class="flex justify-between items-start gap-4">
+
+                            <h1 class="text-lg md:text-xl lg:text-2xl font-bold leading-tight">
+                                {{ listing.title }}
+                            </h1>
+
+                            <div class="text-right">
+                                {% if listing.is_free %}
+                                    <span class="badge badge-success">Free</span>
+                                {% else %}
+                                    <div class="text-2xl font-bold text-primary">
+                                        {{ listing.price }} Rs
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div class="bg-base-100 rounded-2xl p-6 shadow">
+                        <h2 class="text-lg font-semibold mb-3">Description</h2>
+
+                        <div class="prose max-w-prose break-words">
+                            {{ listing.description.html|safe }}
+                        </div>
                     </div>
 
                 </div>
 
-                <!-- DESCRIPTION -->
-                <div class="bg-base-100 rounded-2xl p-6 shadow">
-                    <h2 class="text-lg font-semibold mb-3">Description</h2>
+                <!-- RIGHT SIDEBAR -->
+                <div class="space-y-6">
 
-                    <div class="prose max-w-prose break-words">
-                        {{ listing.description.html|safe }}
-                    </div>
-                </div>
+                    <div class="bg-base-100 rounded-2xl shadow p-6 sticky top-6">
 
-            </div>
-
-            <!-- RIGHT SIDEBAR -->
-            <div class="space-y-6">
-
-                <div class="bg-base-100 rounded-2xl shadow p-6 sticky top-6">
-
-                    <!-- CTA -->
-                    <button class="btn btn-primary w-full mb-4">
-                        Make an offer
-                    </button>
-
-                    {% if listing.user.whatsapp_number %}
-                        <a href="https://wa.me/{{ listing.whatsapp_number }}"
-                           target="_blank"
-                           class="btn btn-outline w-full">
-                            Contact publisher
-                        </a>
-                    {% endif %}
-
-                    <!-- META -->
-                    <div class="mt-6 border-t pt-5 text-sm opacity-70 space-y-2">
-
-                        {% if listing.area %}
-                            <div>📍 {{ listing.area.name }}</div>
+                        <!-- CTA -->
+                        {% if request.user.is_authenticated %}
+                            <button class="btn btn-primary w-full mb-4">
+                                Make an offer
+                            </button>
+                        {% else %}
+                            <button onclick="not_logged_modal.showModal()"
+                                    class="btn btn-primary w-full mb-4">
+                                Make an offer
+                            </button>
                         {% endif %}
 
-                        <div>{{ listing.created_at|timesince }} ago</div>
+                        {% if listing.user.whatsapp_number %}
+                            <a href="https://wa.me/{{ listing.whatsapp_number }}"
+                               target="_blank"
+                               class="btn btn-outline w-full">
+                                Contact publisher
+                            </a>
+                        {% endif %}
 
-                        <div class="pt-2">
+                        <!-- META -->
+                        <div class="mt-6 border-t pt-5 text-sm opacity-70 space-y-2">
+
+                            {% if listing.area %}
+                                <div>📍 {{ listing.area.name }}</div>
+                            {% endif %}
+
+                            <div>{{ listing.created_at|timesince }} ago</div>
+
+                            <div class="pt-2">
                             <span class="badge badge-outline">
                                 {{ listing.category.name }}
                             </span>
-                        </div>
-                    </div>
-
-                    <!-- SELLER (inchangé) -->
-                    <div class="mt-6 border-t pt-5">
-
-                        <p class="text-sm font-semibold mb-3">Publisher</p>
-
-                        <div class="flex items-center gap-3">
-
-                            <div class="avatar avatar-placeholder">
-                              <div class="bg-neutral text-neutral-content w-10 rounded-full">
-                                <span>{{ listing.user.display_name|slice:":1"|upper }}</span>
-                              </div>
                             </div>
-
-                            <div>
-                                <p class="font-medium text-lg">
-                                    {{ listing.user.display_name|default:'Anonymous' }}
-                                </p>
-                            </div>
-
                         </div>
 
-                    </div>
+                        <!-- SELLER (inchangé) -->
+                        <div class="mt-6 border-t pt-5">
 
+                            <p class="text-sm font-semibold mb-3">Publisher</p>
+
+                            <div class="flex items-center gap-3">
+
+                                <div class="avatar avatar-placeholder">
+                                    <div class="bg-neutral text-neutral-content w-10 rounded-full">
+                                        <span>{{ listing.user.display_name|slice:":1"|upper }}</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="font-medium text-lg">
+                                        {{ listing.user.display_name|default:'Anonymous' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-</div>
 
 {% endblock %}
