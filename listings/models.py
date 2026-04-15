@@ -97,8 +97,9 @@ class Offer(models.Model):
 
     def clean(self):
         super().clean()
-        if self.listing and self.user == self.listing.user:
-            raise ValidationError("You cannot make an offer on your own listing.")
+        if self.listing_id and self.user_id:
+            if self.user_id == self.listing.user_id:
+                raise ValidationError("You cannot make an offer on your own listing.")
 
         if self.whatsapp_contact_allowed and not self.whatsapp_number:
             raise ValidationError("WhatsApp number is required if contact is allowed.")
@@ -107,9 +108,10 @@ class Offer(models.Model):
             raise ValidationError("WhatsApp number should be empty if contact is not allowed.")
 
     def save(self, *args, **kwargs):
-        self.full_clean()
         super().save(*args, **kwargs)
 
     def __str__(self):
+        if not self.user_id or not self.listing_id:
+            return f"Offer created at: {self.created_at}"
         return f"Offer by {self.user.email} on {self.listing.title}"
 

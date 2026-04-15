@@ -1,5 +1,9 @@
 {% extends "cotton/components/layout/base.html" %}
-{% load static %} 
+{% load static %}
+
+{% block extra_head %}
+    <link href="{% static 'css/quill.snow.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block title %}
 <title>Listings</title>
@@ -7,4 +11,9 @@
 
 {% block content %}
     <c-partials.listings_page_partial></c-partials.listings_page_partial>
+{% endblock %}
+
+{% block extra_script %}
+    <script src="{% static 'js/quill.js' %}"></script>
+    <script src="{% static 'js/init_quill.js' %}"></script>
 {% endblock %}

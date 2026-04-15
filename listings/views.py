@@ -1,9 +1,11 @@
 # from django.contrib.auth.decorators import login_required
 import uuid
 from datetime import datetime, timedelta, time
+from django.contrib import messages
 
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from listings.forms import OfferForm
 from listings.models import Listing, Category
 from locations.models import District
 
@@ -88,14 +90,37 @@ def listings_view(request):
 
     return render(request, "listings/listings_page.html", context)
 
+
 def listing_details(request, listing_id):
     listing = get_object_or_404(
         Listing.objects.select_related('area', 'user', 'category'),
         pk=listing_id
     )
-
+    form = OfferForm()
     context = {
         'listing': listing,
+        'form': form,
     }
-
     return render(request, "listings/listing_details.html", context)
+
+
+def make_offer(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    if request.method == "POST":
+        form = OfferForm(request.POST)
+        if form.is_valid():
+            offer = form.save(commit=False)
+            offer.listing = listing
+            offer.user = request.user
+            offer.save()
+            messages.success(request, "Offer sent successfully")
+            return redirect("listing_details", listing_id=listing.id)
+
+        return render(request, "listings/listing_details.html", {
+            "listing": listing,
+            "form": form,
+            "modal_open": True
+        })
+
+    return redirect("listing_details", listing_id=listing.id)

@@ -1,0 +1,78 @@
+<dialog class="modal" id="offer_modal"
+        {% if modal_open or request.GET.modal == "on" %}
+          {% if request.user != listing.user %}
+            open
+          {% endif %}
+        {% endif %}>
+
+    <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Make offer</h3>
+
+        <form method="post" action="{% url 'make_offer' listing.id %}">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Allow WhatsApp -->
+            <div class="form-control mb-4">
+                <label class="label cursor-pointer justify-start gap-3">
+                    {{ form.whatsapp_contact_allowed }}
+
+                    <span class="label-text flex items-center gap-2">
+                    Allow WhatsApp<!-- Tooltip -->
+                    <div class="tooltip" data-tip="Publisher can contact you via WhatsApp">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+                      </svg>
+                    </div>
+                  </span>
+                </label>
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div class="form-control mb-4">
+                <label for="whatsapp_number" class="label">
+                    <span class="label-text">WhatsApp Number</span>
+                </label>
+                <div class="input input-bordered flex items-center gap-2 w-full py-2">
+                  <span class="opacity-60 select-none">+230</span>
+                  <input id="whatsapp_number"
+                         type="text"
+                         name="whatsapp_number"
+                         value="{{ form.whatsapp_number.value|default:'' }}"
+                         class="grow flex-1"
+                         placeholder="xxxx xxxx" />
+                </div>
+
+                {% if form.whatsapp_number.errors %}
+                  <p class="text-error text-sm mt-1">
+                    {{ form.whatsapp_number.errors.0 }}
+                  </p>
+                {% endif %}
+            </div>
+
+            <!-- Message -->
+            <div class="form-control mb-4">
+                <label class="label">
+                    <span class="label-text">Your message</span>
+                </label>
+                <div id="editor" style="width:100%; height:100px; padding:5px; border:1px solid #ccc; border-radius:5px;" placeholder="Aucune observation pour cette réservation."></div>
+            </div>
+
+            <!-- Actions -->
+            <div class="modal-action">
+                <button type="submit" class="btn btn-primary">Send offer</button>
+                <button
+                        type="button"
+                        hx-get="{% url 'listing_details' listing.id %}"
+                        hx-push-url="true"
+                        hx-target="#body"
+                        class="btn">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+</dialog>

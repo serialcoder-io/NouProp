@@ -1,4 +1,4 @@
-<div class="navbar bg-base-100 shadow-sm sticky top-0 z-40">
+<div class="navbar bg-base-100 shadow-sm sticky top-0 z-40 px-2 md:px-6">
     <div class="navbar-start">
         <div class="dropdown">
             <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -62,7 +62,12 @@
             </li>
         </ul>
     </div>
-    <div class="navbar-end">
-        <a class="btn">Button</a>
+    <div class="navbar-end space-x-3">
+        {% if not request.user.is_authenticated %}
+            <a href="{% url 'account_login' %}" class="btn btn-ghost">
+                Log In
+            </a>
+            <a href="{% url 'account_signup' %}" class="btn btn-primary">Sign Up</a>
+        {% endif %}
     </div>
 </div>

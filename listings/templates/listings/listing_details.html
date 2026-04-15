@@ -1,6 +1,10 @@
 {% extends "cotton/components/layout/base.html" %}
 {% load static %}
 
+{% block extra_head %}
+    <link href="{% static 'css/quill.snow.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}
     <title>{{ listing.title }}</title>
 {% endblock %}
@@ -8,6 +12,7 @@
 {% block content %}
     <c-components.layout.header></c-components.layout.header>
     <c-components.auth_required_modal next="{{ request.path }}"></c-components.auth_required_modal>
+    <c-components.offer_dialog></c-components.offer_dialog>
     <div class="bg-base-100 min-h-screen py-10 px-4">
         <div class="max-w-6xl mx-auto">
 
@@ -79,23 +84,29 @@
                     <div class="bg-base-100 rounded-2xl shadow p-6 sticky top-6">
 
                         <!-- CTA -->
-                        {% if request.user.is_authenticated %}
-                            <button class="btn btn-primary w-full mb-4">
-                                Make an offer
-                            </button>
+                        {% if request.user == listing.user %}
+                            <div role="alert" class="alert alert-info alert-soft">
+                              <span>Your published this listing, you cannot make a offer.</span>
+                            </div>
                         {% else %}
-                            <button onclick="not_logged_modal.showModal()"
-                                    class="btn btn-primary w-full mb-4">
-                                Make an offer
-                            </button>
-                        {% endif %}
+                            {% if request.user.is_authenticated %}
+                                <button class="btn btn-primary w-full mb-4" onclick="offer_modal.showModal()">
+                                    Make an offer
+                                </button>
+                            {% else %}
+                                <button onclick="not_logged_modal.showModal()"
+                                        class="btn btn-primary w-full mb-4">
+                                    Make an offer
+                                </button>
+                            {% endif %}
 
-                        {% if listing.user.whatsapp_number %}
-                            <a href="https://wa.me/{{ listing.whatsapp_number }}"
-                               target="_blank"
-                               class="btn btn-outline w-full">
-                                Contact publisher
-                            </a>
+                            {% if listing.user.whatsapp_number %}
+                                <a href="https://wa.me/{{ listing.whatsapp_number }}"
+                                   target="_blank"
+                                   class="btn btn-outline w-full">
+                                    Contact publisher
+                                </a>
+                            {% endif %}
                         {% endif %}
 
                         <!-- META -->
@@ -130,6 +141,9 @@
                                 <div>
                                     <p class="font-medium text-lg">
                                         {{ listing.user.display_name|default:'Anonymous' }}
+                                        {% if request.user == listing.user %}
+                                            (You)
+                                        {% endif %}
                                     </p>
                                 </div>
                             </div>
@@ -140,4 +154,20 @@
         </div>
     </div>
 
+    {% if messages %}
+        <div class="space-y-2 mb-4 fixed bottom-4 right-4 alert-container">
+            {% for message in messages %}
+                <div class="alert alert-success text-white">
+                <span>{{ message }}</span>
+                <button class="btn btn-ghost" onclick="this.closest('.alert').remove()">X</button>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_script %}
+    <script src="{% static 'js/quill.js' %}"></script>
+    <script src="{% static 'js/init_quill.js' %}"></script>
 {% endblock %}

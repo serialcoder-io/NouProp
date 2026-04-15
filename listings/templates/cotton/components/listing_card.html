@@ -77,8 +77,9 @@
 
             {% if request.user.is_authenticated %}
                 <button
-                    hx-get="{% url 'listing_details' listing.id %}"
+                    hx-get="{% url 'listing_details' listing.id %}?modal=on"
                     hx-target="#body"
+                    hx-push-url="true"
                     class="btn btn-sm btn-primary flex-1">
                     Make offer
                 </button>
