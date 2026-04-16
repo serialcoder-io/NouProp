@@ -1,0 +1,95 @@
+{% extends "cotton/components/layout/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+    <link href="{% static 'css/quill.snow.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    <title>My Listings</title>
+{% endblock %} 
+
+{% block content %}
+    <!-- navbar -->
+    <c-components.layout.header></c-components.layout.header>
+    <div class="w-full flex justify-center">
+        <div class="w-full max-w-7xl py-4 ">
+            <!-- header section -->
+           <div class="flex justify-between items-end py-6 mb-2">
+                <div class="flex flex-col">
+                    <h2 class="text-3xl font-bold">Dashboard</h2>
+                    <p class="text-md font-normal text-neutral/50">Manage your listings and waste reports</p>
+                </div>
+               <div class="shadow rounded-full flex gap-2 px-2 py-1 bg-base-200">
+                   <c-components.ui.tab_button text="My Listings" curr_path="my_listings" url="{% url 'my_listings' request.user.id%}" />
+                   <c-components.ui.tab_button text="My Reports" curr_path="my_reportss" url="" />
+                   <c-components.ui.tab_button text="My Offers" curr_path="my_offers" url="" />
+                   <c-components.ui.tab_button text="Received Offers" curr_path="received offers" url="" />
+               </div>
+           </div>
+            <!-- filter section -->
+            <div class="w-full bg-base-200 p-4 rounded-xl shadow">
+                <form
+                    hx-get="{% url 'my_listings' request.user.id %}"
+                    hx-target="#listings"
+                    hx-push-url="true"
+                    hx-trigger="input delay:500ms, change"
+                    class="flex flex-col md:flex-row gap-3 md:items-center">
+                    <!-- Search -->
+                    <label class="w-full grow">
+                        <input
+                            type="text"
+                            name="q"
+                            placeholder="Search..."
+                            class="input input-bordered w-full md:flex-1"
+                            value="{{ q|default:'' }}"
+                        />
+                    </label>
+
+                    <!-- Status Select -->
+                    <select class="select select-bordered w-full md:w-52" name="status">
+                        {% for status in statuses %}
+                            <option value="{{ status }}" {% if status == current_status %}selected{% endif %}>{{ status|title }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Status Select -->
+                    <select class="select select-bordered w-full md:w-52" name="category">
+                        <option value="all" {% if category == 'all' %} selected {% endif %}>All</option>
+                        {% for category in categories %}
+                            <option value="{{ category.slug }}" {% if category.slug == category %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Reset Button -->
+                    <button
+                        hx-get="{% url 'my_listings' request.user.id %}"
+                        hx-target="#body"
+                        hx-push-url="true"
+                        type="button" class="btn bg-base-100 shadow-xs w-full md:w-auto">
+                        <c-icons.refresh_ccw></c-icons.refresh_ccw>
+                        Reset Filters
+                    </button>
+                </form>
+            </div>
+
+            <div class="flex justify-between items-center py-3 my-3">
+                <p class="text-xl font-bold">My listings</p>
+                <button class="btn btn-primary">
+                    <c-icons.plus></c-icons.plus>
+                    New listing
+                </button>
+            </div>
+            <div id="listings">
+                <c-partials.listings_partial></c-partials.listings_partial>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_script %}
+    <script src="{% static 'js/quill.js' %}"></script>
+    <script src="{% static 'js/init_quill.js' %}"></script>
+{% endblock %}

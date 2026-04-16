@@ -1,4 +1,4 @@
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 import uuid
 from datetime import datetime, timedelta, time
 from django.contrib import messages
@@ -88,7 +88,7 @@ def listings_view(request):
         if target == "body":
             return render(request, "cotton/partials/listings_page_partial.html", context)
 
-    return render(request, "listings/listings_page.html", context)
+    return render(request, "listings/listings.html", context)
 
 
 def listing_details(request, listing_id):
@@ -103,7 +103,7 @@ def listing_details(request, listing_id):
     }
     return render(request, "listings/listing_details.html", context)
 
-
+@login_required
 def make_offer(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
 

@@ -1,0 +1,12 @@
+{% if listings %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {% for listing in listings %}
+            <c-components.user_listing_card></c-components.user_listing_card>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="w-full flex flex-col gap-4 justify-center items-center h-44 shadow shadow-xs border border-neutral/10 rounded-xl bg-base-200">
+        <c-icons.file_x></c-icons.file_x>
+        <p class="text-3xl">No listing Found</p>
+    </div>
+{% endif %}

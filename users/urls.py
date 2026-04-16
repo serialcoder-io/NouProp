@@ -1,8 +1,8 @@
 from django.conf.urls.i18n import i18n_patterns
 from django.urls import include, path
 from django.contrib import admin
-from .views import dashboard
+from .views import my_listings
 
 urlpatterns = [
-    path("", dashboard, name="dashboard"),
+    path("my_listings/<uuid:user_id>/", my_listings, name="my_listings"),
 ]

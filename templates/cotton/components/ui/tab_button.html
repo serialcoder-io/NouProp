@@ -1,0 +1,13 @@
+<c-vars curr_path="" text=""></c-vars>
+<button
+    class="btn btn-ghost rounded-full h-8 hover:bg-base-100 transition-all duration-300
+    {% if text == 'Home' and request.path == '/' or text != 'Home' and curr_path != 'home' and request.resolver_match.url_name == curr_path %}
+    bg-base-100
+    {% endif %}"
+    curr_path="{{ curr_path }}"
+    hx-get="{{ url }}"
+    hx-target="#body"
+    hx-swap="innerHTML"
+    hx-push-url="true">
+    {{ text }}
+</button>

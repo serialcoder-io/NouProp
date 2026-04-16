@@ -1,0 +1,62 @@
+<div class="card bg-base-100 shadow-md rounded-2xl overflow-hidden w-full max-w-sm">
+
+    <!-- Image -->
+    <figure class="relative">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Product" class="w-full h-48 object-cover">
+
+        <!-- Badge -->
+        {% if listing.is_open %}
+            <span class="badge badge-success absolute top-3 right-3">
+                Open
+            </span>
+        {% else %}
+            <span class="badge badge-danger absolute top-3 right-3">
+                Closed
+            </span>
+        {% endif %}
+    </figure>
+
+    <!-- Content -->
+    <div class="card-body space-y-2">
+
+        <!-- Category -->
+        <span class="badge badge-primary w-fit">{{ listing.category.name|default:'No Category' }}</span>
+
+        <!-- Title -->
+        <h2 class="card-title text-lg font-semibold">
+            {{ listing.title }}
+        </h2>
+
+        <!-- Description -->
+        <div class="prose max-w-prose break-words">
+            {{ listing.description.html|safe|truncatechars_html:100 }}
+        </div>
+
+        <!-- Price -->
+        {% if listing.is_free %}
+            <p class="text-green-600 text-xl font-semibold">
+                Free
+            </p>
+        {% else %}
+            <p class="text-green-600 text-xl font-semibold">
+                Rs {{ listing.price }}
+            </p>
+        {% endif %}
+
+        <!-- Actions -->
+        <div class="flex gap-3 mt-3">
+
+            <button class="btn btn-outline flex-1">
+                <c-icons.square_pen></c-icons.square_pen>
+                Edit
+            </button>
+
+            <button class="btn btn-outline btn-error flex-1">
+                <c-icons.trash></c-icons.trash>
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+</div>
