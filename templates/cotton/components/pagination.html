@@ -1,0 +1,33 @@
+{% if page_obj.paginator.num_pages > 1 %}
+    <div class="flex justify-center mt-10" {{ attrs }}>
+        <div class="join">
+            {% if page_obj.has_previous %}
+                <a
+                    hx-get="?{{ query_params }}{% if query_params %}&{% endif %}page={{ page_obj.previous_page_number }}"
+                    hx-target="{{hx_target}}"
+                    hx-swap="innerHTML show:top"
+                    hx-push-url="true"
+                    class="join-item btn btn-sm"
+                >«
+            </a>
+            {% endif %}
+
+            <button class="join-item btn btn-sm">
+                {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+            </button>
+
+            {% if page_obj.has_next %}
+                <a
+                    hx-get="?{{ query_params }}{% if query_params %}&{% endif %}page={{ page_obj.next_page_number }}"
+                    hx-target="{{hx_target}}"
+                    hx-swap="innerHTML show:top"
+                    hx-push-url="true"
+
+                    class="join-item btn btn-sm"
+                >
+                »
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

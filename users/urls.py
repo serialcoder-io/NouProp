@@ -4,5 +4,5 @@ from django.contrib import admin
 from .views import my_listings
 
 urlpatterns = [
-    path("my_listings/<uuid:user_id>/", my_listings, name="my_listings"),
+    path("my_listings/", my_listings, name="my_listings"),
 ]

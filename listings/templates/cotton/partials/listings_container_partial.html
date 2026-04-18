@@ -3,6 +3,35 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {% for listing in listings %}
             <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
+            <c-components.listing_card></c-components.listing_card>
         {% endfor %}
     </div>
 {% else %}
@@ -12,33 +41,5 @@
 {% endif %}
 
 <!-- PAGINATION -->
-{% if page_obj.paginator.num_pages > 1 %}
-    <div class="flex justify-center mt-10">
-        <div class="join">
-            {% if page_obj.has_previous %}
-                <a
-                    hx-get="?{{ query_params }}{% if query_params %}&{% endif %}page={{ page_obj.previous_page_number }}"
-                    hx-target="#listing-container"
-                    hx-push-url="true"
-                    class="join-item btn btn-sm"
-                >«
-            </a>
-            {% endif %}
-
-            <button class="join-item btn btn-sm">
-                {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-            </button>
-
-            {% if page_obj.has_next %}
-                <a
-                    hx-get="?{{ query_params }}{% if query_params %}&{% endif %}page={{ page_obj.next_page_number }}"
-                    hx-target="#listing-container"
-                    hx-push-url="true"
-                    class="join-item btn btn-sm"
-                >
-                »
-                </a>
-            {% endif %}
-        </div>
-    </div>
-{% endif %}
+<c-components.pagination hx_target="#listing-container" hx-on::htmx:afterSwap="window.scrollTo({ top: 0, behavior: 'smooth' })">
+</c-components.pagination>

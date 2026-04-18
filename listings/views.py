@@ -59,7 +59,7 @@ def listings_view(request):
 
     # PAGINATION
     page = request.GET.get('page', 1)
-    paginator = Paginator(listings, 10)
+    paginator = Paginator(listings, 2)
     page_obj = paginator.get_page(page)
 
     context = {

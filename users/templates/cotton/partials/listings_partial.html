@@ -10,3 +10,5 @@
         <p class="text-3xl">No listing Found</p>
     </div>
 {% endif %}
+
+<c-components.pagination hx_target="#listings" hx-on::after-request="document.querySelector('#listings').scrollIntoView()"></c-components.pagination>

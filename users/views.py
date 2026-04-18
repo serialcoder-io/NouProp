@@ -17,7 +17,7 @@ def index(request):
 
 
 @login_required
-def my_listings(request, user_id):
+def my_listings(request):
     categories = Category.objects.all().order_by('name')
     listings = (Listing.objects
                 .filter(user = request.user, is_deleted=False)
@@ -43,7 +43,7 @@ def my_listings(request, user_id):
 
     # PAGINATION
     page = request.GET.get('page', 1)
-    paginator = Paginator(listings, 10)
+    paginator = Paginator(listings, 1)
     page_obj = paginator.get_page(page)
 
     context = {
@@ -70,3 +70,6 @@ def my_listings(request, user_id):
             return render(request, "users/listings.html", context)
 
     return render(request, 'users/listings.html', context)
+
+def my_offers(request):
+    pass
