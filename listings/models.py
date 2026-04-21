@@ -79,6 +79,7 @@ class Offer(models.Model):
     whatsapp_contact_allowed = models.BooleanField(default=False, verbose_name='Allow WhatsApp contact')
     whatsapp_number = PhoneNumberField(blank=True, null=True, verbose_name='WhatsApp number')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
+    is_deleted = models.BooleanField(default=False, verbose_name='Is deleted')
     last_updated_at = models.DateTimeField(auto_now=True, verbose_name='Last updated at')
     status = models.CharField(
         choices=OfferStatus.choices, # type: ignore
@@ -93,6 +94,9 @@ class Offer(models.Model):
         db_table = 'offers'
         indexes = [
             models.Index(fields=['status']),
+            models.Index(fields=['is_deleted']),
+            models.Index(fields=['-created_at']),
+            models.Index(fields=['listing', 'is_deleted']),
         ]
 
     def clean(self):

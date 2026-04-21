@@ -1,0 +1,8 @@
+<div class="shadow rounded-full flex gap-2 px-2 py-1 bg-base-200">
+    <c-components.ui.tab_button text="My Listings" curr_path="my_listings" url="{% url 'my_listings' %}"/>
+    <c-components.ui.tab_button text="My Reports" curr_path="my_reportss" url=""/>
+    {% if request.user.role.name == "collector" %}
+        <c-components.ui.tab_button text="My Offers" curr_path="my_offers" url="{% url 'my_offers' %}" />
+    {% endif %}
+    <c-components.ui.tab_button text="Received Offers" curr_path="received_offers" url="{% url 'received_offers' %}" />
+</div>

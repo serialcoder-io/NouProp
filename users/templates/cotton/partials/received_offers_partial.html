@@ -1,0 +1,18 @@
+{% if offers %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {% for offer in offers %}
+            <c-components.ui.received_offer_card></c-components.ui.received_offer_card>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="w-full flex flex-col gap-4 justify-center items-center h-44 shadow shadow-xs border border-neutral/10 rounded-xl bg-base-200">
+        <c-icons.file_x></c-icons.file_x>
+        <p class="text-3xl">No Offer Found</p>
+        <button class="btn btn-primary" hx-get="{% url 'listings' %}" hx-target="body" hx-push-url="true">
+            Create new listing
+        </button>
+    </div>
+{% endif %}
+
+<c-components.pagination hx_target="#received_offers" hx-on::htmx:afterSwap="window.scrollTo({ top: 0, behavior: 'smooth' })">
+</c-components.pagination>

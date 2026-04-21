@@ -1,0 +1,101 @@
+<div class="card bg-base-100 shadow-sm border border-base-200
+    {% if offer.status == 'accepted' %} border-green-500
+    {% elif offer.status == 'rejected' %} border-red-500
+    {% endif %}
+">
+    <div class="card-body p-4">
+
+        <!-- HEADER -->
+        <div class="flex justify-between items-center">
+            <p class="font-medium text-sm">
+                {{ offer.user.display_name }}
+            </p>
+
+            <span class="badge
+                {% if offer.status == 'pending' %} badge-warning
+                {% elif offer.status == 'accepted' %} badge-success
+                {% elif offer.status == 'rejected' %} badge-error
+                {% endif %}
+            ">
+                {{ offer.status|title }}
+            </span>
+        </div>
+
+        <!-- LISTING -->
+        <div class="mt-3">
+            <p class="font-medium text-sm">
+                {{ offer.listing.title }}
+            </p>
+        </div>
+
+        <!-- DATE -->
+        <div class="mt-2 text-xs text-gray-400">
+            {{ offer.created_at|timesince }} ago
+        </div>
+
+        <!-- STATUS INFO -->
+        {% if offer.status != 'pending' %}
+        <div class="mt-2 text-xs text-gray-500">
+            {% if offer.status == 'accepted' %}
+                Offer accepted
+            {% elif offer.status == 'rejected' %}
+                Offer rejected
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- ACTIONS -->
+        <div class="flex justify-end gap-2 mt-4">
+
+            <!-- DETAILS -->
+            <a href=""
+               class="btn btn-sm btn-outline">
+                Details
+            </a>
+
+            <!-- WHATSAPP -->
+            {% if offer.whatsapp_contact_allowed and offer.whatsapp_number %}
+                <a href="https://wa.me/{{ offer.whatsapp_number|cut:'+' }}"
+                   target="_blank"
+                   class="btn btn-sm btn-success">
+                    WhatsApp
+                </a>
+            {% endif %}
+
+            <!-- DROPDOWN ACTIONS -->
+            {% if offer.status == 'pending' %}
+            <div class="dropdown dropdown-end">
+
+                <label tabindex="0" class="btn btn-sm btn-ghost">
+                    ⋮
+                </label>
+
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+
+                    <li>
+                        <button
+                            hx-post=""
+                            hx-target="#received-offers"
+                            hx-swap="innerHTML">
+                            Accept
+                        </button>
+                    </li>
+
+                    <li>
+                        <button
+                            hx-post=""
+                            hx-target="#received-offers"
+                            hx-swap="innerHTML">
+                            Reject
+                        </button>
+                    </li>
+
+                </ul>
+
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>

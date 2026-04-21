@@ -18,15 +18,15 @@
            <div class="flex justify-between items-end py-6 mb-2">
                 <div class="flex flex-col">
                     <h2 class="text-3xl font-bold">Dashboard</h2>
-                    <p class="text-md font-normal text-neutral/50">Manage your listings and waste reports</p>
+                    <p class="text-md font-normal text-neutral/50">Manage your offers</p>
                 </div>
                <c-components.dashboard_nav></c-components.dashboard_nav>
            </div>
             <!-- filter section -->
             <div class="w-full bg-base-200 p-4 rounded-xl shadow">
                 <form
-                    hx-get="{% url 'my_listings' %}"
-                    hx-target="#listings"
+                    hx-get="{% url 'my_offers' %}"
+                    hx-target="#offers"
                     hx-push-url="true"
                     hx-trigger="input delay:500ms, change"
                     class="flex flex-col md:flex-row gap-3 md:items-center">
@@ -40,6 +40,19 @@
                             value="{{ q|default:'' }}"
                         />
                     </label>
+
+                    <select id="date_filter" class="select select-bordered w-full" name="date_filter">
+                        <option value="all" {% if date_filter == 'all' %} selected {% endif %}>All time</option>
+                        {% for filter in date_filters %}
+                            <option
+                                    value="{{ filter.num_days }}"
+                                    {% if date_filter == filter.num_days|stringformat:"s" %}selected{% endif %}
+                            >
+                                {{ filter.label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
 
                     <!-- Status Select -->
                     <select class="select select-bordered w-full md:w-52" name="status">
@@ -60,7 +73,7 @@
 
                     <!-- Reset Button -->
                     <button
-                        hx-get="{% url 'my_listings' %}"
+                        hx-get="{% url 'my_offers' %}"
                         hx-target="#body"
                         hx-push-url="true"
                         type="button" class="btn bg-base-100 shadow-xs w-full md:w-auto">
@@ -71,15 +84,10 @@
             </div>
 
             <div class="flex justify-between items-center py-3 my-3">
-                <p class="text-xl font-bold">My listings</p>
-                <button class="btn btn-primary">
-                    <c-icons.plus></c-icons.plus>
-                    New listing
-                </button>
+                <p class="text-xl font-bold">My Offers</p>
             </div>
-            <div id="listings">
-                <c-partials.listings_partial></c-partials.listings_partial>
-
+            <div id="offers">
+                <c-partials.offers_partial></c-partials.offers_partial>
             </div>
         </div>
     </div>

@@ -1,12 +1,13 @@
-import uuid
+# from django.contrib.auth.decorators import user_passes_test
+from django.http import Http404
 
+# from .permissions import is_collector
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
-
-from listings.models import Category, Listing
-
+from listings.models import Category, Listing, Offer
+from datetime import datetime, timedelta, time
 
 # Create your views here.
 
@@ -23,7 +24,7 @@ def my_listings(request):
                 .filter(user = request.user, is_deleted=False)
                 .select_related('category').order_by('-created_at')
                 )
-    statuses = ('all', 'open', 'closed')
+    listing_statuses = ('all', 'open', 'closed')
 
     q = request.GET.get("q")
     status = request.GET.get("status")
@@ -43,13 +44,13 @@ def my_listings(request):
 
     # PAGINATION
     page = request.GET.get('page', 1)
-    paginator = Paginator(listings, 1)
+    paginator = Paginator(listings, 10)
     page_obj = paginator.get_page(page)
 
     context = {
         'page_obj': page_obj,
         'listings': page_obj.object_list,
-        'statuses': statuses,
+        'statuses': listing_statuses,
         'categories': categories,
         'current_status': status,
         'q': q,
@@ -71,5 +72,172 @@ def my_listings(request):
 
     return render(request, 'users/listings.html', context)
 
+
+# offer statuses
+statuses = ('all', 'pending', 'accepted', 'rejected')
+# offer dates filters
+date_filters = (
+        {"label": 'Today', 'num_days': 0},
+        {"label": 'Last 24h hours', 'num_days': 1},
+        {"label": 'This week', 'num_days': 7},
+        {"label": 'Past 2 weeks', 'num_days': 14},
+        {"label": 'Past 3 weeks', 'num_days': 21},
+        {"label": 'This month', 'num_days': 30},
+        {"label": 'Past 2 months', 'num_days': 60},
+    )
+
+@login_required
 def my_offers(request):
-    pass
+    if not (request.user.role and request.user.role.name == "collector"):
+        raise Http404()
+    offers = (
+        Offer.objects
+        .filter(user=request.user, is_deleted=False)
+        .select_related('listing')
+        .order_by('-created_at')
+    )
+
+    categories = Category.objects.all().order_by('name')
+
+    # GET params
+    q = request.GET.get("q")
+    status = request.GET.get("status")
+    date_filter = request.GET.get("date_filter")
+    category = request.GET.get("category")
+
+    # SEARCH
+    if q:
+        offers = offers.filter(
+            Q(listing__title__icontains=q)
+        )
+
+    # STATUS FILTER
+    if status and status != 'all':
+        offers = offers.filter(status=status)
+
+    if category and category != 'all':
+        offers = offers.filter(listing__category__slug=category)
+
+    # DATE FILTER
+    if date_filter and date_filter != "all":
+
+        if date_filter == "0":
+            today_start = datetime.combine(datetime.today(), time.min)
+            offers = offers.filter(created_at__gte=today_start)
+
+        elif date_filter.isdigit():
+            days = int(date_filter)
+            offers = offers.filter(
+                created_at__gte=datetime.now() - timedelta(days=days)
+            )
+
+    # PAGINATION
+    page = request.GET.get('page', 1)
+    paginator = Paginator(offers, 10)
+    page_obj = paginator.get_page(page)
+
+    context = {
+        'page_obj': page_obj,
+        'offers': page_obj.object_list,
+        'statuses': statuses,
+        'date_filters': date_filters,
+        'current_status': status,
+        'current_date_filter': date_filter,
+        'categories': categories,
+        'q': q,
+    }
+
+    # pagination
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        query_params.pop('page')
+    context["query_params"] = query_params.urlencode()
+
+    # HTMX support
+    if request.htmx:
+        target = request.headers.get('HX-Target')
+
+        if target == "offers":
+            return render(request, "cotton/partials/offers_partial.html", context)
+
+        if target == "body":
+            return render(request, "users/offers.html", context)
+
+    return render(request, "users/offers.html", context)
+
+
+@login_required
+def received_offers(request):  
+    offers = (
+        Offer.objects
+        .filter(listing__user=request.user, is_deleted=False)
+        .select_related('listing', 'user')  # the user who made the offer
+        .order_by('-created_at')
+    )
+    categories = Category.objects.all().order_by('name')
+
+    # GET params
+    q = request.GET.get("q")
+    status = request.GET.get("status")
+    date_filter = request.GET.get("date_filter")
+    category = request.GET.get("category")
+
+    # SEARCH
+    if q:
+        offers = offers.filter(
+            Q(listing__title__icontains=q)
+        )
+
+    # STATUS FILTER
+    if status and status != 'all':
+        offers = offers.filter(status=status)
+
+    if category and category != 'all':
+        offers = offers.filter(listing__category__slug=category)
+
+    # DATE FILTER
+    if date_filter and date_filter != "all":
+
+        if date_filter == "0":
+            today_start = datetime.combine(datetime.today(), time.min)
+            offers = offers.filter(created_at__gte=today_start)
+
+        elif date_filter.isdigit():
+            days = int(date_filter)
+            offers = offers.filter(
+                created_at__gte=datetime.now() - timedelta(days=days)
+            )
+
+    # PAGINATION
+    page = request.GET.get('page', 1)
+    paginator = Paginator(offers, 10)
+    page_obj = paginator.get_page(page)
+
+    context = {
+        'page_obj': page_obj,
+        'offers': page_obj.object_list,
+        'statuses': statuses,
+        'date_filters': date_filters,
+        'current_status': status,
+        'current_date_filter': date_filter,
+        'categories': categories,
+        'q': q,
+    }
+
+    # clean query params (pagination HTMX)
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        query_params.pop('page')
+    context["query_params"] = query_params.urlencode()
+
+    # HTMX
+    if request.htmx:
+        target = request.headers.get('HX-Target')
+
+        if target == "received-offers":
+            return render(request, "cotton/partials/received_offers_partial.html", context)
+
+        if target == "body":
+            return render(request, "users/received_offers.html", context)
+
+    return render(request, "users/received_offers.html", context)

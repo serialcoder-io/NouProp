@@ -1,0 +1,80 @@
+<div class="card bg-base-100 shadow-sm hover:shadow-md transition border border-base-200">
+
+    <!-- HEADER -->
+    <div class="p-4 flex justify-between gap-4">
+
+        <!-- Left -->
+        <div class="min-w-0">
+            <h2 class="text-lg font-bold truncate">
+                {{ offer.listing.title }}
+            </h2>
+            <p class="text-xs text-base-content/60">
+                Offered on {{ offer.created_at }}
+            </p>
+        </div>
+
+        <!-- Right badges -->
+        <div class="flex flex-col items-end gap-2">
+
+            {% if offer.listing.is_free %}
+                <span class="badge badge-success">Free</span>
+            {% else %}
+                <span class="badge badge-primary">
+                    Rs {{ offer.listing.price }}
+                </span>
+            {% endif %}
+
+            <span class="badge badge-ghost">
+                {{ offer.status }}
+            </span>
+        </div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="px-4 pb-4">
+        <div class="text-sm text-base-content/70 line-clamp-3">
+            {{ offer.message.html|safe|truncatechars_html:120 }}
+        </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="px-4 py-3 bg-base-200/40 flex justify-between items-center">
+
+        <!-- Primary action -->
+        <button
+            class="btn btn-sm btn-primary"
+            hx-get="{% url 'listing_details' offer.listing.id %}"
+            hx-target="#body"
+            hx-push-url="true"
+        >
+            View Listing
+        </button>
+
+        <!-- Secondary actions (dropdown) -->
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn btn-sm btn-ghost">
+                Actions
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </label>
+
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-48">
+
+                <li>
+                    <a>
+                        View Offer
+                    </a>
+                </li>
+
+                <li>
+                    <button>
+                        Delete
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>

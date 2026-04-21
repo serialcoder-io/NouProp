@@ -11,4 +11,5 @@
     </div>
 {% endif %}
 
-<c-components.pagination hx_target="#listings" hx-on::after-request="document.querySelector('#listings').scrollIntoView()"></c-components.pagination>
+<c-components.pagination hx_target="#listings" hx-on::htmx:afterSwap="window.scrollTo({ top: 0, behavior: 'smooth' })">
+</c-components.pagination>
