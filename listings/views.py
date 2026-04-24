@@ -110,7 +110,11 @@ def make_offer(request, listing_id):
     if request.method == "POST":
         form = OfferForm(request.POST)
         if form.is_valid():
-            print(request.POST)
+            offer = form.save(commit=False)
+            offer.listing = listing
+            offer.user = request.user
+            offer.save()
+            messages.success(request, "Your offer has been sent successfully.")
             return redirect("listing_details", listing_id=listing.id)
 
         return render(request, "listings/listing_details.html", {

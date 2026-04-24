@@ -6,7 +6,7 @@ class OfferForm(forms.ModelForm):
     whatsapp_contact_allowed = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(attrs={
-            'class': 'checkbox',
+            'class': '',
         }),
         label='Allow publisher to contact you via WhatsApp'
     )

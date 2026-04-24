@@ -1,8 +1,6 @@
 import uuid
-
 from django.db import models
 from django.utils.text import slugify
-from django_quill.fields import QuillField
 from locations.models import Area
 from users.models import User
 
@@ -12,10 +10,6 @@ class Tag(models.Model):
     name = models.CharField(max_length=50, verbose_name='Tag', unique=True)
     slug = models.SlugField(blank=True, verbose_name='Slug', unique=True)
     color = models.CharField(max_length=20, verbose_name='Color', null=True, blank=True)
-    def __str__(self):
-        return self.name
-    def __str__(self):
-        return self.name
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render
 
 from django.http import HttpResponse
@@ -16,12 +17,12 @@ def create_report(request):
 
         report = form.save(commit=False)
 
-        # USER (optional)
+        # USER (optional: a anonymous user can can report an illegal dumping)
         report.user = request.user if request.user.is_authenticated else None
 
         report.save()
         form.save_m2m()
-
+        messages.success(request, "your report has been sent successfully. thank your for helping")
         return redirect("my_offers")
 
     return render(request, "reports/create_report.html", {
