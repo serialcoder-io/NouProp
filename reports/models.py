@@ -44,7 +44,7 @@ class Report(models.Model):
     area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True, blank=True, related_name='reports', verbose_name='Area')
     tags = models.ManyToManyField(Tag, blank=True)
     title = models.CharField(max_length=100, verbose_name='Title')
-    description = QuillField(blank=True, null=True, verbose_name='Description')
+    description = models.TextField(blank=True, null=True, verbose_name='Description')
     status = models.CharField(
         choices=ReportStatus.choices, # type: ignore
         default=ReportStatus.PENDING,

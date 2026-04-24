@@ -1,0 +1,251 @@
+{% extends "cotton/components/layout/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link href="{% static 'css/quill.snow.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+<title>Create Report</title>
+{% endblock %}
+
+{% block content %}
+
+<c-components.layout.header></c-components.layout.header>
+
+<div class="w-full min-h-screen bg-gradient-to-b from-base-200 to-base-300 flex justify-center py-10">
+
+    <div class="w-full max-w-3xl">
+
+        <!-- HERO -->
+        <div class="mb-8 text-center">
+
+            <h1 class="text-4xl font-bold">
+                Report illegal dumping
+            </h1>
+
+            <p class="text-sm text-gray-500 mt-2">
+                Help improve your area by reporting illegal dumping locations
+            </p>
+
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-base-100 shadow-md rounded-2xl overflow-hidden">
+
+            <!-- PROGRESS -->
+            <div class="bg-base-200 px-6 py-3 text-xs text-gray-500 flex justify-between">
+                <span>Step 1: Details</span>
+                <span>Step 2: Media</span>
+                <span>Step 3: Location</span>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="p-6 space-y-8">
+
+                {% csrf_token %}
+
+                <!-- BASIC INFO -->
+                <div class="space-y-4">
+
+                    <h2 class="text-lg font-semibold">Basic information</h2>
+
+                    <div>
+                        <label class="label"><span class="label-text">Title</span></label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <p class="text-sm text-red-500">{{ form.title.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="label"><span class="label-text">Area</span></label>
+                        {{ form.area }}
+                        {% if form.area.errors %}
+                            <p class="text-sm text-red-500">{{ form.area.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Address -->
+                    <div>
+                        <label class="label">
+                            <span class="label-text">Address (optional)</span>
+                        </label>
+
+                        {{ form.address }}
+
+                        {% if form.address.errors %}
+                            <p class="text-sm text-red-500">{{ form.address.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- DETAILS -->
+                <div class="space-y-4">
+
+                    <h2 class="text-lg font-semibold">Details</h2>
+
+                    <div>
+                        <label class="label"><span class="label-text">Tags</span></label>
+                        {{ form.tags }}
+                    </div>
+
+                    <div>
+                        <label class="label"><span class="label-text">Image</span></label>
+                        {{ form.image }}
+                    </div>
+
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- DESCRIPTION -->
+                <div class="space-y-4">
+
+                    <h2 class="text-lg font-semibold">Description</h2>
+
+                    {{ form.description }}
+
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- LOCATION -->
+                <div class="space-y-4">
+
+                    <h2 class="text-lg font-semibold">Location</h2>
+
+                    <div class="bg-base-200 p-4 rounded-xl border space-y-5">
+
+                        <!-- GPS -->
+                        <div class="flex items-center justify-between">
+
+                            <div>
+                                <p class="font-medium">
+                                    Detect your position
+                                </p>
+                                <p class="text-sm text-gray-500">
+                                    Used to locate the exact site of the report
+                                </p>
+                            </div>
+
+                            <button type="button"
+                                    id="gps-btn"
+                                    onclick="getLocation()"
+                                    class="btn btn-primary btn-sm">
+
+                                <span id="gps-btn-text">Detect</span>
+
+                                <span id="gps-spinner" class="loading loading-spinner loading-sm hidden"></span>
+
+                            </button>
+
+                        </div>
+
+                        <!-- COORDINATES -->
+                        <div id="gps-status" class="hidden">
+
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+
+                                <div class="bg-base-100 p-2 rounded-lg">
+                                    <p class="text-xs text-gray-400">Latitude</p>
+                                    <p id="lat-display" class="font-mono"></p>
+                                </div>
+
+                                <div class="bg-base-100 p-2 rounded-lg">
+                                    <p class="text-xs text-gray-400">Longitude</p>
+                                    <p id="lng-display" class="font-mono"></p>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="badge badge-success">
+                                    Location captured
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{ form.lat }}
+                {{ form.lng }}
+
+                <!-- SUBMIT -->
+                <div class="pt-4">
+
+                    <button type="submit" class="btn btn-success w-full btn-lg">
+                        Submit report
+                    </button>
+
+                    <p class="text-xs text-gray-400 text-center mt-2">
+                        Your report will be reviewed by moderators
+                    </p>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'js/quill.js' %}"></script>
+<script src="{% static 'js/init_quill.js' %}"></script>
+
+<script>
+function getLocation() {
+
+    const btn = document.getElementById("gps-btn");
+    const text = document.getElementById("gps-btn-text");
+    const spinner = document.getElementById("gps-spinner");
+
+    // LOADING STATE ON
+    btn.disabled = true;
+    text.textContent = "Detecting...";
+    spinner.classList.remove("hidden");
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            document.getElementById("id_lat").value = lat;
+            document.getElementById("id_lng").value = lng;
+
+            document.getElementById("gps-status").classList.remove("hidden");
+
+            document.getElementById("lat-display").textContent = lat.toFixed(6);
+            document.getElementById("lng-display").textContent = lng.toFixed(6);
+
+            // RESET BUTTON
+            btn.disabled = false;
+            text.textContent = "Detect";
+            spinner.classList.add("hidden");
+
+        },
+        () => {
+
+            alert("Unable to detect location");
+
+            // RESET BUTTON
+            btn.disabled = false;
+            text.textContent = "Detect";
+            spinner.classList.add("hidden");
+        }
+    );
+}
+</script>
+
+{% endblock %}

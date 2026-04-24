@@ -8,7 +8,7 @@ class OfferForm(forms.ModelForm):
         widget=forms.CheckboxInput(attrs={
             'class': 'checkbox',
         }),
-        label='Allow WhatsApp'
+        label='Allow publisher to contact you via WhatsApp'
     )
 
     whatsapp_number = PhoneNumberField(

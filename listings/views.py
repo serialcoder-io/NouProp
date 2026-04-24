@@ -59,7 +59,7 @@ def listings_view(request):
 
     # PAGINATION
     page = request.GET.get('page', 1)
-    paginator = Paginator(listings, 2)
+    paginator = Paginator(listings, 10)
     page_obj = paginator.get_page(page)
 
     context = {
@@ -110,11 +110,7 @@ def make_offer(request, listing_id):
     if request.method == "POST":
         form = OfferForm(request.POST)
         if form.is_valid():
-            offer = form.save(commit=False)
-            offer.listing = listing
-            offer.user = request.user
-            offer.save()
-            messages.success(request, "Offer sent successfully")
+            print(request.POST)
             return redirect("listing_details", listing_id=listing.id)
 
         return render(request, "listings/listing_details.html", {

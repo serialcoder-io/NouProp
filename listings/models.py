@@ -37,7 +37,7 @@ class Listing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings', verbose_name='User')
     area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True, blank=True, related_name='listings', verbose_name='Area')
     title = models.CharField(max_length=60)
-    description = QuillField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='listings', blank=True, null=True, verbose_name='Image')
     created_at = models.DateTimeField(auto_now_add=True,verbose_name='Created at')
     last_updated_at = models.DateTimeField(auto_now=True, verbose_name='Last updated at')
@@ -88,7 +88,7 @@ class Offer(models.Model):
         db_index=True,
         verbose_name='Status'
     )
-    message = QuillField(blank=True, null=True, verbose_name='Message')
+    message = models.TextField(blank=True, null=True, verbose_name='Message')
 
     class Meta:
         db_table = 'offers'
