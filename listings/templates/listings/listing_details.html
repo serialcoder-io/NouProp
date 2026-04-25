@@ -157,17 +157,9 @@
     {% if messages %}
         <div class="space-y-2 mb-4 fixed bottom-4 right-4 alert-container">
             {% for message in messages %}
-                <div class="alert alert-success text-white">
-                <span>{{ message }}</span>
-                <button class="btn btn-ghost" onclick="this.closest('.alert').remove()">X</button>
-            </div>
+                <c-components.ui.alert></c-components.ui.alert>
             {% endfor %}
         </div>
     {% endif %}
 
-{% endblock %}
-
-{% block extra_script %}
-    <script src="{% static 'js/quill.js' %}"></script>
-    <script src="{% static 'js/init_quill.js' %}"></script>
 {% endblock %}

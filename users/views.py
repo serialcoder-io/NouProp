@@ -225,7 +225,6 @@ def received_offers(request):
     page = request.GET.get('page', 1)
     paginator = Paginator(offers, 10)
     page_obj = paginator.get_page(page)
-
     context = {
         'page_obj': page_obj,
         'offers': page_obj.object_list,

@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="alert {% if message.tags == 'success' %}alert-success{% endif %}
+    {% if message.tags == 'error' %}alert-error{% endif %}
+    {% if message.tags == 'warning' %}alert-warning{% endif %}
+    {% if message.tags == 'info' %}alert-info{% endif %}
+    text-white">
+    <span>{{ message }}</span>
+    <button class="btn btn-ghost" onclick="this.closest('.alert').remove()">X</button>
+</div>

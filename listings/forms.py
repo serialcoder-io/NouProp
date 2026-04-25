@@ -1,6 +1,7 @@
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
-from .models import Offer
+from .models import Offer, Listing
+
 
 class OfferForm(forms.ModelForm):
     whatsapp_contact_allowed = forms.BooleanField(
@@ -24,3 +25,17 @@ class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer
         fields = ['whatsapp_contact_allowed', 'whatsapp_number', 'message']
+
+
+class ListingForm(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ['category', 'area', 'title', 'description', 'image', 'is_free', 'price']
+
+        widgets = {
+            'category': forms.Select(
+                attrs={
+                    'class': 'select',
+                }
+            )
+        }
