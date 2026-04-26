@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 
+from allauth.socialaccount.models import SocialAccount
 from listings.models import Category, Listing, Offer
 from listings.forms import ListingForm
 from reports.models import Report
@@ -43,15 +44,31 @@ def account_overview(request):
 
 @login_required
 def edit_account(request):
+    user_has_social_account = SocialAccount.objects.filter(user=request.user).exists()
+
     if request.method == "POST":
-        form = UserAccountForm(request.POST, instance=request.user)
+        form = UserAccountForm(
+            request.POST,
+            instance=request.user,
+            user_has_social_account=user_has_social_account,
+        )
         if form.is_valid():
             form.save()
             return redirect("account_overview")
     else:
-        form = UserAccountForm(instance=request.user)
+        form = UserAccountForm(
+            instance=request.user,
+            user_has_social_account=user_has_social_account,
+        )
 
-    return render(request, "users/edit_account.html", {"form": form})
+    return render(
+        request,
+        "users/edit_account.html",
+        {
+            "form": form,
+            "user_has_social_account": user_has_social_account,
+        },
+    )
 
 
 @login_required

@@ -21,8 +21,21 @@
                 <div class="card-body gap-6">
                     <h2 class="card-title text-2xl">Profile Details</h2>
 
-                    <form method="post" class="space-y-5">
+                    <form method="post" class="flex flex-col gap-3">
                         {% csrf_token %}
+
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Email</span>
+                            </div>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <p class="text-sm text-error mt-2">{{ form.email.errors.0 }}</p>
+                            {% endif %}
+                            {% if user_has_social_account %}
+                                <p class="text-sm text-neutral/60 mt-2">Email cannot be changed for social login accounts</p>
+                            {% endif %}
+                        </label>
 
                         <label class="form-control w-full">
                             <div class="label">

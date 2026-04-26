@@ -96,8 +96,8 @@
                         url="{% url 'my_listings' %}">
                     </c-components.ui.nav_link>
                 </li>
+                <li><a href="{% url 'account_overview' %}">Account</a></li>
                   {% if request.user.is_staff %}
-                      <li><a href="{% url 'account_overview' %}">Account</a></li>
                       <li><a href="{% url 'staff_reports_list' %}">Staff</a></li>
                   {% endif %}
                 <li><a href="{% url 'account_logout' %}">Log out</a></li>

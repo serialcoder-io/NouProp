@@ -29,7 +29,7 @@
                             <p class="font-medium mt-1">Type <span class="font-bold">{{ request.user.email }}</span> to confirm account deletion.</p>
                         </div>
 
-                        <form method="post" class="space-y-5">
+                        <form method="post" class="flex flex-col gap-3">
                             {% csrf_token %}
 
                             <label class="form-control w-full">

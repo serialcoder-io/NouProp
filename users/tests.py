@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from allauth.socialaccount.models import SocialAccount
 from listings.models import Category, Listing, Offer
 from locations.models import Area, District
 from reports.models import Report
@@ -306,6 +307,7 @@ class AccountManagementViewTests(TestCase):
         response = self.client.post(
             reverse("edit_account"),
             {
+                "email": "updated-account@example.com",
                 "display_name": "Updated Name",
                 "whatsapp_number": "+23058111111",
             },
@@ -314,8 +316,49 @@ class AccountManagementViewTests(TestCase):
         self.user.refresh_from_db()
 
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.user.email, "updated-account@example.com")
         self.assertEqual(self.user.display_name, "Updated Name")
         self.assertEqual(str(self.user.whatsapp_number), "+23058111111")
+
+    def test_edit_account_shows_locked_email_for_social_account(self):
+        SocialAccount.objects.create(
+            user=self.user,
+            provider="google",
+            uid="google-account-1",
+            extra_data={},
+        )
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("edit_account"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Email cannot be changed for social login accounts")
+        self.assertContains(response, "disabled")
+
+    def test_edit_account_does_not_update_email_for_social_account(self):
+        SocialAccount.objects.create(
+            user=self.user,
+            provider="google",
+            uid="google-account-2",
+            extra_data={},
+        )
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("edit_account"),
+            {
+                "email": "hijack@example.com",
+                "display_name": "Social Name",
+                "whatsapp_number": "+23058222222",
+            },
+        )
+
+        self.user.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.user.email, "account@example.com")
+        self.assertEqual(self.user.display_name, "Social Name")
+        self.assertEqual(str(self.user.whatsapp_number), "+23058222222")
 
     def test_account_data_management_lists_related_content(self):
         self.client.force_login(self.user)

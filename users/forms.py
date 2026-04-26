@@ -27,10 +27,21 @@ class CustomSignupForm(SignupForm):
 
 
 class UserAccountForm(forms.ModelForm):
+    def __init__(self, *args, user_has_social_account=False, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if user_has_social_account:
+            self.fields["email"].disabled = True
+            self.fields["email"].help_text = "Email cannot be changed for social login accounts"
+
     class Meta:
         model = User
-        fields = ["display_name", "whatsapp_number"]
+        fields = ["email", "display_name", "whatsapp_number"]
         widgets = {
+            "email": forms.EmailInput(attrs={
+                "class": "input input-bordered w-full",
+                "placeholder": "Email address",
+            }),
             "display_name": forms.TextInput(attrs={
                 "class": "input input-bordered w-full",
                 "placeholder": "Display name",
