@@ -150,7 +150,7 @@ class StaffReportsListViewTests(TestCase):
             created_at=timezone.now() - timedelta(days=5)
         )
         Report.objects.filter(pk=self.report_two.pk).update(
-            created_at=timezone.now() - timedelta(days=1)
+            created_at=timezone.now() - timedelta(hours=12)
         )
         self.report_one.refresh_from_db()
         self.report_two.refresh_from_db()
@@ -181,7 +181,7 @@ class StaffReportsListViewTests(TestCase):
                 "q": "Plastic",
                 "status": "pending",
                 "area": str(self.area_one.id),
-                "tags": [str(self.tag_plastic.id)],
+                "tag": str(self.tag_plastic.id),
             },
         )
 
@@ -190,14 +190,13 @@ class StaffReportsListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(reports, [self.report_one])
 
-    def test_staff_reports_list_filters_by_date_range(self):
+    def test_staff_reports_list_filters_by_date_filter(self):
         self.client.force_login(self.staff_user)
 
         response = self.client.get(
             reverse("staff_reports_list"),
             {
-                "date_from": (timezone.now() - timedelta(days=2)).date().isoformat(),
-                "date_to": timezone.now().date().isoformat(),
+                "date_filter": "1",
             },
         )
 
@@ -222,7 +221,7 @@ class StaffReportsListViewTests(TestCase):
             reverse("staff_reports_list"),
             {
                 "status": "pending",
-                "tags": [str(self.tag_plastic.id)],
+                "tag": str(self.tag_plastic.id),
                 "page": 2,
             },
         )
@@ -230,7 +229,7 @@ class StaffReportsListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["page_obj"].number, 2)
         self.assertIn("status=pending", response.context["query_params"])
-        self.assertIn("tags=", response.context["query_params"])
+        self.assertIn("tag=", response.context["query_params"])
 
     def test_staff_reports_list_returns_partial_for_htmx_results_target(self):
         self.client.force_login(self.staff_user)

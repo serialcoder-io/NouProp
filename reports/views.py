@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta, time
+
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -7,6 +9,16 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import ReportForm
 from .models import Report, ReportStatus, Tag
 from locations.models import Area
+
+date_filters = (
+    {"label": 'Today', 'num_days': 0},
+    {"label": 'Last 24h hours', 'num_days': 1},
+    {"label": 'This week', 'num_days': 7},
+    {"label": 'Past 2 weeks', 'num_days': 14},
+    {"label": 'Past 3 weeks', 'num_days': 21},
+    {"label": 'This month', 'num_days': 30},
+    {"label": 'Past 2 months', 'num_days': 60},
+)
 
 # Create your views here.
 def reports(request):
@@ -84,9 +96,8 @@ def staff_reports_list(request):
     q = request.GET.get("q")
     status = request.GET.get("status")
     area = request.GET.get("area")
-    date_from = request.GET.get("date_from")
-    date_to = request.GET.get("date_to")
-    selected_tags = request.GET.getlist("tags")
+    date_filter = request.GET.get("date_filter")
+    selected_tag = request.GET.get("tag") or "all"
 
     if q:
         reports = reports.filter(Q(title__icontains=q))
@@ -97,14 +108,19 @@ def staff_reports_list(request):
     if area and area != "all":
         reports = reports.filter(area__id=area)
 
-    if date_from:
-        reports = reports.filter(created_at__date__gte=date_from)
+    if date_filter and date_filter != "all":
+        if date_filter == "0":
+            today_start = datetime.combine(datetime.today(), time.min)
+            reports = reports.filter(created_at__gte=today_start)
 
-    if date_to:
-        reports = reports.filter(created_at__date__lte=date_to)
+        elif date_filter.isdigit():
+            days = int(date_filter)
+            reports = reports.filter(
+                created_at__gte=datetime.now() - timedelta(days=days)
+            )
 
-    if selected_tags:
-        reports = reports.filter(tags__id__in=selected_tags).distinct()
+    if selected_tag != "all":
+        reports = reports.filter(tags__id=selected_tag)
 
     page = request.GET.get("page", 1)
     paginator = Paginator(reports, 10)
@@ -116,11 +132,11 @@ def staff_reports_list(request):
         "areas": areas,
         "tags": tags,
         "statuses": statuses,
+        "date_filters": date_filters,
         "current_status": status or "all",
         "current_area": area or "all",
-        "current_tags": selected_tags,
-        "date_from": date_from,
-        "date_to": date_to,
+        "current_tag": selected_tag,
+        "date_filter": date_filter,
         "q": q,
     }
 

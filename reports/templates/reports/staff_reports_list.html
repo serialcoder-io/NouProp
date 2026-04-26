@@ -63,25 +63,29 @@
 
                         <label class="form-control">
                             <div class="label">
-                                <span class="label-text">From date</span>
+                                <span class="label-text">Date posted</span>
                             </div>
-                            <input type="date" name="date_from" class="input input-bordered w-full" value="{{ date_from|default:'' }}">
-                        </label>
-
-                        <label class="form-control">
-                            <div class="label">
-                                <span class="label-text">To date</span>
-                            </div>
-                            <input type="date" name="date_to" class="input input-bordered w-full" value="{{ date_to|default:'' }}">
+                            <select id="date_filter" class="select select-bordered w-full" name="date_filter">
+                                <option value="all" {% if date_filter == 'all' %} selected {% endif %}>All time</option>
+                                {% for filter in date_filters %}
+                                    <option
+                                        value="{{ filter.num_days }}"
+                                        {% if date_filter == filter.num_days|stringformat:"s" %}selected{% endif %}
+                                    >
+                                        {{ filter.label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </label>
 
                         <label class="form-control md:col-span-2 xl:col-span-5">
                             <div class="label">
-                                <span class="label-text">Tags</span>
+                                <span class="label-text">Tag</span>
                             </div>
-                            <select class="select select-bordered w-full min-h-40" name="tags" multiple>
+                            <select class="select select-bordered w-full" name="tag">
+                                <option value="all" {% if current_tag == 'all' %}selected{% endif %}>All tags</option>
                                 {% for tag in tags %}
-                                    <option value="{{ tag.id }}" {% if tag.id|stringformat:'s' in current_tags %}selected{% endif %}>
+                                    <option value="{{ tag.id }}" {% if current_tag == tag.id|stringformat:'s' %}selected{% endif %}>
                                         {{ tag.name }}
                                     </option>
                                 {% endfor %}
