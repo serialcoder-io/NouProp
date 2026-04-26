@@ -32,7 +32,7 @@ class UserAccountForm(forms.ModelForm):
 
         if user_has_social_account:
             self.fields["email"].disabled = True
-            self.fields["email"].help_text = "Email cannot be changed for social login accounts"
+            self.fields["email"].help_text = "Email cannot be changed for social login account"
 
     class Meta:
         model = User

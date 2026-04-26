@@ -181,7 +181,7 @@ ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['role', 'email*', 'whatsapp_number', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/dashboard/my_listings'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 LOGIN_URL = '/accounts/login/'

@@ -86,6 +86,13 @@
             </div>
         </div>
     </div>
+    {% if messages %}
+        <div class="space-y-2 mb-4 fixed bottom-4 right-4 alert-container">
+            {% for message in messages %}
+                <c-components.ui.alert></c-components.ui.alert>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block extra_script %}

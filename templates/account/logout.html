@@ -1,0 +1,46 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Logout</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <main class="min-h-screen flex items-center justify-center bg-base-200/40 px-4">
+        <div class="w-full max-w-md">
+
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body text-center">
+
+                    <!-- Title -->
+                    <h1 class="text-2xl font-bold">
+                        Sign out
+                    </h1>
+
+                    <p class="text-sm text-base-content/60 mt-2">
+                        Are you sure you want to log out of your account?
+                    </p>
+
+                    <!-- Form -->
+                    <form method="POST" action="{% url 'account_logout' %}" class="mt-6">
+                        {% csrf_token %}
+
+                        <button type="submit" class="btn btn-error w-full">
+                            Yes, log me out
+                        </button>
+                    </form>
+
+                    <!-- Cancel -->
+                    <a href="/" class="btn btn-outline w-full mt-3">
+                        Cancel
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <c-partials.site_footer></c-partials.site_footer>
+{% endblock %}

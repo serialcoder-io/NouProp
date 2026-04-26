@@ -1,0 +1,117 @@
+{% extends "cotton/components/layout/base.html" %}
+{% load socialaccount %}
+
+{% block title %}
+    <title>Sign Up</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <main class="min-h-screen flex items-center justify-center bg-base-200/40 px-4">
+        <div class="w-full max-w-md">
+
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+
+                    <!-- Title -->
+                    <h1 class="text-2xl font-bold text-center">
+                        Create your account
+                    </h1>
+
+                    <p class="text-sm text-center text-base-content/60 mb-4">
+                        Join NouProp to get started
+                    </p>
+
+                    <!-- Errors -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-error">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Form -->
+                    <form method="POST" action="{% url 'account_signup' %}" class="space-y-4">
+                        {% csrf_token %}
+
+                        <!-- Email -->
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            <input type="email" name="email" required class="input input-bordered w-full">
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Password</span>
+                            </label>
+                            <input type="password" name="password1" required class="input input-bordered w-full">
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Confirm Password</span>
+                            </label>
+                            <input type="password" name="password2" required class="input input-bordered w-full">
+                        </div>
+
+                        <!-- WhatsApp -->
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">WhatsApp Number</span>
+                            </label>
+                            <input type="text" name="whatsapp_number" required class="input input-bordered w-full">
+                        </div>
+
+                        <!-- Role -->
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Role</span>
+                            </label>
+                            <select name="role" required class="select select-bordered w-full">
+                                <option value="">Select a role</option>
+                                {% for role in form.role.field.queryset %}
+                                    <option value="{{ role.id }}">{{ role.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="btn btn-primary w-full">
+                            Create account
+                        </button>
+                    </form>
+
+                    <!-- Social Login (GOOGLE RESTORED) -->
+                    {% get_providers as socialaccount_providers %}
+                    {% if socialaccount_providers %}
+                        <div class="divider">or</div>
+
+                        <div class="space-y-2">
+                            {% for provider in socialaccount_providers %}
+                                <a href="{% provider_login_url provider.id process='login' %}" class="btn btn-outline w-full">
+                                    Continue with {{ provider.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Login link -->
+                    <p class="text-sm text-center mt-4">
+                        Already have an account?
+                        <a href="{% url 'account_login' %}" class="link link-hover">
+                            Sign in
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <c-partials.site_footer></c-partials.site_footer>
+{% endblock %}

@@ -332,7 +332,7 @@ class AccountManagementViewTests(TestCase):
         response = self.client.get(reverse("edit_account"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Email cannot be changed for social login accounts")
+        self.assertContains(response, "Email cannot be changed for social login account")
         self.assertContains(response, "disabled")
 
     def test_edit_account_does_not_update_email_for_social_account(self):
