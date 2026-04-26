@@ -1,0 +1,67 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Delete Account</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <div class="w-full flex justify-center bg-base-200/40">
+        <div class="w-full max-w-5xl px-4 py-8 lg:px-6">
+            <div class="flex flex-col gap-4 mb-8">
+                <div>
+                    <h1 class="text-4xl font-bold">Delete Account</h1>
+                    <p class="text-base text-neutral/60 mt-2">This action deactivates your account and signs you out immediately.</p>
+                </div>
+                <c-components.account_nav></c-components.account_nav>
+            </div>
+
+            <div class="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(20rem,1fr)]">
+                <section class="card bg-base-100 shadow border border-error/20">
+                    <div class="card-body gap-6">
+                        <div class="alert alert-warning">
+                            <span>Deleting your account is a dangerous action. You will be logged out and your account will be deactivated.</span>
+                        </div>
+
+                        <div class="rounded-xl bg-base-200 p-4">
+                            <p class="text-sm text-neutral/60">Confirmation required</p>
+                            <p class="font-medium mt-1">Type <span class="font-bold">{{ request.user.email }}</span> to confirm account deletion.</p>
+                        </div>
+
+                        <form method="post" class="space-y-5">
+                            {% csrf_token %}
+
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text">Confirmation Email</span>
+                                </div>
+                                {{ form.confirmation_email }}
+                                {% if form.confirmation_email.errors %}
+                                    <p class="text-sm text-error mt-2">{{ form.confirmation_email.errors.0 }}</p>
+                                {% endif %}
+                            </label>
+
+                            <div class="flex flex-col gap-3 sm:flex-row">
+                                <button type="submit" class="btn btn-error">Deactivate and Log Out</button>
+                                <a href="{% url 'account_overview' %}" class="btn btn-outline">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="card bg-base-100 shadow">
+                    <div class="card-body gap-4">
+                        <h2 class="card-title text-2xl">Before You Continue</h2>
+                        <ul class="space-y-3 text-sm text-neutral/70">
+                            <li>Your account will no longer be active for sign-in.</li>
+                            <li>Your session will be ended immediately.</li>
+                            <li>You can review your data from the account pages before confirming.</li>
+                        </ul>
+                        <a href="{% url 'account_data_management' %}" class="btn btn-ghost">Review My Data</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

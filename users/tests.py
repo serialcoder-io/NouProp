@@ -4,6 +4,8 @@ from django.urls import reverse
 
 from listings.models import Category, Listing, Offer
 from locations.models import Area, District
+from reports.models import Report
+from users.models import Role
 
 
 class UserListingDetailsViewTests(TestCase):
@@ -232,3 +234,123 @@ class UserOfferDetailsViewTests(TestCase):
 
         self.assertEqual(response.status_code, 403)
         self.assertFalse(self.offer.is_deleted)
+
+
+class AccountManagementViewTests(TestCase):
+    def setUp(self):
+        self.user_model = get_user_model()
+        self.citizen_role = Role.objects.create(name="citizen")
+        self.collector_role = Role.objects.create(name="collector")
+
+        self.user = self.user_model.objects.create_user(
+            email="account@example.com",
+            password="testpass123",
+            display_name="Account User",
+            whatsapp_number="+23058000000",
+            role=self.collector_role,
+        )
+        self.other_user = self.user_model.objects.create_user(
+            email="other-account@example.com",
+            password="testpass123",
+            role=self.citizen_role,
+        )
+
+        self.category = Category.objects.create(name="Glass")
+        self.district = District.objects.create(name="Riviere du Rempart")
+        self.area = Area.objects.create(name="Goodlands", district=self.district)
+
+        self.listing = Listing.objects.create(
+            category=self.category,
+            user=self.user,
+            area=self.area,
+            title="Glass jars",
+            is_free=True,
+            price="0.00",
+        )
+        self.offer = Offer.objects.create(
+            user=self.user,
+            listing=self.listing,
+            status="pending",
+            message="Interested in a trade.",
+        )
+        self.report = Report.objects.create(
+            user=self.user,
+            area=self.area,
+            title="Overflowing waste point",
+            status="pending",
+        )
+
+    def test_account_pages_require_login(self):
+        for url_name in (
+            "account_overview",
+            "edit_account",
+            "account_data_management",
+            "delete_account",
+        ):
+            response = self.client.get(reverse(url_name))
+            self.assertEqual(response.status_code, 302)
+
+    def test_account_overview_shows_custom_user_fields(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("account_overview"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "account@example.com")
+        self.assertContains(response, "Account User")
+        self.assertContains(response, "collector")
+
+    def test_edit_account_updates_custom_user_fields(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("edit_account"),
+            {
+                "display_name": "Updated Name",
+                "whatsapp_number": "+23058111111",
+            },
+        )
+
+        self.user.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.user.display_name, "Updated Name")
+        self.assertEqual(str(self.user.whatsapp_number), "+23058111111")
+
+    def test_account_data_management_lists_related_content(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("account_data_management"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Glass jars")
+        self.assertContains(response, "Offers")
+        self.assertContains(response, "Overflowing waste point")
+
+    def test_delete_account_requires_matching_confirmation_email(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("delete_account"),
+            {"confirmation_email": "wrong@example.com"},
+        )
+
+        self.user.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user.is_active)
+        self.assertContains(response, "Enter your current account email to confirm deletion.")
+
+    def test_delete_account_deactivates_and_logs_out_user(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("delete_account"),
+            {"confirmation_email": "account@example.com"},
+        )
+
+        self.user.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(self.user.is_active)
+        self.assertNotIn("_auth_user_id", self.client.session)

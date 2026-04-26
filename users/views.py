@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta, time
 
 # from .permissions import is_collector
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -14,6 +15,7 @@ from django.utils import timezone
 from listings.models import Category, Listing, Offer
 from listings.forms import ListingForm
 from reports.models import Report
+from .forms import DeleteAccountForm, UserAccountForm
 
 
 # Create your views here.
@@ -22,6 +24,81 @@ def index(request):
     if request.htmx:
         return render(request, "cotton/partials/index_partial.html")
     return render(request, 'index.html')
+
+
+@login_required
+def account_overview(request):
+    listings_count = Listing.objects.filter(user=request.user, is_deleted=False).count()
+    offers_count = Offer.objects.filter(user=request.user, is_deleted=False).count()
+    reports_count = Report.objects.filter(user=request.user).count()
+
+    context = {
+        "account_user": request.user,
+        "listings_count": listings_count,
+        "offers_count": offers_count,
+        "reports_count": reports_count,
+    }
+    return render(request, "users/account_overview.html", context)
+
+
+@login_required
+def edit_account(request):
+    if request.method == "POST":
+        form = UserAccountForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("account_overview")
+    else:
+        form = UserAccountForm(instance=request.user)
+
+    return render(request, "users/edit_account.html", {"form": form})
+
+
+@login_required
+def account_data_management(request):
+    listings = (
+        Listing.objects.filter(user=request.user, is_deleted=False)
+        .select_related("category", "area")
+        .order_by("-created_at")[:5]
+    )
+    offers = (
+        Offer.objects.filter(user=request.user, is_deleted=False)
+        .select_related("listing")
+        .order_by("-created_at")[:5]
+    )
+    reports = (
+        Report.objects.filter(user=request.user)
+        .select_related("area__district")
+        .prefetch_related("tags")
+        .order_by("-created_at")[:5]
+    )
+
+    context = {
+        "listings": listings,
+        "offers": offers,
+        "reports": reports,
+        "listings_count": Listing.objects.filter(user=request.user, is_deleted=False).count(),
+        "offers_count": Offer.objects.filter(user=request.user, is_deleted=False).count(),
+        "reports_count": Report.objects.filter(user=request.user).count(),
+        "can_view_my_offers": bool(request.user.role and request.user.role.name == "collector"),
+    }
+    return render(request, "users/account_data_management.html", context)
+
+
+@login_required
+def delete_account(request):
+    if request.method == "POST":
+        form = DeleteAccountForm(request.POST, user=request.user)
+        if form.is_valid():
+            user = request.user
+            user.is_active = False
+            user.save(update_fields=["is_active"])
+            logout(request)
+            return redirect("home")
+    else:
+        form = DeleteAccountForm(user=request.user)
+
+    return render(request, "users/delete_account.html", {"form": form})
 
 
 @login_required

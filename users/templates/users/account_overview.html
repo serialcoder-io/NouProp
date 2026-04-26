@@ -1,0 +1,85 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Account Overview</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <div class="w-full flex justify-center bg-base-200/40">
+        <div class="w-full max-w-7xl px-4 py-8 lg:px-6">
+            <div class="flex flex-col gap-4 mb-8 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                    <h1 class="text-4xl font-bold">Account Overview</h1>
+                    <p class="text-base text-neutral/60 mt-2">View the information stored on your custom account profile and jump into related actions.</p>
+                </div>
+                <c-components.account_nav></c-components.account_nav>
+            </div>
+
+            <div class="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(22rem,1fr)]">
+                <section class="card bg-base-100 shadow">
+                    <div class="card-body gap-6">
+                        <h2 class="card-title text-2xl">Account Info</h2>
+
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Email</p>
+                                <p class="font-medium break-all">{{ account_user.email }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Display Name</p>
+                                <p class="font-medium">{{ account_user.display_name|default:"-" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Role</p>
+                                <p class="font-medium">{{ account_user.role|default:"-" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Joined</p>
+                                <p class="font-medium">{{ account_user.date_joined|date:"M j, Y g:i A" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4 md:col-span-2">
+                                <p class="text-sm text-neutral/60">WhatsApp Number</p>
+                                <p class="font-medium">{{ account_user.whatsapp_number|default:"-" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="flex flex-col gap-6">
+                    <section class="card bg-base-100 shadow">
+                        <div class="card-body gap-4">
+                            <h2 class="card-title text-2xl">Your Activity</h2>
+                            <div class="grid gap-4">
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Listings</p>
+                                    <p class="text-3xl font-bold">{{ listings_count }}</p>
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Offers</p>
+                                    <p class="text-3xl font-bold">{{ offers_count }}</p>
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Reports</p>
+                                    <p class="text-3xl font-bold">{{ reports_count }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card bg-base-100 shadow">
+                        <div class="card-body gap-3">
+                            <h2 class="card-title text-2xl">Account Actions</h2>
+                            <a href="{% url 'edit_account' %}" class="btn btn-primary">Edit Account</a>
+                            <a href="{% url 'account_data_management' %}" class="btn btn-outline">Manage My Data</a>
+                            <a href="{% url 'account_reset_password' %}" class="btn btn-ghost">Reset Password</a>
+                            <a href="{% url 'account_logout' %}" class="btn btn-ghost">Log Out</a>
+                            <a href="{% url 'delete_account' %}" class="btn btn-outline btn-error">Delete Account</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

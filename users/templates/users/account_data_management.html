@@ -1,0 +1,135 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>My Data</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <div class="w-full flex justify-center bg-base-200/40">
+        <div class="w-full max-w-7xl px-4 py-8 lg:px-6">
+            <div class="flex flex-col gap-4 mb-8">
+                <div>
+                    <h1 class="text-4xl font-bold">My Data</h1>
+                    <p class="text-base text-neutral/60 mt-2">Review the content attached to your account and jump into detailed management pages.</p>
+                </div>
+                <c-components.account_nav></c-components.account_nav>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-3">
+                <section class="card bg-base-100 shadow">
+                    <div class="card-body gap-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <h2 class="card-title text-2xl">Listings</h2>
+                                <p class="text-sm text-neutral/60">{{ listings_count }} total</p>
+                            </div>
+                            <a href="{% url 'my_listings' %}" class="btn btn-sm btn-outline">View All</a>
+                        </div>
+
+                        {% if listings %}
+                            <div class="space-y-3">
+                                {% for listing in listings %}
+                                    <div class="rounded-xl bg-base-200 p-4">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div>
+                                                <p class="font-medium">{{ listing.title }}</p>
+                                                <p class="text-sm text-neutral/60">
+                                                    {{ listing.category.name }}{% if listing.area %} • {{ listing.area.name }}{% endif %}
+                                                </p>
+                                            </div>
+                                            <span class="badge {% if listing.is_open %}badge-success{% else %}badge-neutral{% endif %}">
+                                                {% if listing.is_open %}Open{% else %}Closed{% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="flex gap-2 mt-4">
+                                            <a href="{% url 'user_listing_details' listing.id %}" class="btn btn-sm btn-outline">Details</a>
+                                            <a href="{% url 'edit_listing' listing.id %}" class="btn btn-sm btn-ghost">Edit</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-sm text-neutral/60">No listings found.</p>
+                        {% endif %}
+                    </div>
+                </section>
+
+                <section class="card bg-base-100 shadow">
+                    <div class="card-body gap-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <h2 class="card-title text-2xl">Offers</h2>
+                                <p class="text-sm text-neutral/60">{{ offers_count }} total</p>
+                            </div>
+                            {% if can_view_my_offers %}
+                                <a href="{% url 'my_offers' %}" class="btn btn-sm btn-outline">View All</a>
+                            {% endif %}
+                        </div>
+
+                        {% if offers %}
+                            <div class="space-y-3">
+                                {% for offer in offers %}
+                                    <div class="rounded-xl bg-base-200 p-4">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div>
+                                                <p class="font-medium">{{ offer.listing.title }}</p>
+                                                <p class="text-sm text-neutral/60">{{ offer.created_at|date:"M j, Y g:i A" }}</p>
+                                            </div>
+                                            <span class="badge badge-outline">{{ offer.status|title }}</span>
+                                        </div>
+                                        <div class="flex gap-2 mt-4">
+                                            <a href="{% url 'offer_details' offer.id %}" class="btn btn-sm btn-outline">Details</a>
+                                            <form method="post" action="{% url 'delete_offer' offer.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-ghost">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-sm text-neutral/60">No offers found.</p>
+                        {% endif %}
+                    </div>
+                </section>
+
+                <section class="card bg-base-100 shadow">
+                    <div class="card-body gap-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <h2 class="card-title text-2xl">Reports</h2>
+                                <p class="text-sm text-neutral/60">{{ reports_count }} total</p>
+                            </div>
+                            <a href="{% url 'my_reports' %}" class="btn btn-sm btn-outline">View All</a>
+                        </div>
+
+                        {% if reports %}
+                            <div class="space-y-3">
+                                {% for report in reports %}
+                                    <div class="rounded-xl bg-base-200 p-4">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div>
+                                                <p class="font-medium">{{ report.title }}</p>
+                                                <p class="text-sm text-neutral/60">
+                                                    {% if report.area %}{{ report.area.name }} ({{ report.area.district.name }}){% else %}No area{% endif %}
+                                                </p>
+                                            </div>
+                                            <span class="badge badge-outline">{{ report.status|title }}</span>
+                                        </div>
+                                        <div class="flex gap-2 mt-4">
+                                            <a href="{% url 'report_details' report.id %}" class="btn btn-sm btn-outline">Details</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-sm text-neutral/60">No reports found.</p>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

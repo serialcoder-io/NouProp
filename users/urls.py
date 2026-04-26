@@ -2,6 +2,10 @@
 from django.urls import include, path
 from django.contrib import admin
 from .views import (
+    account_data_management,
+    account_overview,
+    delete_account,
+    edit_account,
     my_listings,
     listing_details,
     offer_details,
@@ -14,6 +18,10 @@ from .views import (
 )
 
 urlpatterns = [
+    path("account/", account_overview, name="account_overview"),
+    path("account/edit/", edit_account, name="edit_account"),
+    path("account/data/", account_data_management, name="account_data_management"),
+    path("account/delete/", delete_account, name="delete_account"),
     path("my_listings/", my_listings, name="my_listings"),
     path("listings/<uuid:listing_id>/", listing_details, name="user_listing_details"),
     path("offers/<uuid:offer_id>/", offer_details, name="offer_details"),
