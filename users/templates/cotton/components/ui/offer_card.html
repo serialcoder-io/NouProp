@@ -62,15 +62,18 @@
             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-48">
 
                 <li>
-                    <a>
+                    <a href="{% url 'offer_details' offer.id %}">
                         View Offer
                     </a>
                 </li>
 
                 <li>
-                    <button>
-                        Delete
-                    </button>
+                    <form method="post" action="{% url 'delete_offer' offer.id %}">
+                        {% csrf_token %}
+                        <button type="submit">
+                            Delete
+                        </button>
+                    </form>
                 </li>
 
             </ul>

@@ -5,9 +5,11 @@ from datetime import datetime, timedelta, time
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db import transaction
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.utils import timezone
 
 from listings.models import Category, Listing, Offer
 from listings.forms import ListingForm
@@ -115,6 +117,70 @@ def listing_details(request, listing_id):
             return render(request, "cotton/partials/listing_offers_partial.html", context)
 
     return render(request, 'users/listing_details.html', context)
+
+
+@login_required
+def offer_details(request, offer_id):
+    offer = get_object_or_404(
+        Offer.objects.select_related('user', 'listing', 'listing__user'),
+        pk=offer_id,
+    )
+
+    is_offer_creator = request.user == offer.user
+    is_listing_owner = request.user == offer.listing.user
+
+    if not (is_offer_creator or is_listing_owner):
+        return HttpResponseForbidden()
+
+    if request.method == "POST":
+        if not is_listing_owner:
+            return HttpResponseForbidden()
+
+        action = request.POST.get("action")
+        if action not in {"accept", "reject"}:
+            return HttpResponseForbidden()
+
+        if offer.status == "pending" and not offer.is_deleted:
+            if action == "accept":
+                now = timezone.now()
+                with transaction.atomic():
+                    offer.status = "accepted"
+                    offer.save()
+                    Offer.objects.filter(listing=offer.listing).exclude(pk=offer.pk).update(
+                        status="rejected",
+                        last_updated_at=now,
+                    )
+                    offer.listing.is_open = False
+                    offer.listing.save()
+            else:
+                offer.status = "rejected"
+                offer.save()
+
+        return redirect("offer_details", offer_id=offer.id)
+
+    context = {
+        "offer": offer,
+        "is_offer_creator": is_offer_creator,
+        "is_listing_owner": is_listing_owner,
+        "can_manage_offer": is_listing_owner and offer.status == "pending" and not offer.is_deleted,
+    }
+
+    return render(request, "users/offer_details.html", context)
+
+
+@login_required
+def delete_offer(request, offer_id):
+    offer = get_object_or_404(Offer, pk=offer_id)
+
+    if request.user != offer.user:
+        return HttpResponseForbidden()
+
+    if request.method == "POST":
+        offer.is_deleted = True
+        offer.save()
+        return redirect("my_offers")
+
+    return HttpResponseForbidden("Method not allowed.")
 
 
 # offer statuses

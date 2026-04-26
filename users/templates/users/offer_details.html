@@ -1,0 +1,188 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Offer Details</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <div class="w-full flex justify-center">
+        <div class="w-full max-w-6xl py-4">
+            <div class="flex flex-col gap-4 py-6 mb-2 lg:flex-row lg:items-end lg:justify-between">
+                <div class="flex flex-col gap-2">
+                    {% if is_listing_owner %}
+                        <a href="{% url 'received_offers' %}" class="link link-hover text-sm text-neutral/60">Back to Received Offers</a>
+                    {% else %}
+                        <a href="{% url 'my_offers' %}" class="link link-hover text-sm text-neutral/60">Back to My Offers</a>
+                    {% endif %}
+                    <div>
+                        <h2 class="text-3xl font-bold">Offer Details</h2>
+                        <p class="text-md font-normal text-neutral/50">Review the full offer record and available actions.</p>
+                    </div>
+                </div>
+                <c-components.dashboard_nav></c-components.dashboard_nav>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]">
+                <div class="card bg-base-100 shadow">
+                    <div class="card-body gap-6">
+                        <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                            <div>
+                                <p class="text-sm text-neutral/60">Offer record details</p>
+                            </div>
+                            <span class="badge
+                                {% if offer.status == 'pending' %} badge-warning
+                                {% elif offer.status == 'accepted' %} badge-success
+                                {% else %} badge-error
+                                {% endif %}
+                            ">
+                                {{ offer.status|title }}
+                            </span>
+                        </div>
+
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">User</p>
+                                <p class="font-medium">{{ offer.user }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Listing</p>
+                                <p class="font-medium">{{ offer.listing }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">WhatsApp Contact Allowed</p>
+                                <p class="font-medium">{{ offer.whatsapp_contact_allowed|yesno:"Yes,No" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">WhatsApp Number</p>
+                                <p class="font-medium">{{ offer.whatsapp_number|default:"-" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Created At</p>
+                                <p class="font-medium">{{ offer.created_at|date:"M j, Y g:i A" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Last Updated</p>
+                                <p class="font-medium">{{ offer.last_updated_at|date:"M j, Y g:i A" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Status</p>
+                                <p class="font-medium">{{ offer.status|title }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Is Deleted</p>
+                                <p class="font-medium">{{ offer.is_deleted|yesno:"Yes,No" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl bg-base-200 p-4">
+                            <p class="text-sm text-neutral/60 mb-2">Message</p>
+                            {% if offer.message %}
+                                <p class="whitespace-pre-line">{{ offer.message }}</p>
+                            {% else %}
+                                <p>No message provided.</p>
+                            {% endif %}
+                        </div>
+
+                        {% if offer.is_deleted %}
+                            <div class="alert alert-warning">
+                                <span>This offer has been deleted.</span>
+                            </div>
+                        {% elif offer.status == "accepted" %}
+                            <div class="alert alert-success">
+                                <span>You already accepted this offer.</span>
+                            </div>
+                        {% elif offer.status == "rejected" %}
+                            <div class="alert alert-error">
+                                <span>You already rejected this offer.</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="card bg-base-100 shadow">
+                    <div class="card-body gap-4">
+                        <h3 class="card-title">Actions</h3>
+
+                        {% if can_manage_offer %}
+                            <label for="accept-offer-modal" class="btn btn-success">Accept</label>
+                            <label for="reject-offer-modal" class="btn btn-error btn-outline">Reject</label>
+                        {% elif is_listing_owner and not offer.is_deleted %}
+                            <p class="text-sm text-neutral/60">This offer is already processed and can no longer be updated.</p>
+                        {% else %}
+                            <p class="text-sm text-neutral/60">No owner actions are available for this offer.</p>
+                        {% endif %}
+
+                        {% if is_offer_creator and not offer.is_deleted %}
+                            <label for="delete-offer-modal" class="btn btn-outline">Delete Offer</label>
+                        {% endif %}
+
+                        {% if offer.whatsapp_contact_allowed and offer.whatsapp_number %}
+                            <a href="https://wa.me/{{ offer.whatsapp_number|cut:'+' }}" target="_blank" rel="noreferrer" class="btn btn-ghost">
+                                Contact on WhatsApp
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if can_manage_offer %}
+        <input type="checkbox" id="accept-offer-modal" class="modal-toggle">
+        <div class="modal" role="dialog">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold">Accept this offer?</h3>
+                <div class="py-4 space-y-3 text-sm text-base-content/80">
+                    <p>Accepting this offer will reject all other offers related to the same listing.</p>
+                    <p>Accepting this offer will also set the listing <code>is_open = False</code>.</p>
+                </div>
+                <div class="modal-action">
+                    <label for="accept-offer-modal" class="btn btn-ghost">Cancel</label>
+                    <form method="post" action="{% url 'offer_details' offer.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="accept">
+                        <button type="submit" class="btn btn-success">Confirm Accept</button>
+                    </form>
+                </div>
+            </div>
+            <label class="modal-backdrop" for="accept-offer-modal">Close</label>
+        </div>
+
+        <input type="checkbox" id="reject-offer-modal" class="modal-toggle">
+        <div class="modal" role="dialog">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold">Reject this offer?</h3>
+                <p class="py-4 text-sm text-base-content/80">This action will mark the offer as rejected.</p>
+                <div class="modal-action">
+                    <label for="reject-offer-modal" class="btn btn-ghost">Cancel</label>
+                    <form method="post" action="{% url 'offer_details' offer.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit" class="btn btn-error">Confirm Reject</button>
+                    </form>
+                </div>
+            </div>
+            <label class="modal-backdrop" for="reject-offer-modal">Close</label>
+        </div>
+    {% endif %}
+
+    {% if is_offer_creator and not offer.is_deleted %}
+        <input type="checkbox" id="delete-offer-modal" class="modal-toggle">
+        <div class="modal" role="dialog">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold">Delete this offer?</h3>
+                <p class="py-4 text-sm text-base-content/80">This action will remove the offer from your active offers list.</p>
+                <div class="modal-action">
+                    <label for="delete-offer-modal" class="btn btn-ghost">Cancel</label>
+                    <form method="post" action="{% url 'delete_offer' offer.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline">Confirm Delete</button>
+                    </form>
+                </div>
+            </div>
+            <label class="modal-backdrop" for="delete-offer-modal">Close</label>
+        </div>
+    {% endif %}
+{% endblock %}
