@@ -1,0 +1,49 @@
+<footer class="bg-neutral text-neutral-content">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div class="grid gap-10 md:grid-cols-2 xl:grid-cols-4">
+            <div class="space-y-4">
+                <p class="text-2xl font-bold">NouProp</p>
+                <p class="text-sm leading-6 text-neutral-content/80">
+                    A Mauritius-focused platform for reusable materials, local recycling exchanges, and community reporting of waste issues.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-content/70">Navigation</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="{% url 'home' %}" class="link link-hover">Home</a></li>
+                    <li><a href="{% url 'listings' %}" class="link link-hover">Browse Listings</a></li>
+                    <li><a href="{% url 'create_report' %}" class="link link-hover">Report Illegal Dumping</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'account_overview' %}" class="link link-hover">My Account</a></li>
+                    {% else %}
+                        <li><a href="{% url 'account_login' %}" class="link link-hover">Log In</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-content/70">Contact</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="mailto:anliomar@outlook.com" class="link link-hover">anliomar@outlook.com</a></li>
+                    <li><a href="tel:+23058483071" class="link link-hover">+230 5848 3071</a></li>
+                    <li><a href="https://wa.me/23057297857" target="_blank" rel="noreferrer" class="link link-hover">WhatsApp: +230 5729 7857</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-content/70">Legal</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="{% url 'terms_of_use' %}" class="link link-hover">Terms of Use</a></li>
+                    <li><a href="{% url 'privacy_policy' %}" class="link link-hover">Privacy Policy</a></li>
+                    <li><a href="{% url 'legal_notice' %}" class="link link-hover">Legal Notice</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-neutral-content/15 mt-10 pt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-sm text-neutral-content/70">
+            <p>&copy; {% now "Y" %} NouProp. All rights reserved.</p>
+            <p>Designed for use in Mauritius with privacy and platform transparency in mind.</p>
+        </div>
+    </div>
+</footer>

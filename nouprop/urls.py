@@ -28,6 +28,7 @@ urlpatterns = [
     path('listings/', include('listings.urls')),
     path('reports/', include('reports.urls')),
     path('locations/', include('locations.urls')),
+    path('legal/', include('legal.urls')),
     path('dashboard/', include('users.urls')),
     path('', index, name='home'),
 ]

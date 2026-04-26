@@ -1,0 +1,83 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Legal Notice</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <main class="bg-base-200/40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="mb-10">
+                <p class="text-sm uppercase tracking-[0.2em] text-neutral/60">Legal</p>
+                <h1 class="text-4xl font-bold mt-3">Legal Notice</h1>
+                <p class="text-sm text-neutral/60 mt-3">Effective date: April 10, 2026</p>
+                <div class="flex flex-wrap gap-3 mt-5 text-sm">
+                    <a href="{% url 'terms_of_use' %}" class="btn btn-sm btn-outline">Terms of Use</a>
+                    <a href="{% url 'privacy_policy' %}" class="btn btn-sm btn-outline">Privacy Policy</a>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow">
+                <div class="card-body prose max-w-none">
+                    <h2 class="text-bold text-lg"><strong>1. Website Identity</strong></h2>
+                    <p>
+                        NouProp is an online platform made available to users in Mauritius for recyclable-material listings, offer management, and reporting of waste-related issues.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>2. Owner and Contact Details</strong></h2>
+                    <p>The website owner and operator may be contacted at:</p>
+                    <ul>
+                        <li>Email: <a href="mailto:anliomar@outlook.com">anliomar@outlook.com</a></li>
+                        <li>Phone: <a href="tel:+23058483071">+230 5848 3071</a></li>
+                        <li>WhatsApp: <a href="https://wa.me/23057297857" target="_blank" rel="noreferrer">+230 5729 7857</a></li>
+                    </ul>
+
+                    <h2 class="text-bold text-lg"><strong>3. Intellectual Property</strong></h2>
+                    <p>
+                        Unless otherwise stated, the website structure, design elements, text, graphics, and original platform content made available by the operator are protected by applicable intellectual property and related rights.
+                        Users remain responsible for ensuring they have the right to submit content they publish on the platform.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>4. Website Use and Responsibility</strong></h2>
+                    <p>
+                        Access to and use of the website are subject to the Terms of Use and applicable law.
+                        Users are responsible for the lawfulness, accuracy, and relevance of the content they submit, including listings, offers, reports, and messages.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>5. Information Disclaimer</strong></h2>
+                    <p>
+                        The operator seeks to keep website information reasonably accurate and available, but does not guarantee uninterrupted access, absolute accuracy, or fitness for a specific purpose.
+                        Information published on the website may be updated, corrected, suspended, or removed without prior notice where reasonably necessary.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>6. Limitation of Responsibility</strong></h2>
+                    <p>
+                        To the extent permitted by Mauritian law, the operator is not responsible for indirect or consequential loss arising from use of the website, reliance on user-generated content, third-party conduct, or technical interruptions beyond reasonable control.
+                        Nothing in this Notice excludes liability that cannot lawfully be excluded.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>7. Hosting and Platform Disclaimer</strong></h2>
+                    <p>
+                        The website may rely on third-party hosting, cloud storage, authentication, media, analytics, or infrastructure services selected by the operator.
+                        Those providers may change over time.
+                        Third-party service providers remain subject to their own technical and legal terms for the services they supply.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>8. Data Protection</strong></h2>
+                    <p>
+                        Personal data are handled in accordance with the NouProp Privacy Policy and applicable Mauritian data protection rules, including the Data Protection Act 2017 where applicable.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>9. Governing Law</strong></h2>
+                    <p>
+                        This website and its legal notices are intended to be interpreted in accordance with the laws of Mauritius.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <c-partials.site_footer></c-partials.site_footer>
+{% endblock %}

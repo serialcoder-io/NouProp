@@ -1,0 +1,119 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Terms of Use</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <main class="bg-base-200/40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="mb-10">
+                <p class="text-sm uppercase tracking-[0.2em] text-neutral/60">Legal</p>
+                <h1 class="text-4xl font-bold mt-3">Terms of Use</h1>
+                <p class="text-sm text-neutral/60 mt-3">Effective date: April 10, 2026</p>
+                <div class="flex flex-wrap gap-3 mt-5 text-sm">
+                    <a href="{% url 'privacy_policy' %}" class="btn btn-sm btn-outline">Privacy Policy</a>
+                    <a href="{% url 'legal_notice' %}" class="btn btn-sm btn-outline">Legal Notice</a>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow">
+                <div class="card-body prose max-w-none">
+                    <h2 class="text-bold text-lg"><strong>1. Acceptance of these Terms</strong></h2>
+                    <p>
+                        By accessing or using NouProp, you agree to comply with these Terms of Use and with all applicable laws and regulations in Mauritius.
+                        If you do not agree with these Terms, you should not access or use the website.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>2. Purpose of the Website</strong></h2>
+                    <p>
+                        NouProp is intended to help users publish recyclable-material listings, make or receive offers, and report waste-related issues.
+                        The website is provided as an informational and transactional platform for lawful community use.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>3. Eligibility and Account Use</strong></h2>
+                    <p>
+                        You are responsible for ensuring that the information associated with your account is accurate, current, and complete.
+                        You must keep your login credentials confidential and remain responsible for activity performed through your account unless caused by a security failure attributable to the website operator.
+                    </p>
+                    <p>
+                        Accounts created through email/password and accounts created through supported social login providers remain subject to the same platform rules.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>4. User Responsibilities</strong></h2>
+                    <p>You agree to use the website in good faith and not to upload, post, or transmit content that is unlawful, misleading, defamatory, abusive, fraudulent, or infringing.</p>
+                    <p>You must ensure that listings, offers, messages, and waste reports are truthful and do not violate the rights of third parties.</p>
+
+                    <h2 class="text-bold text-lg"><strong>5. Prohibited Use</strong></h2>
+                    <p>You must not:</p>
+                    <ul>
+                        <li>use the website for unlawful, deceptive, or harmful activity;</li>
+                        <li>attempt to gain unauthorised access to accounts, systems, or data;</li>
+                        <li>interfere with the availability, integrity, or security of the website;</li>
+                        <li>submit malicious code, spam, or automated abusive traffic;</li>
+                        <li>impersonate another person or misrepresent your identity, role, or authority;</li>
+                        <li>use the website in a manner that breaches privacy, intellectual property, consumer, or data protection laws.</li>
+                    </ul>
+
+                    <h2 class="text-bold text-lg"><strong>6. User Content</strong></h2>
+                    <p>
+                        You retain responsibility for the content you submit.
+                        By submitting content to NouProp, you grant the website operator a non-exclusive right to host, store, display, and process that content for the operation, moderation, security, and improvement of the platform.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>7. Moderation and Account Measures</strong></h2>
+                    <p>
+                        The website operator may suspend, restrict, remove, or refuse content or accounts that appear to breach these Terms, applicable law, or platform safety requirements.
+                        Such action may be taken where reasonably necessary to protect users, preserve platform integrity, or comply with legal obligations.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>8. Availability and Changes</strong></h2>
+                    <p>
+                        NouProp is provided on an “as available” basis.
+                        The operator may change, suspend, or discontinue all or part of the website, features, or content where reasonably necessary for maintenance, security, improvement, or legal compliance.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>9. Limitation of Liability</strong></h2>
+                    <p>
+                        To the fullest extent permitted by Mauritian law, the operator is not liable for indirect, incidental, special, consequential, or punitive loss arising from your use of, or inability to use, the website.
+                        Nothing in these Terms excludes liability that cannot lawfully be excluded, including liability arising from fraud or any mandatory legal protection.
+                    </p>
+                    <p>
+                        NouProp does not guarantee the conduct, quality, or performance of third-party users, nor the completion of transactions or off-platform arrangements between users.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>10. External Links and Third-Party Services</strong></h2>
+                    <p>
+                        The website may contain links to external services or depend on third-party infrastructure and authentication providers.
+                        Those services remain subject to their own terms and privacy practices.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>11. Privacy and Personal Data</strong></h2>
+                    <p>
+                        Personal data are processed in accordance with the NouProp Privacy Policy and applicable Mauritian data protection law, including the Data Protection Act 2017 where applicable.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>12. Modification of Terms</strong></h2>
+                    <p>
+                        These Terms may be updated from time to time.
+                        Updated Terms take effect when published on the website unless a later effective date is stated.
+                        Continued use of the website after publication constitutes acceptance of the revised Terms.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>13. Governing Law and Contact</strong></h2>
+                    <p>
+                        These Terms are governed by the laws of Mauritius.
+                        For questions about these Terms, contact:
+                        <a href="mailto:anliomar@outlook.com">anliomar@outlook.com</a>,
+                        phone <a href="tel:+23058483071">+230 5848 3071</a>,
+                        WhatsApp <a href="https://wa.me/23057297857" target="_blank" rel="noreferrer">+230 5729 7857</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <c-partials.site_footer></c-partials.site_footer>
+{% endblock %}

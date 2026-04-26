@@ -1,0 +1,133 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Privacy Policy</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <main class="bg-base-200/40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="mb-10">
+                <p class="text-sm uppercase tracking-[0.2em] text-neutral/60">Legal</p>
+                <h1 class="text-4xl font-bold mt-3">Privacy Policy</h1>
+                <p class="text-sm text-neutral/60 mt-3">Effective date: April 10, 2026</p>
+                <div class="flex flex-wrap gap-3 mt-5 text-sm">
+                    <a href="{% url 'terms_of_use' %}" class="btn btn-sm btn-outline">Terms of Use</a>
+                    <a href="{% url 'legal_notice' %}" class="btn btn-sm btn-outline">Legal Notice</a>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow">
+                <div class="card-body prose max-w-none">
+                    <h2 class="text-bold text-lg"><strong>1. Scope and Legal Framework</strong></h2>
+                    <p>
+                        This Privacy Policy explains how NouProp collects, uses, stores, protects, and discloses personal data in connection with the website.
+                        The policy is intended to reflect the principles of the Mauritius Data Protection Act 2017, which came into force on January 15, 2018.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>2. Data Controller Contact</strong></h2>
+                    <p>
+                        The website operator acts as the controller for personal data processed through NouProp.
+                        Contact details:
+                        <a href="mailto:anliomar@outlook.com">anliomar@outlook.com</a>,
+                        phone <a href="tel:+23058483071">+230 5848 3071</a>,
+                        WhatsApp <a href="https://wa.me/23057297857" target="_blank" rel="noreferrer">+230 5729 7857</a>.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>3. Categories of Personal Data Collected</strong></h2>
+                    <p>Depending on how you use the website, NouProp may process the following categories of personal data:</p>
+                    <ul>
+                        <li>account data, such as email address, display name, WhatsApp number, role, and authentication identifiers;</li>
+                        <li>content you submit, such as listings, offers, reports, descriptions, uploaded images, and related messages;</li>
+                        <li>location-related data submitted by you when reporting waste issues, including address and coordinates where provided;</li>
+                        <li>technical and security data, such as session information, logs, and metadata required for authentication, fraud prevention, and system integrity;</li>
+                        <li>social authentication linkage data when you sign in through a supported third-party provider.</li>
+                    </ul>
+
+                    <h2 class="text-bold text-lg"><strong>4. How Data Are Collected</strong></h2>
+                    <p>Personal data may be collected:</p>
+                    <ul>
+                        <li>directly from you when you create an account, edit your profile, publish content, or contact the operator;</li>
+                        <li>through authentication and session-management tools provided by django-allauth and related service providers;</li>
+                        <li>through technical records created as part of standard website operations, security, and debugging.</li>
+                    </ul>
+
+                    <h2 class="text-bold text-lg"><strong>5. Purposes of Processing</strong></h2>
+                    <p>Personal data may be processed for the following purposes:</p>
+                    <ul>
+                        <li>creating and managing user accounts;</li>
+                        <li>operating listings, offers, waste reports, and related user-to-user interactions;</li>
+                        <li>providing customer support and responding to inquiries;</li>
+                        <li>protecting the platform against abuse, fraud, unauthorised access, and service disruption;</li>
+                        <li>maintaining auditability, moderation capability, and service quality;</li>
+                        <li>complying with applicable legal or regulatory obligations in Mauritius.</li>
+                    </ul>
+
+                    <h2 class="text-bold text-lg"><strong>6. Legal Basis and Fair Processing</strong></h2>
+                    <p>
+                        NouProp seeks to process personal data lawfully, fairly, and transparently.
+                        Depending on the context, processing may rely on user consent, the performance of platform services requested by the user, compliance with legal obligations, or legitimate operational interests that do not override the rights of data subjects.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>7. Disclosure of Personal Data</strong></h2>
+                    <p>Personal data may be disclosed only where reasonably necessary, including to:</p>
+                    <ul>
+                        <li>other users when the platform design requires certain submitted information to be visible for listings, offers, or reports;</li>
+                        <li>technical, hosting, storage, authentication, and infrastructure providers acting on behalf of the website operator;</li>
+                        <li>competent authorities where required by law, lawful request, or enforcement obligation.</li>
+                    </ul>
+
+                    <h2 class="text-bold text-lg"><strong>8. International or External Processing</strong></h2>
+                    <p>
+                        Where personal data are processed through third-party technical providers or infrastructure outside Mauritius, the operator will seek to ensure that such transfers occur only where appropriate safeguards, contractual protections, or lawful conditions are in place, consistent with applicable Mauritian data protection requirements.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>9. Data Retention and Storage</strong></h2>
+                    <p>
+                        Personal data are retained only for as long as reasonably necessary for the purposes for which they were collected, for platform administration, dispute handling, fraud prevention, audit needs, or legal compliance.
+                        When data are no longer required, the operator aims to delete, anonymise, or restrict them in an appropriate manner.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>10. Security Measures</strong></h2>
+                    <p>
+                        NouProp uses reasonable technical and organisational measures to protect personal data against accidental or unlawful destruction, loss, alteration, unauthorised disclosure, or unauthorised access.
+                        These measures may include access controls, authenticated sessions, role-based restrictions, controlled third-party services, and routine maintenance of the application environment.
+                    </p>
+                    <p>
+                        No internet-based system can be guaranteed completely secure, but the operator seeks to reduce foreseeable risk and respond appropriately to security incidents.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>11. Your Rights</strong></h2>
+                    <p>Subject to applicable law and any lawful limitations, you may have the right to:</p>
+                    <ul>
+                        <li>request access to personal data concerning you;</li>
+                        <li>request correction or rectification of inaccurate or incomplete data;</li>
+                        <li>request erasure or restriction of processing in appropriate circumstances;</li>
+                        <li>object to certain processing activities;</li>
+                        <li>withdraw consent where processing is based on consent, without affecting prior lawful processing;</li>
+                        <li>raise a complaint with the Mauritius Data Protection Office if you believe your rights have been infringed.</li>
+                    </ul>
+                    <p>
+                        Requests can be sent to <a href="mailto:anliomar@outlook.com">anliomar@outlook.com</a>.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>12. Children and Sensitive Data</strong></h2>
+                    <p>
+                        Users should not submit special categories of personal data or children’s personal data unless strictly necessary and lawful.
+                        If such data are submitted in platform content, the operator may restrict, remove, or otherwise moderate the content where necessary for legal compliance or risk reduction.
+                    </p>
+
+                    <h2 class="text-bold text-lg"><strong>13. Updates to this Policy</strong></h2>
+                    <p>
+                        This Privacy Policy may be updated to reflect legal, technical, or operational changes.
+                        The updated version will be published on this page with a revised effective date where appropriate.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <c-partials.site_footer></c-partials.site_footer>
+{% endblock %}

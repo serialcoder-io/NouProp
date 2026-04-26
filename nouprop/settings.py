@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'listings.apps.ListingsConfig',
     'reports.apps.ReportsConfig',
     'locations.apps.LocationsConfig',
+    'legal.apps.LegalConfig',
 
     'allauth_ui',
     'allauth',
