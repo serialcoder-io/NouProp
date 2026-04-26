@@ -258,3 +258,60 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
+DAISY_SETTINGS = {
+    'SITE_TITLE': 'NouProp Admin',
+    'SITE_HEADER': 'NouProp Administration',
+    'INDEX_TITLE': 'Hi, welcome to admin site',
+    'SITE_LOGO': '/static/images/recycle_logo.jpg',
+
+    'EXTRA_STYLES': [],
+    'EXTRA_SCRIPTS': [],
+
+    'LOAD_FULL_STYLES': False,
+    'SHOW_CHANGELIST_FILTER': False,
+
+    'APPS_REORDER': {
+        'auth': {
+            'icon': 'fa-solid fa-user-group',
+            'name': 'Authentication',
+            'hide': False,
+            'app': 'users',
+            'divider_title': "Auth",
+        },
+        'social_django': {
+            'icon': 'fa-solid fa-users-gear',
+        },
+
+        'users': {
+            'icon': 'fa-solid fa-user',
+            'name': 'Users',
+        },
+        'listings': {
+            'icon': 'fa-solid fa-list',
+            'name': 'Listings',
+        },
+        'offers': {
+            'icon': 'fa-solid fa-handshake',
+            'name': 'Offers',
+        },
+        'reports': {
+            'icon': 'fa-solid fa-flag',
+            'name': 'Reports',
+        },
+
+        'account': {
+            'icon': 'fa-solid fa-id-card',
+            'name': 'Accounts',
+        },
+
+        'socialaccount': {
+            'icon': 'fa-solid fa-user-shield',
+            'name': 'Social Accounts',
+        },
+
+        'locations': {
+            'icon': 'fa-solid fa-location-dot',
+            'name': 'Locations',
+        },
+    },
+}
