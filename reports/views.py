@@ -1,10 +1,9 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
 
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from .forms import ReportForm
+from .models import Report, ReportStatus
 
 # Create your views here.
 def reports(request):
@@ -28,3 +27,38 @@ def create_report(request):
     return render(request, "reports/create_report.html", {
         "form": form
     })
+
+
+def report_details(request, report_id):
+    report = get_object_or_404(
+        Report.objects.select_related("user", "area__district").prefetch_related("tags"),
+        pk=report_id,
+    )
+
+    is_owner = request.user.is_authenticated and request.user == report.user
+    is_staff = request.user.is_authenticated and request.user.is_staff
+
+    if not (is_owner or is_staff):
+        return HttpResponseForbidden()
+
+    valid_statuses = {choice[0] for choice in ReportStatus.choices}
+
+    if request.method == "POST":
+        if not is_staff:
+            return HttpResponseForbidden()
+
+        status = request.POST.get("status")
+        if status not in valid_statuses:
+            return HttpResponseForbidden()
+
+        report.status = status
+        report.save(update_fields=["status", "updated_at"])
+        return redirect("report_details", report_id=report.id)
+
+    context = {
+        "report": report,
+        "status_choices": ReportStatus.choices,
+        "is_staff_user": is_staff,
+        "has_coordinates": report.lat is not None and report.lng is not None,
+    }
+    return render(request, "reports/report_details.html", context)

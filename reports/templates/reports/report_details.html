@@ -1,0 +1,244 @@
+{% extends "cotton/components/layout/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+    {% if has_coordinates %}
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        />
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    <title>Report Details</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <div class="w-full flex justify-center bg-base-200/40">
+        <div class="w-full max-w-7xl px-4 py-8 lg:px-6">
+            <div class="flex flex-col gap-3 mb-8">
+                <a href="{% url 'my_reports' %}" class="link link-hover text-sm text-neutral/60">Back to My Reports</a>
+                <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                    <div>
+                        <h1 class="text-4xl font-bold">{{ report.title }}</h1>
+                        <p class="text-base text-neutral/60 mt-2">Detailed report overview and location context.</p>
+                    </div>
+                    <div class="badge badge-lg
+                        {% if report.status == 'pending' %} badge-warning
+                        {% elif report.status == 'validated' %} badge-info
+                        {% elif report.status == 'in_progress' %} badge-primary
+                        {% elif report.status == 'completed' %} badge-success
+                        {% else %} badge-error
+                        {% endif %}
+                    ">
+                        {{ report.status|title }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(22rem,1fr)]">
+                <div class="flex flex-col gap-6">
+                    <section class="card bg-base-100 shadow">
+                        <div class="card-body gap-6">
+                            <div class="flex items-center justify-between">
+                                <h2 class="card-title text-2xl">Report Info</h2>
+                            </div>
+
+                            {% if report.image %}
+                                <figure class="rounded-2xl overflow-hidden bg-base-200">
+                                    <img src="{{ report.image.url }}" alt="{{ report.title }}" class="w-full max-h-[26rem] object-cover">
+                                </figure>
+                            {% endif %}
+
+                            <div class="grid gap-4 md:grid-cols-2">
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Title</p>
+                                    <p class="font-medium">{{ report.title }}</p>
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Status</p>
+                                    <p class="font-medium">{{ report.status|title }}</p>
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4 md:col-span-2">
+                                    <p class="text-sm text-neutral/60">Description</p>
+                                    {% if report.description %}
+                                        <p class="whitespace-pre-line">{{ report.description }}</p>
+                                    {% else %}
+                                        <p>No description provided.</p>
+                                    {% endif %}
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4 md:col-span-2">
+                                    <p class="text-sm text-neutral/60">Address</p>
+                                    {% if report.address %}
+                                        <p class="whitespace-pre-line">{{ report.address }}</p>
+                                    {% else %}
+                                        <p>No address provided.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card bg-base-100 shadow">
+                        <div class="card-body gap-6">
+                            <h2 class="card-title text-2xl">Location</h2>
+
+                            <div class="grid gap-4 md:grid-cols-3">
+                                <div class="rounded-xl bg-base-200 p-4 md:col-span-3">
+                                    <p class="text-sm text-neutral/60">Area</p>
+                                    {% if report.area %}
+                                        <p class="font-medium">{{ report.area.name }} ({{ report.area.district.name }})</p>
+                                    {% else %}
+                                        <p class="font-medium">No area assigned.</p>
+                                    {% endif %}
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Latitude</p>
+                                    <p class="font-medium">{{ report.lat|default:"-" }}</p>
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Longitude</p>
+                                    <p class="font-medium">{{ report.lng|default:"-" }}</p>
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Address</p>
+                                    <p class="font-medium">{{ report.address|default:"-" }}</p>
+                                </div>
+                            </div>
+
+                            {% if has_coordinates %}
+                                <div>
+                                    <p class="text-sm text-neutral/60 mb-3">Map Preview</p>
+                                    <div
+                                        id="report-map"
+                                        class="w-full h-96 rounded-2xl overflow-hidden border border-base-300"
+                                        data-lat="{{ report.lat }}"
+                                        data-lng="{{ report.lng }}"
+                                    ></div>
+                                </div>
+                            {% endif %}
+
+                        {% if has_coordinates %}
+                            <div class="flex gap-2 mt-2">
+                                <a
+                                    href="https://www.google.com/maps?q={{ report.lat }},{{ report.lng }}"
+                                    target="_blank"
+                                    class="btn btn-primary btn-sm"
+                                >
+                                    Open Google Maps
+                                </a>
+
+                                <a
+                                    href="https://www.google.com/maps/dir/?api=1&destination={{ report.lat }},{{ report.lng }}"
+                                    target="_blank"
+                                    class="btn btn-outline btn-sm"
+                                >
+                                    Get Directions
+                                </a>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </section>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <section class="card bg-base-100 shadow">
+                        <div class="card-body gap-4">
+                            <h2 class="card-title text-2xl">Tags</h2>
+                            {% if report.tags.all %}
+                                <div class="flex flex-wrap gap-2">
+                                    {% for tag in report.tags.all %}
+                                        <span
+                                            class="badge badge-lg border-0 text-white"
+                                            {% if tag.color %}style="background-color: {{ tag.color }};"{% else %}style="background-color: #4b5563;"{% endif %}
+                                        >
+                                            {{ tag.name }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-sm text-neutral/60">No tags assigned.</p>
+                            {% endif %}
+                        </div>
+                    </section>
+
+                    <section class="card bg-base-100 shadow">
+                        <div class="card-body gap-4">
+                            <h2 class="card-title text-2xl">Metadata</h2>
+                            <div class="space-y-4">
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Created By</p>
+                                    {% if report.user %}
+                                        <p class="font-medium">{{ report.user }}</p>
+                                    {% else %}
+                                        <p class="font-medium">Anonymous</p>
+                                    {% endif %}
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Created At</p>
+                                    <p class="font-medium">{{ report.created_at|date:"M j, Y g:i A" }}</p>
+                                </div>
+                                <div class="rounded-xl bg-base-200 p-4">
+                                    <p class="text-sm text-neutral/60">Updated At</p>
+                                    <p class="font-medium">{{ report.updated_at|date:"M j, Y g:i A" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card bg-base-100 shadow">
+                        <div class="card-body gap-4">
+                            <h2 class="card-title text-2xl">Status Control</h2>
+                            {% if is_staff_user %}
+                                <form method="post" class="space-y-4">
+                                    {% csrf_token %}
+                                    <label class="form-control w-full">
+                                        <div class="label">
+                                            <span class="label-text">Update report status</span>
+                                        </div>
+                                        <select name="status" class="select select-bordered w-full">
+                                            {% for value, label in status_choices %}
+                                                <option value="{{ value }}" {% if value == report.status %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                    <button type="submit" class="btn btn-primary w-full mt-2">Save Status</button>
+                                </form>
+                            {% else %}
+                                <p class="text-sm text-neutral/60">This report is read-only for non-staff users.</p>
+                            {% endif %}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_script %}
+    {% if has_coordinates %}
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+            const mapElement = document.getElementById("report-map");
+
+            if (mapElement) {
+                const lat = parseFloat(mapElement.dataset.lat);
+                const lng = parseFloat(mapElement.dataset.lng);
+                const map = L.map(mapElement).setView([lat, lng], 15);
+
+                L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+                    maxZoom: 19,
+                    attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+                }).addTo(map);
+
+                L.marker([lat, lng]).addTo(map);
+                map.on('click', () => {
+                    window.open(`https://www.google.com/maps?q=${lat},${lng}`, "_blank");
+                });
+            }
+        </script>
+    {% endif %}
+{% endblock %}
