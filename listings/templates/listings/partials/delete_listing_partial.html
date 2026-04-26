@@ -1,0 +1,9 @@
+<div class="alert alert-success">
+    <span>Listing deleted successfully. Redirecting...</span>
+</div>
+
+<script>
+    setTimeout(() => {
+        window.location.href = "{% url 'listings' %}";
+    }, 1500);
+</script>

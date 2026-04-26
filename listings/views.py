@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from listings.forms import OfferForm
+from listings.forms import OfferForm, ListingForm
 from listings.models import Listing, Category
 from locations.models import District
 
@@ -124,3 +124,26 @@ def make_offer(request, listing_id):
         })
 
     return redirect("listing_details", listing_id=listing.id)
+
+
+@login_required
+def create_listing(request):
+    if request.method == "POST":
+        form = ListingForm(request.POST, request.FILES)
+        if form.is_valid():
+            listing = form.save(commit=False)
+            listing.user = request.user
+            listing.save()
+            messages.success(request, "Listing created successfully.")
+            return redirect("listing_details", listing_id=listing.id)
+    else:
+        form = ListingForm()
+
+    context = {"form": form}
+
+    if request.htmx:
+        target = request.headers.get('HX-Target')
+        if target == "body":
+            return render(request, "cotton/partials/create_listing_partial.html", context)
+
+    return render(request, "listings/create_listing.html", context)

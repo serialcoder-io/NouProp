@@ -88,10 +88,18 @@
                         </svg>
                     </c-components.ui.nav_link>
                 </li>
+                <li>
+                    <c-components.ui.nav_link
+                    text="Report illegal dumping"
+                    curr_path="create_report"
+                    url="{% url 'create_report' %}">
+                    </c-components.ui.nav_link>
+                </li>
             {% endif %}
         </ul>
     </div>
     <div class="navbar-end space-x-3">
+
         {% if request.user.is_authenticated %}
             <c-components.ui.nav_link
                 text="Dashboard"

@@ -72,7 +72,11 @@
 
             <div class="flex justify-between items-center py-3 my-3">
                 <p class="text-xl font-bold">My listings</p>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary"
+                    hx-get="{% url 'create_listing' %}"
+                        hx-push-url="true"
+                        hx-target="#body"
+                >
                     <c-icons.plus></c-icons.plus>
                     New listing
                 </button>

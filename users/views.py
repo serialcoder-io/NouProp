@@ -5,10 +5,12 @@ from datetime import datetime, timedelta, time
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import Http404
-from django.shortcuts import render
+from django.http import Http404, HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 
 from listings.models import Category, Listing, Offer
+from listings.forms import ListingForm
 from reports.models import Report
 
 
@@ -330,3 +332,53 @@ def my_reports(request):
             return render(request, "users/reports.html", context)
 
     return render(request, "users/reports.html", context)
+
+
+@login_required
+def edit_listing(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    # Ownership check
+    if listing.user != request.user:
+        return HttpResponseForbidden("You don't have permission to edit this listing.")
+
+    if request.method == "POST":
+        form = ListingForm(request.POST, request.FILES, instance=listing)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Listing updated successfully.")
+            return redirect("listing_details", listing_id=listing.id)
+    else:
+        form = ListingForm(instance=listing)
+
+    context = {"form": form, "listing": listing}
+
+    # HTMX
+    if request.htmx:
+        target = request.headers.get('HX-Target')
+        if target == "body":
+            return render(request, "cotton/partials/edit_listing_partial.html", context)
+
+    return render(request, "users/edit_listing.html", context)
+
+
+@login_required
+def delete_listing(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    # Ownership check
+    if listing.user != request.user:
+        return HttpResponseForbidden("You don't have permission to delete this listing.")
+
+    if request.method == "POST":
+        listing.is_deleted = True
+        listing.is_open = False
+        listing.save()
+        messages.success(request, "Listing deleted successfully.")
+        
+        if request.htmx:
+            return render(request, "listings/partials/delete_listing_partial.html", {})
+        
+        return redirect("my_listings")
+
+    return HttpResponseForbidden("Method not allowed.")

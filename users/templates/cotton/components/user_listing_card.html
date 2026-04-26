@@ -29,7 +29,7 @@
 
         <!-- Description -->
         <div class="prose max-w-prose break-words">
-            {{ listing.description.html|safe|truncatechars_html:100 }}
+            {{ listing.description|safe|truncatechars:100 }}
         </div>
 
         <!-- Price -->
@@ -46,7 +46,12 @@
         <!-- Actions -->
         <div class="flex gap-3 mt-3">
 
-            <button class="btn btn-outline flex-1">
+            <button
+                class="btn btn-outline flex-1"
+                hx-get="{% url 'edit_listing' listing.id %}"
+                hx-target="#body"
+                hx-push-url="true"
+            >
                 <c-icons.square_pen></c-icons.square_pen>
                 Edit
             </button>

@@ -1,0 +1,27 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Create Listing</title>
+{% endblock %}
+
+{% block content %}
+
+    
+    <c-partials.create_listing_partial></c-partials.create_listing_partial>
+
+    <script>
+        const isFreeCheckbox = document.querySelector('input[name="is_free"]');
+        const priceContainer = document.getElementById('price-container');
+
+        function togglePriceField() {
+            if (isFreeCheckbox.checked) {
+                priceContainer.style.display = 'none';
+            } else {
+                priceContainer.style.display = 'block';
+            }
+        }
+
+        isFreeCheckbox.addEventListener('change', togglePriceField);
+        togglePriceField(); // Initialize on page load
+    </script>
+{% endblock %}
