@@ -1,6 +1,7 @@
 <div class="group bg-base-100 border border-base-200 rounded-2xl overflow-hidden flex flex-col transition hover:shadow-sm">
     <!-- IMAGE -->
-    <div class="relative h-56 bg-base-200 overflow-hidden">
+    <div class="relative h-56 bg-base-200 overflow-hidden group">
+
         {% if listing.image %}
             <img src="{{ listing.image.url }}"
                  class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
@@ -13,20 +14,31 @@
         {% endif %}
 
         <!-- BADGES -->
-        <div class="absolute top-3 left-3 flex gap-2">
+        <div class="absolute top-3 left-3 flex gap-2 z-10">
             <span class="badge badge-sm badge-primary">
                 {{ listing.category.name }}
             </span>
+
             {% if listing.is_free %}
                 <span class="badge badge-sm badge-success">
-                  Free
+                    Free
                 </span>
             {% else %}
                 <span class="badge badge-sm badge-warning">
-                  Paid
+                    Paid
                 </span>
             {% endif %}
         </div>
+
+        <!-- CLOSED OVERLAY -->
+        {% if not listing.is_open %}
+            <div class="absolute inset-0 bg-white/60 flex items-center justify-center z-20">
+                <span class="text-red-700 text-xl font-bold uppercase tracking-widest">
+                    Closed
+                </span>
+            </div>
+        {% endif %}
+
     </div>
 
     <!-- CONTENT -->
@@ -77,6 +89,9 @@
 
             {% if request.user.is_authenticated %}
                 <button
+                    {%  if not listing.is_open %}
+                        disabled
+                    {%  endif %}
                     hx-get="{% url 'listing_details' listing.id %}?modal=on"
                     hx-target="#body"
                     hx-push-url="true"

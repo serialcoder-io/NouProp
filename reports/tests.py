@@ -243,3 +243,113 @@ class StaffReportsListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Report Results")
         self.assertNotContains(response, "<html", html=False)
+
+
+class StaffReportsDashboardViewTests(TestCase):
+    def setUp(self):
+        self.user_model = get_user_model()
+        self.staff_user = self.user_model.objects.create_user(
+            email="dashboard-staff@example.com",
+            password="testpass123",
+            is_staff=True,
+        )
+        self.normal_user = self.user_model.objects.create_user(
+            email="dashboard-user@example.com",
+            password="testpass123",
+        )
+        self.report_user = self.user_model.objects.create_user(
+            email="dashboard-reporter@example.com",
+            password="testpass123",
+        )
+
+        self.district = District.objects.create(name="Moka")
+        self.area_one = Area.objects.create(name="Helvetia", district=self.district)
+        self.area_two = Area.objects.create(name="Verdun", district=self.district)
+
+        self.tag_plastic = Tag.objects.create(name="Plastic")
+        self.tag_bulk = Tag.objects.create(name="Bulk Waste")
+
+        self.pending_report = Report.objects.create(
+            user=self.report_user,
+            area=self.area_one,
+            title="Pending report",
+            status="pending",
+        )
+        self.pending_report.tags.add(self.tag_plastic)
+
+        self.completed_report = Report.objects.create(
+            user=self.report_user,
+            area=self.area_one,
+            title="Completed report",
+            status="completed",
+        )
+        self.completed_report.tags.add(self.tag_plastic, self.tag_bulk)
+
+        self.in_progress_report = Report.objects.create(
+            user=self.report_user,
+            area=self.area_two,
+            title="In progress report",
+            status="in_progress",
+        )
+        self.in_progress_report.tags.add(self.tag_bulk)
+
+        self.rejected_report = Report.objects.create(
+            user=self.report_user,
+            area=self.area_two,
+            title="Rejected report",
+            status="rejected",
+        )
+
+        self.validated_report = Report.objects.create(
+            user=self.report_user,
+            area=self.area_one,
+            title="Validated report",
+            status="validated",
+        )
+
+        Report.objects.filter(pk=self.completed_report.pk).update(
+            created_at=timezone.now() - timedelta(days=2)
+        )
+        Report.objects.filter(pk=self.in_progress_report.pk).update(
+            created_at=timezone.now() - timedelta(days=9)
+        )
+
+    def test_staff_reports_dashboard_forbids_non_staff(self):
+        self.client.force_login(self.normal_user)
+
+        response = self.client.get(reverse("staff_reports_dashboard"))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_staff_reports_dashboard_shows_aggregated_metrics(self):
+        self.client.force_login(self.staff_user)
+
+        response = self.client.get(reverse("staff_reports_dashboard"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total_reports"], 5)
+        self.assertEqual(response.context["kpi_counts"]["pending"], 1)
+        self.assertEqual(response.context["kpi_counts"]["validated"], 1)
+        self.assertEqual(response.context["kpi_counts"]["in_progress"], 1)
+        self.assertEqual(response.context["kpi_counts"]["completed"], 1)
+        self.assertEqual(response.context["kpi_counts"]["rejected"], 1)
+
+        breakdown = {item["value"]: item for item in response.context["status_breakdown"]}
+        self.assertEqual(breakdown["pending"]["count"], 1)
+        self.assertEqual(breakdown["completed"]["percentage"], 20.0)
+
+        latest_titles = [report.title for report in response.context["latest_reports"]]
+        self.assertIn("Pending report", latest_titles)
+        self.assertIn("Validated report", latest_titles)
+
+        top_tags = list(response.context["most_used_tags"])
+        top_areas = list(response.context["most_active_areas"])
+
+        self.assertEqual(top_tags[0].name, "Bulk Waste")
+        self.assertEqual(top_tags[0].report_count, 2)
+        self.assertEqual(top_areas[0].name, "Helvetia")
+        self.assertEqual(top_areas[0].report_count, 3)
+
+        self.assertContains(response, "Reports Dashboard")
+        self.assertContains(response, "Status Distribution")
+        self.assertContains(response, "Recent Activity")

@@ -24,19 +24,13 @@
                         url="{% url 'listings' %}">
                     </c-components.ui.nav_link>
                 </li>
-                {% if request.user.is_authenticated %}
-                    <li>
-                        <c-components.ui.nav_link
-                            text="Dashboard"
-                            curr_path="my_listings"
-                            url="{% url 'my_listings' %}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user">
-                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
-                            </svg>
-                        </c-components.ui.nav_link>
-                    </li>
-                {% endif %}
+                <li>
+                    <c-components.ui.nav_link
+                    text="Report illegal dumping"
+                    curr_path="create_report"
+                    url="{% url 'create_report' %}">
+                    </c-components.ui.nav_link>
+                </li>
             </ul>
         </div>
         <a class="btn btn-ghost text-xl">
@@ -76,15 +70,13 @@
                     </svg>
                 </c-components.ui.nav_link>
             </li>
-            {% if request.user.is_authenticated %}
-                <li>
-                    <c-components.ui.nav_link
-                    text="Report illegal dumping"
-                    curr_path="create_report"
-                    url="{% url 'create_report' %}">
-                    </c-components.ui.nav_link>
-                </li>
-            {% endif %}
+            <li>
+                <c-components.ui.nav_link
+                text="Report illegal dumping"
+                curr_path="create_report"
+                url="{% url 'create_report' %}">
+                </c-components.ui.nav_link>
+            </li>
         </ul>
     </div>
     <div class="navbar-end space-x-3">

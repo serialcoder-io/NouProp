@@ -9,11 +9,17 @@
 
     <div class="w-full flex justify-center bg-base-200/40">
         <div class="w-full max-w-7xl py-6 px-4 lg:px-6">
-            <div class="flex flex-col gap-2 mb-8">
-                <h1 class="text-4xl font-bold">Reports Management</h1>
-                <p class="text-base text-neutral/60">Browse all reports, refine the dataset with filters, and open detailed report records.</p>
-            </div>
+            <div class="flex justify-between flex-wrap items-center">
+                <div class="flex flex-col gap-2 mb-8">
+                    <h1 class="text-2xl font-bold">Reports Management</h1>
+                    <p class="text-base text-neutral/60">Browse all reports, refine the dataset with filters, and open detailed report records.</p>
+                </div>
 
+                <div class="shadow rounded-full flex gap-2 px-2 py-1 bg-base-200 h-10">
+                    <c-components.ui.tab_button text="Reports" curr_path="staff_reports" url="{% url 'staff_reports_list' %}"/>
+                    <c-components.ui.tab_button text="Reports dashboard" curr_path="staff_reports_dashboard" url="{% url 'staff_reports_dashboard' %}" />
+                </div>
+            </div>
             <div class="card bg-base-100 shadow mb-6">
                 <div class="card-body">
                     <form

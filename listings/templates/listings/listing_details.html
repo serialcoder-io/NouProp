@@ -30,8 +30,9 @@
                 <div class="lg:col-span-2 space-y-6">
 
                     <!-- IMAGE -->
-                    <div class="rounded-2xl overflow-hidden shadow-lg bg-base-100">
-                        <div class="w-full aspect-[4/3] sm:h-[420px]">
+                    <div class="rounded-2xl overflow-hidden shadow-lg bg-base-100 relative">
+                        <div class="w-full aspect-[4/3] sm:h-[420px] relative">
+
                             {% if listing.image %}
                                 <img src="{{ listing.image.url }}"
                                      class="w-full h-full object-cover hover:scale-105 transition duration-500"
@@ -41,6 +42,16 @@
                                     No image available
                                 </div>
                             {% endif %}
+
+                            {% if not listing.is_open %}
+                                <!-- OVERLAY CLOSED -->
+                                <div class="absolute inset-0 bg-white/60 flex items-center justify-center">
+                                    <span class="text-red-700 text-2xl font-bold tracking-widest uppercase">
+                                        Closed
+                                    </span>
+                                </div>
+                            {% endif %}
+
                         </div>
                     </div>
 
@@ -90,11 +101,12 @@
                             </div>
                         {% else %}
                             {% if request.user.is_authenticated %}
-                                <button class="btn btn-primary w-full mb-4" onclick="offer_modal.showModal()">
+                                <button {%  if not listing.is_open %}disabled{%  endif %}
+                                        class="btn btn-primary w-full mb-4" onclick="offer_modal.showModal()">
                                     Make an offer
                                 </button>
                             {% else %}
-                                <button onclick="not_logged_modal.showModal()"
+                                <button {%  if not listing.is_open %}disabled{%  endif %} onclick="not_logged_modal.showModal()"
                                         class="btn btn-primary w-full mb-4">
                                     Make an offer
                                 </button>
