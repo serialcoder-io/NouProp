@@ -79,17 +79,6 @@
             {% if request.user.is_authenticated %}
                 <li>
                     <c-components.ui.nav_link
-                        text="Dashboard"
-                        curr_path="my_listings"
-                        url="{% url 'my_listings' %}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user">
-                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                            <circle cx="12" cy="7" r="4"/>
-                        </svg>
-                    </c-components.ui.nav_link>
-                </li>
-                <li>
-                    <c-components.ui.nav_link
                     text="Report illegal dumping"
                     curr_path="create_report"
                     url="{% url 'create_report' %}">
@@ -101,11 +90,26 @@
     <div class="navbar-end space-x-3">
 
         {% if request.user.is_authenticated %}
-            <c-components.ui.nav_link
-                text="Dashboard"
-                curr_path="my_listings"
-                url="{% url 'my_listings' %}">
-            </c-components.ui.nav_link>
+            <div class="dropdown dropdown-bottom dropdown-left hover:cursor-pointer">
+                <div tabindex="0" role="button" class="avatar avatar-placeholder">
+                  <div class="bg-neutral text-neutral-content w-8 rounded-full">
+                    <span class="text-xs">UI</span>
+                  </div>
+                </div>
+              <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 space-y-2 shadow-sm">
+                <li>
+                    <c-components.ui.nav_link
+                        text="Dashboard"
+                        curr_path="my_listings"
+                        url="{% url 'my_listings' %}">
+                    </c-components.ui.nav_link>
+                </li>
+                  <li><a href="{% url 'account_logout' %}">Log out</a></li>
+                  {% if request.user.is_staff %}
+                      <li><a href="{% url 'staff_reports_list' %}">Staff</a></li>
+                  {% endif %}
+              </ul>
+            </div>
         {% else %}
             <a href="{% url 'account_login' %}" class="btn btn-ghost">
                 Log In

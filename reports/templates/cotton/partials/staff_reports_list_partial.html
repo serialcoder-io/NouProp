@@ -1,0 +1,70 @@
+<div class="card bg-base-100 shadow">
+    <div class="card-body">
+        <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+            <div>
+                <h2 class="card-title text-2xl">Report Results</h2>
+                <p class="text-sm text-neutral/60">All reports matching the current filters.</p>
+            </div>
+            <p class="text-sm text-neutral/60">{{ page_obj.paginator.count }} total report{{ page_obj.paginator.count|pluralize }}</p>
+        </div>
+
+        {% if reports %}
+            <div class="overflow-x-auto mt-4">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>User</th>
+                            <th>Area</th>
+                            <th>Created At</th>
+                            <th>Tags</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in reports %}
+                            <tr>
+                                <td class="min-w-56">
+                                    <div class="font-medium">{{ report.title }}</div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-outline">{{ report.status|title }}</span>
+                                </td>
+                                <td>{{ report.user|default:"Anonymous" }}</td>
+                                <td>
+                                    {% if report.area %}
+                                        {{ report.area.name }} ({{ report.area.district.name }})
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="whitespace-nowrap">{{ report.created_at|date:"M j, Y g:i A" }}</td>
+                                <td>
+                                    <div class="flex flex-wrap gap-1 max-w-xs">
+                                        {% for tag in report.tags.all %}
+                                            <span class="badge badge-sm badge-primary">{{ tag.name }}</span>
+                                        {% empty %}
+                                            <span class="text-sm text-neutral/60">-</span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{% url 'report_details' report.id %}" class="btn btn-sm btn-outline">Details</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="w-full flex flex-col gap-4 justify-center items-center h-44 shadow shadow-xs border border-neutral/10 rounded-xl bg-base-200 mt-4">
+                <c-icons.file_x></c-icons.file_x>
+                <p class="text-2xl">No reports found</p>
+            </div>
+        {% endif %}
+
+        <c-components.pagination hx_target="#staff-reports" hx-on::htmx:afterSwap="window.scrollTo({ top: 0, behavior: 'smooth' })">
+        </c-components.pagination>
+    </div>
+</div>

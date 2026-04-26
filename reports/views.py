@@ -1,9 +1,12 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import ReportForm
-from .models import Report, ReportStatus
+from .models import Report, ReportStatus, Tag
+from locations.models import Area
 
 # Create your views here.
 def reports(request):
@@ -62,3 +65,77 @@ def report_details(request, report_id):
         "has_coordinates": report.lat is not None and report.lng is not None,
     }
     return render(request, "reports/report_details.html", context)
+
+
+def staff_reports_list(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden()
+
+    reports = (
+        Report.objects.all()
+        .select_related("user", "area__district")
+        .prefetch_related("tags")
+        .order_by("-created_at")
+    )
+    areas = Area.objects.select_related("district").order_by("name")
+    tags = Tag.objects.all().order_by("name")
+    statuses = ("all",) + tuple(choice[0] for choice in ReportStatus.choices)
+
+    q = request.GET.get("q")
+    status = request.GET.get("status")
+    area = request.GET.get("area")
+    date_from = request.GET.get("date_from")
+    date_to = request.GET.get("date_to")
+    selected_tags = request.GET.getlist("tags")
+
+    if q:
+        reports = reports.filter(Q(title__icontains=q))
+
+    if status and status != "all":
+        reports = reports.filter(status=status)
+
+    if area and area != "all":
+        reports = reports.filter(area__id=area)
+
+    if date_from:
+        reports = reports.filter(created_at__date__gte=date_from)
+
+    if date_to:
+        reports = reports.filter(created_at__date__lte=date_to)
+
+    if selected_tags:
+        reports = reports.filter(tags__id__in=selected_tags).distinct()
+
+    page = request.GET.get("page", 1)
+    paginator = Paginator(reports, 10)
+    page_obj = paginator.get_page(page)
+
+    context = {
+        "page_obj": page_obj,
+        "reports": page_obj.object_list,
+        "areas": areas,
+        "tags": tags,
+        "statuses": statuses,
+        "current_status": status or "all",
+        "current_area": area or "all",
+        "current_tags": selected_tags,
+        "date_from": date_from,
+        "date_to": date_to,
+        "q": q,
+    }
+
+    query_params = request.GET.copy()
+    if "page" in query_params:
+        query_params.pop("page")
+    context["query_params"] = query_params.urlencode()
+
+    if request.htmx:
+        target = request.headers.get("HX-Target")
+
+        if target == "staff-reports":
+            return render(request, "cotton/partials/staff_reports_list_partial.html", context)
+
+        if target == "body":
+            return render(request, "reports/staff_reports_list.html", context)
+
+    return render(request, "reports/staff_reports_list.html", context)

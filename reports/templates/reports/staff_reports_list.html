@@ -1,0 +1,112 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Staff Reports</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <div class="w-full flex justify-center bg-base-200/40">
+        <div class="w-full max-w-7xl py-6 px-4 lg:px-6">
+            <div class="flex flex-col gap-2 mb-8">
+                <h1 class="text-4xl font-bold">Reports Management</h1>
+                <p class="text-base text-neutral/60">Browse all reports, refine the dataset with filters, and open detailed report records.</p>
+            </div>
+
+            <div class="card bg-base-100 shadow mb-6">
+                <div class="card-body">
+                    <form
+                        hx-get="{% url 'staff_reports_list' %}"
+                        hx-target="#staff-reports"
+                        hx-push-url="true"
+                        hx-trigger="input delay:500ms, change"
+                        class="grid gap-3 md:grid-cols-2 xl:grid-cols-6"
+                    >
+                        <label class="form-control xl:col-span-2">
+                            <div class="label">
+                                <span class="label-text">Search title</span>
+                            </div>
+                            <input
+                                type="text"
+                                name="q"
+                                placeholder="Search reports..."
+                                class="input input-bordered w-full"
+                                value="{{ q|default:'' }}"
+                            />
+                        </label>
+
+                        <label class="form-control">
+                            <div class="label">
+                                <span class="label-text">Status</span>
+                            </div>
+                            <select class="select select-bordered w-full" name="status">
+                                {% for status in statuses %}
+                                    <option value="{{ status }}" {% if status == current_status %}selected{% endif %}>{{ status|title }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label class="form-control">
+                            <div class="label">
+                                <span class="label-text">Category / Area</span>
+                            </div>
+                            <select class="select select-bordered w-full" name="area">
+                                <option value="all" {% if current_area == 'all' %}selected{% endif %}>All</option>
+                                {% for area in areas %}
+                                    <option value="{{ area.id }}" {% if current_area == area.id|stringformat:'s' %}selected{% endif %}>
+                                        {{ area.name }} ({{ area.district.name }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label class="form-control">
+                            <div class="label">
+                                <span class="label-text">From date</span>
+                            </div>
+                            <input type="date" name="date_from" class="input input-bordered w-full" value="{{ date_from|default:'' }}">
+                        </label>
+
+                        <label class="form-control">
+                            <div class="label">
+                                <span class="label-text">To date</span>
+                            </div>
+                            <input type="date" name="date_to" class="input input-bordered w-full" value="{{ date_to|default:'' }}">
+                        </label>
+
+                        <label class="form-control md:col-span-2 xl:col-span-5">
+                            <div class="label">
+                                <span class="label-text">Tags</span>
+                            </div>
+                            <select class="select select-bordered w-full min-h-40" name="tags" multiple>
+                                {% for tag in tags %}
+                                    <option value="{{ tag.id }}" {% if tag.id|stringformat:'s' in current_tags %}selected{% endif %}>
+                                        {{ tag.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <div class="flex items-end">
+                            <button
+                                hx-get="{% url 'staff_reports_list' %}"
+                                hx-target="#body"
+                                hx-push-url="true"
+                                type="button"
+                                class="btn bg-base-100 shadow-xs w-full"
+                            >
+                                <c-icons.refresh_ccw></c-icons.refresh_ccw>
+                                Reset Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="staff-reports">
+                <c-partials.staff_reports_list_partial></c-partials.staff_reports_list_partial>
+            </div>
+        </div>
+    </div>
+{% endblock %}
