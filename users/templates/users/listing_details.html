@@ -1,0 +1,198 @@
+{% extends "cotton/components/layout/base.html" %}
+
+{% block title %}
+    <title>Listing Details</title>
+{% endblock %}
+
+{% block content %}
+    <c-components.layout.header></c-components.layout.header>
+
+    <div class="w-full flex justify-center">
+        <div class="w-full max-w-7xl py-4">
+            <div class="flex flex-col gap-4 py-6 mb-2 lg:flex-row lg:items-end lg:justify-between">
+                <div class="flex flex-col gap-2">
+                    <a href="{% url 'my_listings' %}" class="link link-hover text-sm text-neutral/60">Back to My Listings</a>
+                    <div>
+                        <h2 class="text-3xl font-bold">Listing Details</h2>
+                        <p class="text-md font-normal text-neutral/50">Review your listing and all related offers.</p>
+                    </div>
+                </div>
+                <c-components.dashboard_nav></c-components.dashboard_nav>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(20rem,1fr)]">
+                <div class="card bg-base-100 shadow">
+                    <div class="card-body gap-6">
+                        <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                            <div>
+                                <h3 class="card-title text-2xl">{{ listing.title }}</h3>
+                            </div>
+                            {% if listing.is_open %}
+                                <span class="badge badge-success">Open</span>
+                            {% else %}
+                                <span class="badge badge-neutral">Closed</span>
+                            {% endif %}
+                        </div>
+
+                        {% if listing.image %}
+                            <figure class="rounded-2xl overflow-hidden bg-base-200">
+                                <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="w-full h-72 object-cover">
+                            </figure>
+                        {% endif %}
+
+                        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Category</p>
+                                <p class="font-medium">{{ listing.category }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Owner</p>
+                                <p class="font-medium">{{ listing.user }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Area</p>
+                                <p class="font-medium">{{ listing.area|default:"-" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Price</p>
+                                {% if listing.is_free %}
+                                    <p class="font-medium">Free</p>
+                                {% else %}
+                                    <p class="font-medium">Rs {{ listing.price }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Created At</p>
+                                <p class="font-medium">{{ listing.created_at|date:"M j, Y g:i A" }}</p>
+                            </div>
+                            <div class="rounded-xl bg-base-200 p-4">
+                                <p class="text-sm text-neutral/60">Last Updated</p>
+                                <p class="font-medium">{{ listing.last_updated_at|date:"M j, Y g:i A" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl bg-base-200 p-4">
+                            <p class="text-sm text-neutral/60 mb-2">Description</p>
+                            <div class="prose max-w-none">
+                                {% if listing.description %}
+                                    {{ listing.description|safe }}
+                                {% else %}
+                                    <p>No description provided.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-base-100 shadow h-64">
+                    <div class="card-body">
+                        <h3 class="card-title">Quick Actions</h3>
+                        <p class="text-sm text-neutral/60">These links stay within the dashboard flow.</p>
+                        <div class="flex flex-col gap-3">
+                            <a href="{% url 'edit_listing' listing.id %}" class="btn btn-primary">Edit Listing</a>
+                            <a href="{% url 'my_listings' %}" class="btn btn-outline">View All Listings</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 card bg-base-100 shadow">
+                <div class="card-body">
+                    <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <h3 class="card-title text-2xl">Offers</h3>
+                            <p class="text-sm text-neutral/60">All offers linked to this listing.</p>
+                        </div>
+                        <p class="text-sm text-neutral/60">{{ page_obj.paginator.count }} total offer{{ page_obj.paginator.count|pluralize }}</p>
+                    </div>
+
+                    {% if offers %}
+                        <div class="overflow-x-auto">
+                            <table class="table table-zebra">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>WhatsApp Allowed</th>
+                                        <th>WhatsApp Number</th>
+                                        <th>Status</th>
+                                        <th>Created At</th>
+                                        <th>Details</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for offer in offers %}
+                                        <tr>
+                                            <td class="whitespace-nowrap">{{ offer.user }}</td>
+                                            <td>{{ offer.whatsapp_contact_allowed|yesno:"Yes,No" }}</td>
+                                            {% if offer.whatsapp_contact_allowed and offer.whatsapp_number %}
+                                                <td>
+                                                    <a href="https://wa.me/{{ offer.whatsapp_number }}"
+                                                       target="_blank" class="btn text-white bg-green-500 h-8"
+                                                    >
+                                                        {{ offer.whatsapp_number|default:"-" }}
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td>{{ offer.whatsapp_number|default:"-" }}</td>
+                                            {% endif %}
+                                            <td>
+                                                <span class="badge badge-outline">{{ offer.status|title }}</span>
+                                            </td>
+                                            <td class="whitespace-nowrap">{{ offer.created_at|date:"M j, Y g:i A" }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline">Details</button>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown dropdown-end">
+                                                    <div tabindex="0" role="button" class="btn btn-sm btn-ghost">Actions</div>
+                                                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-10 w-36 p-2 shadow">
+                                                        <li><button type="button">Accept</button></li>
+                                                        <li><button type="button">Reject</button></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="w-full flex flex-col gap-4 justify-center items-center h-44 shadow shadow-xs border border-neutral/10 rounded-xl bg-base-200">
+                            <c-icons.file_x></c-icons.file_x>
+                            <p class="text-2xl">No offers found</p>
+                        </div>
+                    {% endif %}
+
+                    {% if page_obj.paginator.num_pages > 1 %}
+                        <div class="flex justify-start mt-6">
+                            <div class="join">
+                                {% if page_obj.has_previous %}
+                                    <a
+                                        href="?{{ query_params }}{% if query_params %}&{% endif %}page={{ page_obj.previous_page_number }}"
+                                        class="join-item btn btn-sm"
+                                    >
+                                        Previous
+                                    </a>
+                                {% endif %}
+
+                                <button type="button" class="join-item btn btn-sm">
+                                    {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                                </button>
+
+                                {% if page_obj.has_next %}
+                                    <a
+                                        href="?{{ query_params }}{% if query_params %}&{% endif %}page={{ page_obj.next_page_number }}"
+                                        class="join-item btn btn-sm"
+                                    >
+                                        Next
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

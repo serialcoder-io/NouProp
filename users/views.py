@@ -78,6 +78,40 @@ def my_listings(request):
     return render(request, 'users/listings.html', context)
 
 
+@login_required
+def listing_details(request, listing_id):
+    listing = get_object_or_404(
+        Listing.objects.filter(is_deleted=False).select_related('category', 'user', 'area'),
+        pk=listing_id,
+    )
+
+    if request.user != listing.user:
+        return HttpResponseForbidden()
+
+    offers = (
+        listing.offers
+        .select_related('user')
+        .order_by('-created_at')
+    )
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(offers, 10)
+    page_obj = paginator.get_page(page)
+
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        query_params.pop('page')
+
+    context = {
+        'listing': listing,
+        'page_obj': page_obj,
+        'offers': page_obj.object_list,
+        'query_params': query_params.urlencode(),
+    }
+
+    return render(request, 'users/listing_details.html', context)
+
+
 # offer statuses
 statuses = ('all', 'pending', 'accepted', 'rejected')
 # offer dates filters
@@ -347,7 +381,7 @@ def edit_listing(request, listing_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Listing updated successfully.")
-            return redirect("listing_details", listing_id=listing.id)
+            return redirect("user_listing_details", listing_id=listing.id)
     else:
         form = ListingForm(instance=listing)
 

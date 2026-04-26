@@ -56,10 +56,12 @@
                 Edit
             </button>
 
-            <button class="btn btn-outline btn-error flex-1">
-                <c-icons.trash></c-icons.trash>
-                Delete
-            </button>
+            <a
+                href="{% url 'user_listing_details' listing.id %}"
+                class="btn btn-outline btn-secondary flex-1"
+            >
+                Details
+            </a>
 
         </div>
 

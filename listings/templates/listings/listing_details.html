@@ -113,7 +113,7 @@
                         <div class="mt-6 border-t pt-5 text-sm opacity-70 space-y-2">
 
                             {% if listing.area %}
-                                <div>📍 {{ listing.area.name }}</div>
+                                <div class="flex gap-2"><c-icons.map_pin /> {{ listing.area.name }}</div>
                             {% endif %}
 
                             <div>{{ listing.created_at|timesince }} ago</div>
