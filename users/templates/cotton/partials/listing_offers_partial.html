@@ -1,0 +1,70 @@
+<div class="card-body">
+    <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+        <div>
+            <h3 class="card-title text-2xl">Offers</h3>
+            <p class="text-sm text-neutral/60">All offers linked to this listing.</p>
+        </div>
+        <p class="text-sm text-neutral/60">{{ page_obj.paginator.count }} total offer{{ page_obj.paginator.count|pluralize }}</p>
+    </div>
+
+    {% if offers %}
+        <div class="overflow-x-auto">
+            <table class="table table-zebra">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>WhatsApp Allowed</th>
+                        <th>WhatsApp Number</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Details</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in offers %}
+                        <tr>
+                            <td class="whitespace-nowrap">{{ offer.user }}</td>
+                            <td>{{ offer.whatsapp_contact_allowed|yesno:"Yes,No" }}</td>
+                            {% if offer.whatsapp_contact_allowed and offer.whatsapp_number %}
+                                <td>
+                                    <a href="https://wa.me/{{ offer.whatsapp_number }}"
+                                       target="_blank" class="btn text-white bg-green-500 h-8"
+                                    >
+                                        {{ offer.whatsapp_number|default:"-" }}
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td>{{ offer.whatsapp_number|default:"-" }}</td>
+                            {% endif %}
+                            <td>
+                                <span class="badge badge-outline">{{ offer.status|title }}</span>
+                            </td>
+                            <td class="whitespace-nowrap">{{ offer.created_at|date:"M j, Y g:i A" }}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline">Details</button>
+                            </td>
+                            <td>
+                                <div class="dropdown dropdown-end">
+                                    <div tabindex="0" role="button" class="btn btn-sm btn-ghost">Actions</div>
+                                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-10 w-36 p-2 shadow">
+                                        <li><button type="button">Accept</button></li>
+                                        <li><button type="button">Reject</button></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="w-full flex flex-col gap-4 justify-center items-center h-44 shadow shadow-xs border border-neutral/10 rounded-xl bg-base-200">
+            <c-icons.file_x></c-icons.file_x>
+            <p class="text-2xl">No offers found</p>
+        </div>
+    {% endif %}
+
+    <c-components.pagination hx_target="#listing-offers-container" hx-on::htmx:afterSwap="window.scrollTo({ top: 0, behavior: 'smooth' })">
+    </c-components.pagination>
+</div>

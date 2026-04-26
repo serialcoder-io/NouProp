@@ -108,6 +108,11 @@ def listing_details(request, listing_id):
         'offers': page_obj.object_list,
         'query_params': query_params.urlencode(),
     }
+    if request.htmx:
+        target = request.headers.get('HX-Target')
+
+        if target == "listing-offers-container":
+            return render(request, "cotton/partials/listing_offers_partial.html", context)
 
     return render(request, 'users/listing_details.html', context)
 
