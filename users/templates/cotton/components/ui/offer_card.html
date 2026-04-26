@@ -67,15 +67,6 @@
                     </a>
                 </li>
 
-                <li>
-                    <form method="post" action="{% url 'delete_offer' offer.id %}">
-                        {% csrf_token %}
-                        <button type="submit">
-                            Delete
-                        </button>
-                    </form>
-                </li>
-
             </ul>
         </div>
 

@@ -85,18 +85,20 @@
                             {% endif %}
                         </div>
 
-                        {% if offer.is_deleted %}
+                        {% if not is_offer_creator %}
+                            {% if offer.is_deleted %}
                             <div class="alert alert-warning">
                                 <span>This offer has been deleted.</span>
                             </div>
-                        {% elif offer.status == "accepted" %}
-                            <div class="alert alert-success">
-                                <span>You already accepted this offer.</span>
-                            </div>
-                        {% elif offer.status == "rejected" %}
-                            <div class="alert alert-error">
-                                <span>You already rejected this offer.</span>
-                            </div>
+                            {% elif offer.status == "accepted" %}
+                                <div class="alert alert-success">
+                                    <span>You already accepted this offer.</span>
+                                </div>
+                            {% elif offer.status == "rejected" %}
+                                <div class="alert alert-error">
+                                    <span>You already rejected this offer.</span>
+                                </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -104,12 +106,11 @@
                 <div class="card bg-base-100 shadow">
                     <div class="card-body gap-4">
                         <h3 class="card-title">Actions</h3>
-
-                        {% if can_manage_offer %}
+                        {% if is_offer_creator and offer.status != 'pending' %}
+                            <p class="text-sm text-neutral/60">This offer was {{ offer.status }}</p>
+                        {% elif can_manage_offer %}
                             <label for="accept-offer-modal" class="btn btn-success">Accept</label>
                             <label for="reject-offer-modal" class="btn btn-error btn-outline">Reject</label>
-                        {% elif is_listing_owner and not offer.is_deleted %}
-                            <p class="text-sm text-neutral/60">This offer is already processed and can no longer be updated.</p>
                         {% else %}
                             <p class="text-sm text-neutral/60">No owner actions are available for this offer.</p>
                         {% endif %}
