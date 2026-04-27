@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rapport de Projet</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @media print {
+      .page {
+        page-break-after: always;
+      }
+    }
+
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system;
+    }
+
+    p {
+      text-align: justify;
+      line-height: 1.75;
+      color: #111;
+    }
+
+    /* ================= TITRES ================= */
+
+    h2 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #111;
+      letter-spacing: 0.5px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 28px;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 4px solid #111;
+    }
+
+    h4 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-top: 18px;
+      margin-bottom: 10px;
+      color: #222;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ================= LISTES ================= */
+
+    ul {
+      margin-top: 10px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      font-size: 17px !important;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    /* ================= PARAGRAPHES ================= */
+
+    p {
+      font-size: 17px !important;
+      margin-bottom: 12px;
+    }
+
+    /* ================= BLOCS IMPORTANTS ================= */
+
+    strong {
+      font-weight: 700;
+    }
+
+    .highlight {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-black">
+
+  <!-- ================= PAGE DE GARDE ================= -->
+  <section class="page h-screen flex items-center justify-center p-12">
+
+    <div class="w-full max-w-3xl border-2 border-black p-10 text-center">
+
+      <!-- TITRE -->
+      <h1 class="text-3xl font-bold uppercase mb-6 leading-tight">
+        Plateforme de signalement de dépôts sauvages<br>
+        et marketplace de déchets recyclables
+      </h1>
+
+      <div class="mb-8">
+        <p class="text-lg font-semibold">Université des Mascareignes</p>
+        <p>Licence Informatique Appliquée - L2</p>
+      </div>
+
+      <hr class="border-black my-6">
+
+      <!-- INFOS ÉTUDIANT -->
+      <div class="text-left space-y-2 text-sm">
+
+        <p><strong>Étudiant :</strong> Anli Omar</p>
+
+        <p><strong>Encadrant :</strong> Dr. Toofanee Mohammud Shaad Ally</p>
+
+        <p><strong>Année académique :</strong> 2025 - 2026</p>
+
+        <p><strong>Date de soutenance :</strong> 27 Avril 2026</p>
+
+      </div>
+
+      <hr class="border-black my-6">
+
+      <!-- PETIT FOOTER -->
+      <p class="text-xs mt-6 opacity-70">
+        Rapport de Projet Tutoré - Développement Web & Systèmes d’Information
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- ================= REMERCIEMENTS ================= -->
+  <section class="page p-12">
+    <h2 class="text-2xl font-bold">2. Remerciements</h2>
+
+    <p>
+      Je tiens à remercier mon encadrant pédagogique pour son accompagnement et ses conseils tout au long de ce projet.
+      Je remercie également l’ensemble des enseignants pour la qualité de la formation dispensée.
+      Enfin, je remercie mes camarades pour l’entraide et le soutien durant la réalisation du projet.
+    </p>
+  </section>
+
+  <!-- ================= INTRODUCTION ================= -->
+  <section class="page p-8">
+    <h2 class="text-2xl font-bold mb-6">1. Introduction</h2>
+
+    <!-- 1.1 Contexte -->
+    <h3 class="text-xl font-semibold mb-3">1.1 Contexte du projet</h3>
+
+    <p class="mb-4">
+      La gestion des déchets constitue aujourd’hui un enjeu environnemental majeur, particulièrement dans les
+      territoires insulaires comme Maurice. L’augmentation de la population, l’urbanisation rapide ainsi que l’évolution
+      des modes de consommation ont entraîné une production de déchets de plus en plus importante, mettant sous pression
+      les infrastructures de collecte et de traitement existantes.
+    </p>
+
+    <p class="mb-4">
+      Dans ce contexte, les dépôts sauvages de déchets représentent une problématique récurrente. Ces dépôts
+      apparaissent dans des zones non autorisées telles que les terrains vagues, les bords de route ou encore certains
+      espaces publics. Ils contribuent à la dégradation de l’environnement, à la pollution visuelle, ainsi qu’à des
+      risques sanitaires pour la population.
+    </p>
+
+    <p class="mb-4">
+      Par ailleurs, malgré les efforts des autorités et des services de gestion des déchets, le processus de signalement
+      reste encore peu centralisé et parfois inefficace. Les citoyens ne disposent pas toujours d’un outil simple et
+      rapide permettant de signaler un problème avec précision, notamment en intégrant des informations géographiques et
+      visuelles.
+    </p>
+
+
+    <!-- 1.2 Problématique -->
+    <h3 class="text-xl font-semibold mb-3">1.2 Problématique</h3>
+
+    <p class="mb-4">
+      Face à ces constats, une problématique centrale se dégage :
+    </p>
+
+    <p class="mb-4 font-semibold">
+      Comment faciliter le signalement des dépôts de déchets et améliorer la valorisation des déchets recyclables à
+      travers une solution numérique centralisée ?
+    </p>
+
+    <p class="mb-4">
+      Actuellement, les systèmes existants ne permettent pas une gestion fluide et unifiée des signalements. Les
+      informations sont souvent dispersées, ce qui limite la rapidité d’intervention et la coordination entre les
+      différents acteurs concernés.
+    </p>
+
+    <p class="mb-4">
+      De plus, une grande quantité d’objets encore réutilisables est jetée, faute de plateforme permettant leur mise en
+      relation entre particuliers. Il existe donc un manque de solution numérique combinant à la fois le signalement
+      environnemental et la valorisation des ressources recyclables.
+    </p>
+
+
+    <!-- 1.3 Objectifs -->
+    <h3 class="text-xl font-semibold mb-3">1.3 Objectifs du projet</h3>
+
+    <p class="mb-4">
+      L’objectif principal de ce projet est de concevoir et développer une plateforme web permettant de répondre aux
+      problématiques identifiées.
+    </p>
+
+    <ul class="list-disc ml-6 mb-4">
+      <li>Permettre aux utilisateurs de signaler des dépôts de déchets sauvages de manière simple et rapide</li>
+      <li>Intégrer un système de géolocalisation permettant de situer précisément les signalements via GPS</li>
+      <li>Mettre en place un système de suivi des signalements avec différents statuts (en attente, en cours, traité,
+        rejeté)</li>
+      <li>Permettre la création et la publication de listings d’objets ou de déchets recyclables</li>
+      <li>Faciliter les échanges entre utilisateurs à travers un système d’offres sur les listings</li>
+      <li>Centraliser l’ensemble des informations dans une plateforme web unique et accessible</li>
+    </ul>
+
+
+    <!-- 1.4 Plan -->
+    <h3 class="text-xl font-semibold mb-3">1.4 Annonce du plan</h3>
+
+    <p>
+      Afin de répondre à cette problématique, ce rapport est structuré en plusieurs parties. Dans un premier temps, une
+      étude bibliographique sera présentée afin de contextualiser le projet et de s’appuyer sur des sources fiables
+      concernant la gestion des déchets. Ensuite, une analyse des besoins et une méthodologie de travail seront
+      détaillées. La partie suivante sera consacrée à la conception et à l’implémentation de la solution. Enfin, une
+      analyse des résultats, des limites du projet ainsi que des perspectives d’amélioration sera présentée.
+    </p>
+
+  </section>
+
+
+  <section class="page">
+
+    <!-- ================= RECHERCHE BIBLIOGRAPHIQUE ================= -->
+    <div class="page p-8">
+
+      <h2 class="text-2xl font-bold mb-6">2. Recherche bibliographique</h2>
+
+      <p class="mb-4">
+        Cette section présente les principales sources et études relatives à la gestion des déchets, afin de
+        contextualiser le projet et de justifier les choix réalisés lors de sa conception.
+      </p>
+
+      <!-- 2.1 UNDP -->
+      <h3 class="text-xl font-semibold mb-3">2.1 Études du Programme des Nations Unies pour le développement (UNDP)</h3>
+
+      <p class="mb-4">
+        Le United Nations Development Programme <a
+          href="https://www.undp.org/mauritius-seychelles/news/defining-road-map-plastic-free-mauritius"
+          target="_blank"> (UNDP) </a> souligne que la gestion des déchets constitue un défi majeur à
+        Maurice.
+        Selon leurs travaux, le pays fait face à une augmentation constante de la production de déchets, atteignant
+        environ
+        <strong>650 000 tonnes en 2023</strong>, avec une croissance annuelle d’environ <strong>2,5 %</strong>.
+      </p>
+
+      <p class="mb-4">
+        Le site d’enfouissement principal de Mare Chicose approche de sa capacité maximale, ce qui rend nécessaire la
+        mise
+        en place de nouvelles stratégies de gestion durable des déchets.
+      </p>
+
+      <p class="mb-4">
+        L’UNDP met également en avant l’importance du tri des déchets à la source afin de réduire la quantité de déchets
+        envoyés en décharge, avec un objectif pouvant atteindre <strong>70 % de réduction</strong> grâce à des
+        politiques adaptées.
+      </p>
+
+      <p class="mb-4">
+        Ces éléments montrent que la gestion des déchets est un enjeu national nécessitant des solutions innovantes,
+        notamment
+        numériques, pour améliorer la collecte d’informations et la participation des citoyens.
+      </p>
+
+      <!-- 2.2 Pollution plastique -->
+      <h3 class="text-xl font-semibold mb-3">2.2 Pollution plastique et impact environnemental</h3>
+
+      <p class="mb-4">
+        Toujours selon l’UNDP, la pollution plastique représente une part importante du problème environnemental. À
+        Maurice,
+        environ <strong>70 000 tonnes de déchets plastiques</strong> sont envoyées chaque année en décharge, alors que
+        seulement
+        <strong>3 000 tonnes sont recyclées</strong>.
+      </p>
+
+      <p class="mb-4">
+        Une partie de ces déchets finit directement dans l’environnement, affectant les écosystèmes terrestres et
+        marins,
+        ce qui renforce la nécessité de mettre en place des outils facilitant le signalement rapide de ces déchets.
+      </p>
+
+      <!-- 2.3 Déchets dangereux -->
+      <h3 class="text-xl font-semibold mb-3">2.3 Gestion des déchets spécifiques</h3>
+
+      <p class="mb-4">
+        L’UNDP indique également que Maurice génère environ <strong>17 000 tonnes de déchets dangereux par an</strong>,
+        nécessitant des systèmes de gestion spécifiques pour limiter leur impact sur la santé et l’environnement.
+      </p>
+
+      <p class="mb-4">
+        Cela démontre que la problématique des déchets ne concerne pas uniquement les déchets domestiques, mais
+        également
+        des catégories plus complexes nécessitant un suivi précis.
+      </p>
+
+      <!-- 2.4 Acteurs du recyclage à Maurice -->
+      <h3 class="text-xl font-semibold mb-3">2.4 Acteurs du recyclage et de la gestion des déchets à Maurice</h3>
+
+      <p class="mb-4">
+        À Maurice, la gestion et la valorisation des déchets ne reposent pas uniquement sur les institutions publiques,
+        mais également sur plusieurs acteurs privés et associatifs qui contribuent au recyclage et à la sensibilisation.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>
+          <strong>Eco-Sud :</strong> organisation non gouvernementale engagée dans la protection de l’environnement,
+          qui mène régulièrement des campagnes de nettoyage et de sensibilisation dans différentes régions de l’île.
+        </li>
+
+        <li>
+          <strong>Mission Verte :</strong> ONG impliquée dans la collecte de déchets et l’éducation environnementale,
+          notamment dans les écoles et les communautés locales.
+        </li>
+
+        <li>
+          <strong>Recycle Mauritius :</strong> initiative privée et plateforme de sensibilisation au recyclage,
+          visant à encourager le tri et la réduction des déchets.
+        </li>
+
+        <li>
+          <strong>SWMA (Solid Waste Management Authority) :</strong> organisme public responsable de la gestion des
+          déchets solides à Maurice, incluant la collecte, le transport et le traitement des déchets vers les sites
+          d’enfouissement.
+        </li>
+
+        <li>
+          <strong>Entreprises de recyclage :</strong> plusieurs acteurs privés collectent des matériaux recyclables
+          (plastique, métal, papier) afin de les revaloriser ou de les exporter vers des filières spécialisées.
+        </li>
+      </ul>
+
+      <p class="mb-4">
+        Ces acteurs montrent qu’il existe déjà un écosystème de gestion des déchets à Maurice, mais celui-ci reste
+        fragmenté et peu centralisé, ce qui limite l’efficacité globale du système.
+      </p>
+
+      <!-- 2.5 Justification du projet -->
+      <h3 class="text-xl font-semibold mb-3">2.5 Justification du projet</h3>
+
+      <p class="mb-4">
+        L’ensemble de ces études met en évidence plusieurs problématiques majeures : augmentation des déchets,
+        saturation des infrastructures, faible taux de recyclage et manque de suivi des dépôts sauvages.
+      </p>
+
+      <p class="mb-4">
+        Dans ce contexte, le développement d’une plateforme numérique de signalement apparaît comme une solution
+        pertinente.
+        Elle permet de faciliter la remontée d’informations depuis les citoyens, d’améliorer la localisation des dépôts
+        de
+        déchets et de centraliser les données pour une meilleure gestion.
+      </p>
+
+      <p class="mb-4">
+        De plus, l’intégration d’une marketplace de recyclage s’inscrit dans la logique d’économie circulaire encouragée
+        par les organismes internationaux, en favorisant la réutilisation des ressources plutôt que leur mise en
+        décharge.
+      </p>
+
+      <p>
+        Ainsi, les travaux de l’UNDP et les initiatives locales à Maurice confirment la pertinence du projet et
+        justifient
+        le choix d’une solution web combinant signalement et valorisation des déchets dans un écosystème déjà existant
+        mais fragmenté.
+      </p>
+
+    </div>
+
+
+    <div class="p-8">
+
+      <h2 class="text-2xl font-bold mb-6">3. Méthodologie</h2>
+
+      <!-- ================= ANALYSE DES BESOINS ================= -->
+      <h3 class="text-xl font-semibold mb-3">3.1 Analyse des besoins</h3>
+
+      <p class="mb-3">
+        L’analyse des besoins permet de définir les fonctionnalités attendues du système ainsi que les contraintes
+        auxquelles il doit répondre. Elle est essentielle pour orienter la conception et garantir que la solution
+        développée répond réellement au problème identifié.
+      </p>
+
+      <h4 class="font-semibold mb-2">Besoins fonctionnels</h4>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Permettre le signalement de dépôts de déchets avec image</li>
+        <li>Associer une localisation GPS à chaque signalement</li>
+        <li>Gérer le statut des signalements (en attente, en cours, terminé, rejeté)</li>
+        <li>Permettre la création de listings de déchets recyclables</li>
+        <li>Autoriser les utilisateurs à faire des offres sur les listings</li>
+        <li>Afficher les signalements sur une carte interactive</li>
+        <li>Fournir un tableau de bord pour suivre les activités de l’utilisateur</li>
+      </ul>
+
+      <h4 class="font-semibold mb-2">Besoins non fonctionnels</h4>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Simplicité d’utilisation afin d’encourager les signalements</li>
+        <li>Accessibilité sans connexion pour la fonctionnalité de signalement</li>
+        <li>Performance acceptable pour le chargement des pages</li>
+        <li>Interface responsive adaptée aux différents écrans</li>
+        <li>Sécurité des données utilisateurs (authentification, protection des données)</li>
+      </ul>
+
+      <!-- ================= ACTEURS ================= -->
+      <h3 class="text-xl font-semibold mb-3">3.2 Acteurs du système</h3>
+
+      <p class="mb-3">
+        Le système repose sur deux types d’acteurs principaux qui interagissent avec la plateforme.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>
+          <strong>Utilisateur :</strong> peut signaler des déchets, créer des listings recyclables,
+          consulter les annonces et faire des offres.
+        </li>
+        <li>
+          <strong>Administrateur :</strong> dispose d’un accès avancé permettant de gérer les signalements,
+          modifier leur statut et superviser l’ensemble du système.
+        </li>
+      </ul>
+
+      <!-- ================= CHOIX TECHNIQUES ================= -->
+      <h3 class="text-xl font-semibold mb-3">3.3 Choix techniques</h3>
+
+      <p class="mb-3">
+        Le choix des technologies a été réalisé en fonction des besoins du projet, de la rapidité de développement
+        et de la simplicité de mise en œuvre.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+
+        <li>
+          <strong>Django :</strong> framework backend choisi pour sa structure robuste, son système ORM intégré
+          et sa rapidité de développement. Il permet de gérer efficacement les modèles, les vues et la logique métier.
+        </li>
+
+        <li>
+          <strong>HTMX :</strong> utilisé pour améliorer l’interactivité sans recourir à un JavaScript complexe.
+          Il permet de mettre à jour dynamiquement certaines parties de la page via des requêtes AJAX simples.
+        </li>
+
+        <li>
+          <strong>Leaflet :</strong> bibliothèque utilisée pour l’affichage de cartes interactives et la gestion
+          des coordonnées GPS (latitude et longitude).
+        </li>
+
+      </ul>
+
+      <p class="mb-3">
+        D’autres technologies comme PHP auraient pu être utilisées pour le backend. Cependant, aucune stack technique
+        spécifique n’ayant été imposée pour ce projet, le choix s’est porté sur Django.
+      </p>
+
+      <p class="mb-3">
+        Django a été privilégié pour sa simplicité d’intégration, son écosystème complet et sa capacité à gérer
+        rapidement
+        des applications web structurées sans nécessiter une architecture complexe.
+      </p>
+
+      <p class="mb-3">
+        De plus, le choix de Django a été fortement motivé par la contrainte de temps du projet. En effet, le
+        développement
+        a été réalisé sur une durée relativement courte, d’environ un mois. Django, grâce à ses fonctionnalités
+        intégrées
+        (ORM, système d’authentification, interface d’administration), a permis d’accélérer significativement le
+        développement et de produire une application fonctionnelle dans ce délai limité.
+      </p>
+
+      <p class="mb-4">
+        De plus, l’utilisation de HTMX permet d’éviter l’utilisation d’un framework frontend lourd (comme React),
+        ce qui simplifie considérablement le développement tout en conservant une bonne interactivité.
+      </p>
+
+      <!-- ================= METHODE DE TRAVAIL ================= -->
+      <h3 class="text-xl font-semibold mb-3">3.4 Méthode de travail</h3>
+
+      <p class="mb-3">
+        Le développement du projet a été réalisé en suivant une approche inspirée de la méthode Agile.
+      </p>
+
+      <p class="mb-3">
+        Le travail a été organisé en plusieurs phases courtes (sprints), chacune dédiée à l’implémentation
+        d’un ensemble de fonctionnalités spécifiques, telles que l’authentification, le système de signalement
+        ou la marketplace.
+      </p>
+
+      <p class="mb-3">
+        Cette approche a permis de tester progressivement les fonctionnalités, de corriger les erreurs au fur
+        et à mesure et d’améliorer le système de manière itérative.
+      </p>
+
+      <p>
+        L’utilisation d’une méthode Agile a ainsi facilité la gestion du projet et permis une meilleure adaptation
+        aux contraintes et aux évolutions du développement.
+      </p>
+
+    </div>
+
+
+    <div class="p-8">
+
+      <h2 class="text-2xl font-bold mb-6">4. Conception & Implémentation</h2>
+
+      <p class="mb-4">
+        Cette section présente l’architecture du système, la conception de la base de données ainsi que
+        l’implémentation des principales fonctionnalités de la plateforme.
+      </p>
+
+      <!-- ================= ARCHITECTURE ================= -->
+      <h3 class="text-xl font-semibold mb-3">4.1 Architecture du système</h3>
+
+      <p class="mb-3">
+        L’application repose sur l’architecture MVT (Modèle – Vue – Templates) implémentée par Django.
+        Cette architecture permet de séparer clairement la logique métier, l’interface utilisateur et la gestion des
+        données.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li><strong>Modèle :</strong> représente les données (User, Report, Listing, Offer, etc.)</li>
+        <li><strong>Templates :</strong> correspond aux templates HTML affichés à l’utilisateur</li>
+        <li><strong>Vue :</strong> gérés par les vues Django (views.py) qui traitent les requêtes</li>
+      </ul>
+
+      <p class="mb-3">
+        Le projet est structuré en plusieurs applications Django indépendantes afin de respecter le principe de
+        séparation des responsabilités
+        et d’améliorer la maintenabilité, la lisibilité ainsi que l’évolutivité du code.
+      </p>
+
+      <p class="mb-3">
+        Chaque application gère un domaine fonctionnel précis du système :
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+
+        <li>
+          <strong>Users :</strong> gère l’authentification et la gestion des utilisateurs (inscription, connexion,
+          profil utilisateur,
+          gestion des sessions et des rôles).
+        </li>
+
+        <li>
+          <strong>Listings :</strong> gère la marketplace de recyclage, incluant la création, la modification et
+          l’affichage des annonces
+          publiées par les utilisateurs ainsi que la gestion des offres associées.
+        </li>
+
+        <li>
+          <strong>Reports :</strong> gère le système de signalement des dépôts de déchets, incluant la création de
+          reports,
+          l’ajout d’images, la gestion des statuts (en attente, en cours, traité, rejeté) et le suivi administratif.
+        </li>
+
+        <li>
+          <strong>Locations :</strong> gère les données géographiques du système, notamment la gestion des coordonnées
+          GPS,
+          la localisation des signalements et leur affichage sur la carte interactive via Leaflet.
+        </li>
+
+        <li>
+          <strong>Legal :</strong> regroupe les aspects juridiques et informatifs de la plateforme, tels que les
+          conditions d’utilisation,
+          la politique de confidentialité et les règles liées à l’utilisation du service.
+        </li>
+
+      </ul>
+
+      <p class="mb-3">
+        Cette séparation en applications permet de limiter les dépendances entre modules, de faciliter les tests
+        unitaires,
+        et de rendre le projet plus scalable pour de futures évolutions.
+      </p>
+
+      <p class="mb-4">
+        Cette organisation modulaire permet de travailler de manière plus structurée et de faciliter les évolutions
+        futures.
+      </p>
+
+      <!-- ================= BASE DE DONNEES ================= -->
+      <h3 class="text-xl font-semibold mb-3">4.2 Base de données</h3>
+
+      <p class="mb-3">
+        La base de données repose sur un modèle relationnel, permettant d’assurer une structuration cohérente des
+        données
+        et de garantir l’intégrité des relations entre les différentes entités du système.
+      </p>
+
+      <p class="mb-3">
+        Le choix d’un modèle relationnel est justifié par la nature fortement structurée des données manipulées
+        (utilisateurs, signalements, listings et offres), ainsi que par la nécessité de maintenir des relations claires
+        entre ces entités.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li><strong>User :</strong> représente les utilisateurs de la plateforme et centralise les informations
+          d’authentification et de profil.</li>
+
+        <li><strong>Report :</strong> correspond aux signalements de dépôts de déchets effectués par les utilisateurs,
+          incluant image, localisation et statut.</li>
+
+        <li><strong>Listing :</strong> représente les annonces publiées par les utilisateurs pour des objets ou déchets
+          recyclables.</li>
+
+        <li><strong>Offer :</strong> correspond aux propositions faites par les utilisateurs sur les listings
+          disponibles.</li>
+
+        <li><strong>Category :</strong> permet de classifier les reports et listings selon le type de déchet ou d’objet
+          (plastique, métal, etc.).</li>
+
+        <li><strong>Tag :</strong> permet d’ajouter des étiquettes supplémentaires pour améliorer le filtrage et la
+          recherche.</li>
+
+        <li><strong>Area :</strong> représente une zone géographique générale utilisée pour regrouper les signalements
+          et listings.</li>
+
+        <li>
+          <strong>District :</strong> correspond à une subdivision administrative de l’île Maurice. Le territoire est
+          divisé en
+          <strong>9 districts</strong>, utilisés ici comme découpage géographique structurant permettant de situer les
+          signalements
+          de manière cohérente sans aller jusqu’à une précision GPS fine.
+        </li>
+      </ul>
+
+      <p class="mb-4">
+        Les relations entre ces entités sont assurées à l’aide de clés étrangères, permettant de garantir la cohérence
+        des données
+        et de structurer les interactions entre utilisateurs et contenus de la plateforme.
+      </p>
+
+      <!-- ================= UML / MCD / MLD ================= -->
+      <h3 class="text-xl font-semibold mb-3">4.3 Modélisation (UML / MCD / MLD)</h3>
+
+      <p class="mb-3">
+        La phase de modélisation a joué un rôle central dans la conception du système. Elle a permis de structurer les
+        données
+        et les interactions avant le développement, afin de limiter les incohérences et faciliter l’implémentation sous
+        Django.
+      </p>
+
+      <p class="mb-3">
+        Trois niveaux de modélisation ont été utilisés :
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li><strong>UML :</strong> pour représenter les interactions entre les acteurs et le système</li>
+        <li><strong>MCD :</strong> pour définir les entités et leurs relations de manière conceptuelle</li>
+        <li><strong>MLD :</strong> pour traduire le modèle en structure relationnelle exploitable par la base de données
+        </li>
+      </ul>
+
+      <p class="mb-4">
+        Cette approche progressive permet de passer d’une vision fonctionnelle du système à une implémentation technique
+        cohérente.
+      </p>
+
+      <p class="mb-3">
+        Le diagramme de cas d’utilisation permet d’identifier les interactions entre les acteurs et le système,
+        notamment les actions possibles pour les utilisateurs et l’administrateur.
+      </p>
+
+      <img src="use_case.png" class="w-full mb-6 h-[800px] rounded" />
+
+      <p class="mb-3">
+        Le diagramme de classes représente la structure objet du système et les relations entre les différentes entités.
+        Il permet de définir clairement les modèles utilisés dans Django.
+      </p>
+
+      <img src="class-diagram.png" class="w-full mb-6 rounded" />
+
+      <p class="mb-3">
+        Le modèle conceptuel de données (MCD) permet de représenter les entités et leurs relations de manière abstraite,
+        indépendamment de toute implémentation technique.
+      </p>
+
+      <img src="mcd.jpeg" class="w-full mb-6 rounded" />
+
+      <p class="mb-3">
+        Le modèle logique de données (MLD) constitue une transformation du MCD en une structure adaptée à une base
+        de données relationnelle, incluant les clés primaires et étrangères.
+      </p>
+
+      <img src="mld.jpeg" class="w-full mb-6 rounded" />
+
+      <p class="mb-4">
+        Ces différents diagrammes ont permis de structurer le projet en amont et de limiter les erreurs lors du
+        développement.
+      </p>
+
+      <!-- ================= FONCTIONNALITES ================= -->
+      <h3 class="text-xl font-semibold mb-3">4.4 Fonctionnalités implémentées</h3>
+
+      <p class="mb-4">
+        Les fonctionnalités du système ont été développées de manière progressive selon les besoins identifiés lors de
+        l’analyse.
+        Chaque module a été conçu pour répondre à une problématique précise tout en restant cohérent avec l’architecture
+        globale du projet.
+      </p>
+
+      <!-- SIGNAL -->
+      <h4 class="font-semibold mb-2">Signalement des déchets</h4>
+
+      <p class="mb-3">
+        Le module de signalement constitue le cœur du système. Il permet à tout utilisateur de déclarer un dépôt de
+        déchets
+        en fournissant une image et une localisation GPS.
+      </p>
+
+      <p class="mb-3">
+        Ce choix de conception vise à réduire les barrières d’accès afin de favoriser un maximum de contributions
+        citoyennes,
+        notamment dans un contexte environnemental où la rapidité de signalement est essentielle.
+      </p>
+
+      <p class="mb-3">
+        L’intégration de la géolocalisation permet d’associer chaque signalement à une position précise sur la carte,
+        facilitant ainsi le traitement par les autorités ou les administrateurs.
+      </p>
+
+      <p class="mb-3">
+        Une particularité importante est que cette fonctionnalité est accessible sans authentification,
+        afin de réduire les barrières à l’utilisation et encourager un maximum de signalements.
+      </p>
+
+      <img src="report_form.png" class="w-full mb-6 rounded" />
+      <img src="leaflet.png" class="w-full mb-6 rounded" />
+
+      <!-- MARKETPLACE -->
+      <h4 class="font-semibold mb-2">Marketplace de recyclage</h4>
+
+      <p class="mb-3">
+        La marketplace de recyclage a été intégrée afin de favoriser la réutilisation des objets et déchets encore
+        exploitables.
+        Elle permet aux utilisateurs de publier des annonces et d’interagir via un système d’offres.
+      </p>
+
+      <p class="mb-3">
+        Cette fonctionnalité s’inscrit dans une logique d’économie circulaire, visant à réduire la quantité de déchets
+        envoyés
+        en décharge en favorisant leur réutilisation entre particuliers.
+      </p>
+
+      <img src="listings.png" class="w-full mb-6 rounded" />
+      <img src="offer_system.png" class="w-full mb-6 rounded" />
+
+      <!-- DASHBOARD -->
+      <h4 class="font-semibold mb-2">Dashboard utilisateur</h4>
+
+      <p class="mb-3">
+        Le tableau de bord utilisateur centralise l’ensemble des activités liées au compte, notamment les signalements,
+        les listings et les offres.
+      </p>
+
+      <p class="mb-3">
+        Il permet une meilleure visibilité des actions effectuées sur la plateforme et améliore l’expérience utilisateur
+        en regroupant les informations importantes dans une interface unique.
+      </p>
+
+      <img src="user_dashboard.png" class="w-full mb-6 rounded" />
+
+      <h4 class="font-semibold mb-2">Gestion du compte utilisateur</h4>
+
+      <p class="mb-3">
+        La plateforme intègre un système de gestion de compte permettant à chaque utilisateur de contrôler ses données
+        personnelles.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Consultation et modification des informations du profil</li>
+        <li>Gestion des données personnelles enregistrées dans le système</li>
+        <li>Possibilité de suppression du compte utilisateur</li>
+      </ul>
+
+      <p class="mb-3">
+        Cette fonctionnalité garantit à l’utilisateur un contrôle total sur ses données, conformément aux bonnes
+        pratiques en matière
+        de protection des données et aux principes de confidentialité.
+      </p>
+
+      <p class="mb-3">
+        La suppression d’un compte entraîne également la suppression ou l’anonymisation des données associées lorsque
+        cela est applicable.
+      </p>
+
+      <!-- ADMIN -->
+      <h4 class="font-semibold mb-2">Interface administrateur</h4>
+
+      <p class="mb-3">
+        L’interface d’administration permet de gérer les signalements et de modifier leur statut.
+        Elle offre une vue globale sur les données du système.
+      </p>
+
+      <img src="admin_reports.png" class="w-full mb-6 rounded" />
+
+
+      <h3 class="text-xl font-semibold mb-3">4.5 Aspects juridiques et sécurité</h3>
+
+      <p class="mb-3">
+        Dans le cadre de la conception de la plateforme, plusieurs aspects juridiques et liés à la sécurité ont été pris
+        en compte
+        afin d’assurer la conformité et la protection des utilisateurs.
+      </p>
+
+      <h4 class="font-semibold mb-2">Politique de confidentialité</h4>
+
+      <p class="mb-3">
+        Une politique de confidentialité a été mise en place afin d’informer les utilisateurs sur la collecte,
+        l’utilisation et
+        la conservation de leurs données personnelles. Les données sensibles sont limitées au strict nécessaire pour le
+        bon fonctionnement
+        de la plateforme.
+      </p>
+
+      <h4 class="font-semibold mb-2">Conditions d’utilisation</h4>
+
+      <p class="mb-3">
+        Les conditions d’utilisation définissent les règles d’accès et d’utilisation du service. Elles encadrent
+        notamment
+        les comportements interdits, la responsabilité des utilisateurs ainsi que les limites d’utilisation de la
+        plateforme.
+      </p>
+
+      <h4 class="font-semibold mb-2">Mentions légales</h4>
+
+      <p class="mb-3">
+        Les mentions légales permettent d’identifier le responsable du service ainsi que le cadre légal dans lequel la
+        plateforme est utilisée.
+      </p>
+
+      <h4 class="font-semibold mb-2">Sécurité</h4>
+
+      <p class="mb-3">
+        Des mesures de sécurité ont été mises en place afin de protéger les données et les accès au système.
+        L’objectif principal est de garantir la confidentialité, l’intégrité et la disponibilité des informations
+        manipulées par la plateforme.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+
+        <li>
+          <strong>Authentification sécurisée des utilisateurs :</strong> gestion des sessions via le système
+          d’authentification de Django, permettant de sécuriser l’accès aux fonctionnalités réservées.
+        </li>
+
+        <li>
+          <strong>Gestion des permissions :</strong> certaines routes et actions sont protégées afin de limiter
+          l’accès aux utilisateurs non autorisés (ex : interface administrateur, gestion des signalements).
+        </li>
+
+        <li>
+          <strong>Validation des données côté serveur :</strong> toutes les données envoyées par les utilisateurs
+          sont validées afin d’éviter les erreurs et les comportements malveillants.
+        </li>
+
+        <li>
+          <strong>Protection CSRF :</strong> Django intègre un mécanisme de protection contre les attaques CSRF,
+          garantissant que les requêtes sensibles proviennent bien de l’application légitime.
+        </li>
+
+        <li>
+          <strong>Sécurisation des formulaires :</strong> utilisation des formulaires Django permettant d’éviter
+          les injections de données non contrôlées dans le système.
+        </li>
+
+        <li>
+          <strong>Gestion des uploads :</strong> les fichiers image envoyés lors des signalements sont contrôlés
+          (type et taille) afin d’éviter l’envoi de fichiers malveillants.
+        </li>
+
+        <li>
+          <strong>Isolation des rôles :</strong> séparation claire entre utilisateurs standards et administrateurs
+          afin de limiter les accès aux fonctionnalités critiques du système.
+        </li>
+
+        <li>
+          <strong>Protection des données sensibles :</strong> les informations personnelles des utilisateurs sont
+          stockées et manipulées de manière contrôlée, conformément aux bonnes pratiques de développement web.
+        </li>
+
+      </ul>
+
+      <p>
+        Ces éléments permettent de garantir un niveau de sécurité adapté à une application web manipulant des données
+        utilisateurs. Ils s’appuient sur les mécanismes natifs de Django ainsi que sur des bonnes pratiques de
+        développement
+        afin de réduire les risques liés aux attaques courantes (injection, accès non autorisé, falsification de
+        requêtes).
+      </p>
+
+
+      <h3 class="text-xl font-semibold mb-3">4.6 Optimisation et performances</h3>
+
+      <p class="mb-3">
+        Afin d’assurer de bonnes performances globales de la plateforme, plusieurs optimisations ont été mises en place
+        au niveau du backend Django et de la gestion des ressources.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+
+        <li>
+          <strong>Optimisation des requêtes ORM :</strong> les requêtes à la base de données ont été optimisées en
+          utilisant les fonctionnalités de Django ORM afin de limiter les requêtes inutiles et améliorer les temps de
+          réponse (réduction des requêtes redondantes et utilisation de relations optimisées).
+        </li>
+
+        <li>
+          <strong>Analyse des performances avec Django Debug Toolbar :</strong> cet outil a été utilisé durant le
+          développement afin d’analyser les requêtes SQL générées, détecter les requêtes lentes et identifier les points
+          d’amélioration du système.
+        </li>
+
+        <li>
+          <strong>Externalisation du stockage des images :</strong> les images envoyées par les utilisateurs
+          (signalements
+          et listings) sont stockées sur une solution externe ( <a href="https://cloudinary.com/"
+            target="_blank">Cloudinary</a> ) afin de réduire la charge du serveur
+          et améliorer les performances globales de l’application.
+        </li>
+
+        <li>
+          <strong>Réduction de la charge serveur :</strong> en externalisant les fichiers médias et en optimisant les
+          accès
+          aux données, le serveur principal est principalement dédié au traitement logique de l’application.
+        </li>
+
+        <li>
+          <strong>Amélioration progressive des performances :</strong> les tests réalisés durant le développement ont
+          permis
+          d’identifier les parties les plus coûteuses en ressources et d’ajuster progressivement l’architecture.
+        </li>
+
+      </ul>
+
+      <p>
+        Ces optimisations permettent d’assurer une application stable, réactive et capable de supporter une utilisation
+        réelle dans un contexte de production. L’utilisation combinée de Django ORM, d’outils d’analyse comme Debug
+        Toolbar
+        et d’un stockage externe pour les médias contribue à une architecture plus performante et évolutive.
+      </p>
+
+
+      <h3 class="text-xl font-semibold mb-3">4.7 Expérience utilisateur (UX/UI)</h3>
+
+      <p class="mb-3">
+        L’expérience utilisateur (UX/UI) a été un point central dans la conception de la plateforme afin de garantir
+        une utilisation simple, rapide et intuitive, même pour des utilisateurs non techniques.
+      </p>
+
+      <p class="mb-3">
+        L’objectif principal était de réduire la complexité des interactions et de rendre les actions principales
+        accessibles en un minimum de clics, notamment pour le signalement de déchets et la publication de listings.
+      </p>
+
+      <h4 class="font-semibold mb-2">Interface moderne et responsive</h4>
+
+      <p class="mb-3">
+        L’interface a été développée avec Tailwind CSS afin de garantir un design moderne, cohérent et facilement
+        maintenable. L’approche utility-first a permis de concevoir rapidement une interface propre et structurée.
+      </p>
+
+      <p class="mb-3">
+        Le design est entièrement responsive (mobile-first), assurant une adaptation automatique sur différents types
+        d’écrans (smartphones, tablettes et ordinateurs). Cette approche est essentielle pour un système destiné à
+        être utilisé sur le terrain.
+      </p>
+
+      <h4 class="font-semibold mb-2">Optimisation de l’interaction avec HTMX</h4>
+
+      <p class="mb-3">
+        L’utilisation de HTMX a permis d’améliorer fortement l’interactivité de l’application sans recourir à un
+        framework
+        JavaScript lourd. Cela a rendu l’expérience utilisateur plus fluide et réactive.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Mise à jour dynamique des contenus sans rechargement complet de la page</li>
+        <li>Pagination asynchrone des listings et des signalements</li>
+        <li>Filtres en temps réel pour affiner les résultats</li>
+        <li>Réduction du temps de navigation entre les différentes sections</li>
+      </ul>
+
+      <h4 class="font-semibold mb-2">Simplicité et fluidité des parcours utilisateurs</h4>
+
+      <p class="mb-3">
+        Une attention particulière a été portée à la simplicité des formulaires afin de limiter les erreurs et améliorer
+        la rapidité de saisie.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Formulaires clairs et structurés</li>
+        <li>Réduction du nombre de champs obligatoires au strict nécessaire</li>
+        <li>Signalement accessible en quelques étapes seulement</li>
+      </ul>
+
+      <h4 class="font-semibold mb-2">Feedback utilisateur</h4>
+
+      <p class="mb-3">
+        Le système fournit un retour immédiat aux actions de l’utilisateur afin d’améliorer la compréhension et la
+        confiance dans la plateforme.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Messages de succès lors des actions réussies (création, modification, envoi)</li>
+        <li>Messages d’erreur clairs en cas de problème de validation</li>
+        <li>Indications visuelles lors des interactions dynamiques (HTMX)</li>
+      </ul>
+
+      <h4 class="font-semibold mb-2">Performance perçue et réactivité</h4>
+
+      <p class="mb-3">
+        Grâce à l’utilisation combinée de Django et HTMX, l’application offre une expérience fluide avec une forte
+        réactivité côté utilisateur, réduisant la sensation de latence lors des interactions.
+      </p>
+
+      <p>
+        L’ensemble de ces choix contribue à une interface moderne, intuitive et adaptée à une utilisation réelle sur le
+        terrain, tout en améliorant l’efficacité globale du système.
+      </p>
+
+    </div>
+
+
+    <div class="p-8">
+
+      <h2 class="text-2xl font-bold mb-6">5. Planification</h2>
+
+      <p class="mb-4">
+        La planification du projet a été réalisée afin d’organiser les différentes phases de développement
+        et de respecter les contraintes de temps. Le projet ayant été réalisé sur une durée relativement courte
+        d’environ un mois et demi, une organisation rigoureuse a été nécessaire.
+      </p>
+
+      <!-- ================= PHASES ================= -->
+      <h3 class="text-xl font-semibold mb-3">5.1 Phases du projet</h3>
+
+      <p class="mb-3">
+        Le développement du projet a été structuré en plusieurs phases principales, permettant de progresser
+        de manière logique depuis l’analyse jusqu’aux tests finaux.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li><strong>Analyse :</strong> identification du problème, définition des besoins et des objectifs</li>
+        <li><strong>Conception :</strong> réalisation des diagrammes (UML, MCD, MLD) et structuration du système</li>
+        <li><strong>Développement :</strong> implémentation des fonctionnalités avec Django</li>
+        <li><strong>Tests :</strong> vérification du bon fonctionnement et correction des erreurs</li>
+      </ul>
+
+      <!-- ================= GANTT ================= -->
+      <h3 class="text-xl font-semibold mb-3">5.2 Diagramme de Gantt</h3>
+
+      <p class="mb-3">
+        Afin de visualiser l’organisation du projet dans le temps, un diagramme de Gantt a été réalisé.
+        Il permet de représenter les différentes phases ainsi que leur durée.
+      </p>
+
+      <!-- IMAGE GANTT -->
+      <div class="mb-6">
+        <img src="gantt.png" alt="Diagramme de Gantt" class="w-full rounded">
+      </div>
+
+      <!-- ================= REPARTITION TEMPS ================= -->
+      <h3 class="text-xl font-semibold mb-3">5.3 Répartition du temps</h3>
+
+      <p class="mb-3">
+        La répartition du temps a été adaptée à la durée totale du projet (environ un mois).
+        Une part importante du temps a été consacrée au développement des fonctionnalités principales.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li><strong>Analyse :</strong> 10%</li>
+        <li><strong>Conception :</strong> 20%</li>
+        <li><strong>Développement :</strong> 50%</li>
+        <li><strong>Tests et corrections :</strong> 20%</li>
+      </ul>
+
+      <p>
+        Cette répartition a permis de prioriser le développement tout en conservant du temps pour la conception
+        et la validation du système.
+      </p>
+
+    </div>
+
+
+    <div class="page p-8">
+
+      <h2 class="text-2xl font-bold mb-6">6. Résultats et Tests</h2>
+
+
+
+      <p class="mb-3">
+        Afin de garantir la fiabilité du système, deux types de tests ont été réalisés : des tests fonctionnels manuels
+        et des tests unitaires au niveau du backend Django.
+      </p>
+
+      <!-- ================= TESTS FONCTIONNELS ================= -->
+      <h3 class="text-xl font-semibold mb-3">6.1 Tests fonctionnels</h3>
+
+
+      <p class="mb-3">
+        Des tests fonctionnels ont été réalisés afin de vérifier que chaque fonctionnalité principale
+        du système fonctionne correctement.
+      </p>
+
+      <p class="mb-3">
+        Ces tests fonctionnels ont été réalisés manuellement afin de vérifier le comportement global de l’application
+        du point de vue utilisateur.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li><strong>Signalement :</strong> création d’un report avec image et localisation GPS validée</li>
+        <li><strong>Listing :</strong> création et affichage correct des annonces recyclables</li>
+        <li><strong>Offres :</strong> possibilité de faire une offre sur un listing et enregistrement en base</li>
+        <li><strong>Authentification :</strong> inscription, connexion et gestion des sessions fonctionnelles</li>
+      </ul>
+
+      <p class="mb-4">
+        Les tests ont permis de valider que les fonctionnalités principales répondent aux besoins définis
+        dans le cahier des charges.
+      </p>
+
+
+      <h3 class="text-xl font-semibold mb-3">6.2 Tests unitaires (backend)</h3>
+
+      <p class="mb-3">
+        Des tests unitaires ont été implémentés afin de vérifier le bon fonctionnement des composants critiques du
+        système,
+        notamment les modèles et certaines logiques métier.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Vérification de la création d’un utilisateur dans la base de données</li>
+        <li>Validation de la création d’un report avec les champs obligatoires</li>
+        <li>Contrôle de l’enregistrement d’un listing et de ses relations</li>
+        <li>Test de la création d’une offre liée à un listing existant</li>
+      </ul>
+
+      <p class="mb-4">
+        Ces tests unitaires permettent de garantir que les principales entités du système fonctionnent correctement
+        indépendamment de l’interface utilisateur.
+      </p>
+
+      <!-- ================= SCENARIOS ================= -->
+      <h3 class="text-xl font-semibold mb-3">6.3 Scénarios d’utilisation</h3>
+
+      <p class="mb-3">
+        Afin de simuler des cas réels d’utilisation, plusieurs scénarios ont été testés.
+      </p>
+
+      <h4 class="font-semibold mb-2">Scénario 1 : Création d’un signalement</h4>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>L’utilisateur accède à la page de signalement</li>
+        <li>Il ajoute une image du déchet</li>
+        <li>Il sélectionne ou détecte sa localisation</li>
+        <li>Le signalement est enregistré en base de données</li>
+      </ul>
+
+      <h4 class="font-semibold mb-2">Scénario 2 : Gestion par l’administrateur</h4>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>L’administrateur accède à l’interface d’administration</li>
+        <li>Il consulte les signalements</li>
+        <li>Il modifie le statut (en cours, terminé, rejeté)</li>
+      </ul>
+
+      <h4 class="font-semibold mb-2">Scénario 3 : Interaction marketplace</h4>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Un utilisateur crée un listing</li>
+        <li>Un autre utilisateur consulte le listing</li>
+        <li>Il fait une offre</li>
+        <li>L’offre est enregistrée et visible par le propriétaire</li>
+      </ul>
+
+      <!-- ================= CAPTURES ================= -->
+      <h3 class="text-xl font-semibold mb-3">6.4 Captures d’écran</h3>
+
+      <p class="mb-3">
+        Les captures d’écran ci-dessous illustrent le fonctionnement de l’application.
+      </p>
+
+      <!-- GRID IMAGES -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <img src="create_listing.png" class="rounded" />
+        <img src="received_offers.png" class="rounded" />
+        <img src="view_offer.png" class="rounded" />
+        <img src="admin_reports.png" class="rounded" />
+        <img src="leaflet.png" class="rounded" />
+        <img src="dashboard.png" class="rounded" />
+      </div>
+
+      <!-- ================= COMPARAISON ================= -->
+      <h3 class="text-xl font-semibold mb-3">6.5 Comparaison objectifs / résultats</h3>
+
+      <p class="mb-3">
+        Les résultats obtenus sont globalement conformes aux objectifs définis en début de projet.
+      </p>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Le système de signalement est fonctionnel avec image et géolocalisation</li>
+        <li>La marketplace permet la création de listings et d’offres</li>
+        <li>Les interactions entre utilisateurs sont opérationnelles</li>
+        <li>Le tableau de bord permet un suivi des activités</li>
+      </ul>
+
+      <p>
+        Certaines fonctionnalités avancées, comme les notifications ou l’optimisation de la carte,
+        n’ont pas pu être finalisées en raison des contraintes de temps, mais restent envisagées
+        comme améliorations futures.
+      </p>
+
+    </div>
+
+
+    <div class="page p-8">
+
+      <!-- ================= ANALYSE CRITIQUE ================= -->
+      <h2 class="text-2xl font-bold mb-6">7. Analyse critique</h2>
+
+      <p class="mb-4">
+        Bien que le système développé réponde globalement aux objectifs fixés, certaines limites techniques et
+        fonctionnelles
+        peuvent être identifiées. Ces limites ouvrent également des perspectives d’amélioration pour des versions
+        futures.
+      </p>
+
+      <h3 class="text-xl font-semibold mb-3">7.1 Limites du système actuel</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+
+        <li>
+          Absence de système de notifications en temps réel pour informer les utilisateurs des nouvelles offres ou des
+          changements de statut.
+        </li>
+
+        <li>
+          La carte interactive (Leaflet) est utilisée principalement pour afficher la localisation d’un signalement
+          précis,
+          mais ne permet pas actuellement d’afficher plusieurs signalements simultanément sur une carte globale.
+        </li>
+
+        <li>
+          Interface utilisateur perfectible, notamment sur les appareils mobiles où l’ergonomie peut être améliorée.
+        </li>
+
+        <li>
+          Absence de fonctionnalités avancées d’analyse automatique des déchets (ex : classification par image).
+        </li>
+
+        <li>
+          Système dépendant d’une connexion internet stable pour l’accès aux fonctionnalités principales.
+        </li>
+
+      </ul>
+
+      <h3 class="text-xl font-semibold mb-3">7.2 Améliorations possibles</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+
+        <li>
+          Mise en place d’un système de notifications (email ou push) pour améliorer l’interaction entre utilisateurs.
+        </li>
+
+        <li>
+          Optimisation de la carte interactive avec ajout de clustering pour regrouper les signalements proches et
+          améliorer la lisibilité.
+        </li>
+
+        <li>
+          Amélioration de l’interface utilisateur avec une approche mobile-first pour une meilleure expérience sur
+          smartphone.
+        </li>
+
+        <li>
+          Intégration d’un système d’intelligence artificielle pour la reconnaissance automatique des types de déchets à
+          partir des images.
+        </li>
+
+        <li>
+          Ajout d’un système de modération et de validation automatique des signalements afin de garantir la qualité des
+          données.
+        </li>
+
+        <li>
+          Possibilité de transformer la plateforme en application mobile afin de faciliter les signalements sur le
+          terrain.
+        </li>
+
+      </ul>
+
+      <h3 class="text-xl font-semibold mb-3">7.3 Difficultés rencontrées</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+
+        <li>
+          Intégration de la bibliothèque Leaflet et gestion des interactions avec la carte interactive.
+        </li>
+
+        <li>
+          Manipulation des coordonnées GPS (latitude/longitude) et récupération fiable de la position utilisateur.
+        </li>
+
+        <li>
+          Contraintes de temps importantes, le projet ayant été réalisé sur une durée d’environ un mois.
+        </li>
+
+        <li>
+          Priorisation des fonctionnalités essentielles au détriment de certaines fonctionnalités avancées.
+        </li>
+
+      </ul>
+
+      <p>
+        Malgré ces difficultés, des solutions techniques ont été mises en place progressivement, permettant d’aboutir
+        à un système fonctionnel et cohérent avec les objectifs initiaux du projet.
+      </p>
+
+    </div>
+
+    <div class="p-8">
+
+      <h2 class="text-2xl font-bold mb-6">8. Compétences acquises</h2>
+
+      <p class="mb-4">
+        La réalisation de ce projet m’a permis de développer et de consolider plusieurs compétences techniques et
+        méthodologiques
+        dans le domaine du développement web et de la conception de systèmes d’information.
+      </p>
+
+      <h3 class="text-xl font-semibold mb-3">8.1 Compétences techniques</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Maîtrise du framework Django pour le développement backend structuré (MVT)</li>
+        <li>Utilisation avancée de l’ORM Django pour la gestion des bases de données relationnelles</li>
+        <li>Intégration de fonctionnalités géospatiales avec Leaflet et gestion des coordonnées GPS</li>
+        <li>Amélioration de l’interactivité front-end avec HTMX sans framework JavaScript complexe</li>
+        <li>Optimisation des performances backend et analyse des requêtes avec Django Debug Toolbar</li>
+        <li>Externalisation du stockage des fichiers médias via Cloudinary</li>
+        <li>Création d’interfaces responsives avec Tailwind CSS (approche mobile-first)</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mb-3">8.2 Compétences en conception et architecture</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Conception d’une architecture modulaire basée sur des applications Django séparées</li>
+        <li>Modélisation de systèmes avec UML, MCD et MLD</li>
+        <li>Structuration d’une base de données relationnelle cohérente et normalisée</li>
+        <li>Gestion des relations entre entités complexes (utilisateurs, signalements, listings, offres)</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mb-3">8.3 Compétences méthodologiques</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Organisation d’un projet en méthode Agile avec découpage en phases</li>
+        <li>Gestion du temps sur un projet court avec contraintes fortes</li>
+        <li>Capacité à prioriser les fonctionnalités essentielles</li>
+        <li>Approche itérative avec tests et améliorations progressives</li>
+      </ul>
+
+      <p>
+        Ce projet m’a permis de gagner en autonomie dans la conception et le développement d’une application web
+        complète,
+        tout en renforçant ma capacité à structurer un système complexe de manière professionnelle.
+      </p>
+
+    </div>
+
+    <div class="page p-8">
+
+      <h2 class="text-2xl font-bold mb-6">9. Perspectives professionnelles</h2>
+
+      <p class="mb-4">
+        Ce projet ouvre plusieurs perspectives d’évolution, tant sur le plan technique que sur son potentiel
+        d’application réelle.
+        Il pourrait être transformé en une solution complète destinée à des acteurs publics ou privés impliqués dans la
+        gestion des déchets.
+      </p>
+
+      <p class="mb-4">
+        Dans un contexte de transition écologique et de digitalisation des services publics, une plateforme de
+        signalement centralisée
+        peut jouer un rôle important dans l’amélioration de la gestion environnementale.
+      </p>
+
+      <h3 class="text-xl font-semibold mb-3">9.1 Évolutions techniques possibles</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Déploiement sur une infrastructure cloud scalable (AWS, Azure ou équivalent)</li>
+        <li>Ajout d’une application mobile pour faciliter les signalements sur le terrain</li>
+        <li>Implémentation de notifications en temps réel (email ou push)</li>
+        <li>Amélioration de la carte avec clustering des signalements</li>
+        <li>Intégration d’un système d’analyse intelligente des images (IA)</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mb-3">9.2 Intégration dans un contexte réel</h3>
+
+      <ul class="list-disc ml-6 mb-4">
+        <li>Collaboration avec les municipalités pour le traitement des signalements</li>
+        <li>Partenariats avec des ONG environnementales et entreprises de recyclage</li>
+        <li>Utilisation des données pour analyser les zones à forte pollution</li>
+        <li>Contribution à des projets de smart city et de gestion intelligente des déchets</li>
+      </ul>
+
+      <p class="mb-4">
+        Ainsi, ce projet ne se limite pas à un exercice académique, mais peut constituer une base solide pour une
+        solution
+        réelle ayant un impact environnemental et sociétal.
+      </p>
+
+      <p>
+        Il représente également une expérience formatrice complète dans la conception et le développement d’applications
+        web modernes.
+      </p>
+
+    </div>
+
+  </section>
+
+  <div class="page p-8">
+
+    <h2 class="text-2xl font-bold mb-6">10. Conclusion</h2>
+
+    <p class="mb-4">
+      Ce projet a permis de concevoir et développer une plateforme web complète dédiée au signalement de dépôts de
+      déchets sauvages et à la valorisation de déchets recyclables via une marketplace.
+    </p>
+
+    <p class="mb-4">
+      L’objectif principal était de proposer une solution numérique simple et accessible permettant de centraliser
+      les signalements et de faciliter la réutilisation des objets recyclables entre utilisateurs.
+    </p>
+
+    <p class="mb-4">
+      Sur le plan technique, ce projet a permis de consolider plusieurs compétences, notamment l’intégration de
+      cartes interactives avec Leaflet, la gestion des données géographiques (GPS), ainsi que la conception
+      et le développement d’une application web avec Django.
+    </p>
+
+    <p class="mb-4">
+      Une difficulté importante a été la gestion de la carte et des coordonnées GPS, ainsi que la contrainte de
+      temps limitée pour réaliser l’ensemble du projet. Malgré cela, l’application a pu être développée avec succès
+      et fonctionne de manière stable.
+    </p>
+
+    <p class="mb-4">
+      Sur le plan environnemental, ce projet s’inscrit dans une démarche de sensibilisation à la gestion des déchets
+      et à la réduction des dépôts sauvages, un problème réel observé à Maurice.
+    </p>
+
+    <p class="mb-4">
+      En termes de perspectives, plusieurs améliorations peuvent être envisagées, notamment l’ajout de notifications
+      en temps réel, une optimisation de la carte interactive avec clustering, ainsi que le développement d’une
+      application mobile afin de faciliter les signalements sur le terrain.
+    </p>
+
+    <p>
+      Enfin, ce projet représente une expérience complète mêlant développement web, conception de système et réflexion
+      sur un problème environnemental concret.
+    </p>
+
+  </div>
+
+  <section class="page p-8">
+
+    <h2 class="text-2xl font-bold mb-6">Annexe A – Glossaire technique</h2>
+
+    <h3 class="text-xl font-semibold mb-3">A.1 Termes techniques</h3>
+
+    <ul class="list-disc ml-6 mb-4">
+      <li><strong>Clustering :</strong> technique qui regroupe des points proches sur une carte afin d’améliorer la
+        lisibilité et les performances d’affichage.</li>
+
+      <li><strong>Marker :</strong> élément graphique utilisé sur une carte (Leaflet) pour représenter une position
+        géographique précise.</li>
+
+      <li><strong>Leaflet :</strong> bibliothèque JavaScript utilisée pour l’affichage de cartes interactives.</li>
+
+      <li><strong>HTMX :</strong> outil permettant de rendre une interface interactive sans utiliser de framework
+        JavaScript complexe ou du javascript native. Il permet de faire des requêtes asynchrones et de mettre à jour le DOM de manière dynamique.
+      </li>
+
+      <li><strong>Django :</strong> framework backend Python utilisé pour structurer l’application selon l’architecture
+        MVT et accélérer le développement.</li>
+
+      <li><strong>Cloudinary :</strong> service cloud utilisé pour le stockage et la gestion des fichiers médias
+        (images) afin de réduire la charge du serveur.</li>
+
+      <li><strong>Migrations :</strong> mécanisme permettant de synchroniser les modifications des modèles
+        avec la base de données.</li>
+
+      <li><strong>Tests unitaires :</strong> tests automatisés permettant de vérifier le bon fonctionnement de
+        composants spécifiques du système.</li>
+      <li><strong>ORM (Object-Relational Mapping) :</strong> outil permettant de manipuler une base de données via du
+        code orienté objet.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mb-3">A.2 Anglicismes utilisés</h3>
+
+    <ul class="list-disc ml-6 mb-4">
+      <li><strong>Dashboard :</strong> tableau de bord utilisateur.</li>
+      <li><strong>Listing :</strong> annonce publiée sur la plateforme.</li>
+      <li><strong>Report :</strong> signalement de déchet.</li>
+      <li><strong>Offer :</strong> proposition faite sur un listing.</li>
+    </ul>
+
+  </section>
+
+</body>
+
+</html>
